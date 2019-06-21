@@ -1,0 +1,93 @@
+<resources>
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Base application theme. -->
+    <!-- <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">. -->
+        <!-- Customize your theme here. -->
+
+        <!--应用的主要文字颜色,actionBar的标题文字默认使用该颜色-->
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <!--辅助的文字颜色，一般比textColorPrimary的颜色弱一点，用于一些弱化的表示-->
+        <item name="android:textColorSecondary">@color/colorPrimaryLight</item>
+        <!--应用的主要色调,actionBar默认使用该颜色，Toolbar导航栏的底色-->
+        <item name="android:colorPrimary">@color/colorSecond</item>
+        <!--应用的主要暗色调,statusBarColor 默认使用该颜色-->
+        <item name="android:colorPrimaryDark">@color/colorSecondDark</item>
+        <!--状态栏颜色,默认使用 colorPrimaryDark-->
+        <item name="android:statusBarColor">@color/colorSecondDark</item>
+        <!--底部栏颜色-->
+        <item name="android:navigationBarColor">@color/colorSecondDark</item>
+        <!--窗口背景颜色,此处不允许直接赋值如 #FFFFFF，必须在color中定义使用-->
+        <item name="android:windowBackground">@color/colorSecond</item>
+        <!--控件选中时的颜色,默认使用colorAccent-->
+        <item name="android:colorControlActivated">@color/colorPrimaryLight</item>
+        <!--控件按压时的色调-->
+        <item name="android:colorControlHighlight">@color/colorPrimary</item>
+        <!--CheckBox,RadioButton,SwitchCompat等默认状态的颜色-->
+        <item name="android:colorControlNormal">@color/colorPrimary</item>
+        <!--默认按钮的背景颜色-->
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
+        <!--一般控件的选中效果默认采用该颜色,如 CheckBox,RadioButton,SwitchCompat等-->
+        <item name="android:colorAccent">@color/colorPrimaryLight</item>
+        <!--默认 EditView 输入框字体的颜色-->
+        <item name="android:editTextColor">@color/colorPrimaryDark</item>
+        <!--默认 Button,TextView的文字颜色-->
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+        <!--RadioButton checkbox等控件的文字-->
+        <item name="android:textColorPrimaryDisableOnly">@color/colorPrimary</item>
+
+        <!--设备方向-->
+        <item name="android:screenOrientation">portrait</item>
+    </style>
+    <style name="AppTheme" parent="BaseTheme">
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- 设置Toolbar的文本颜色，app:titleTextAppearance(ToolbarTextAppearance)的优先级更高 -->
+        <item name="android:textColorPrimary">@color/colorSecond</item>
+        <!-- 设置Menu菜单的背景色，app:popupTheme(OverflowMenuStyle)的优先级更高 -->
+        <item name="android:itemBackground">@color/colorSecondDark</item>
+    </style>
+    <style name="ToolbarTextAppearance">
+        <!-- 设置Toolbar的文本字号 -->
+        <item name="android:textSize">14sp</item>
+        <!-- 设置Toolbar的文本颜色 -->
+        <item name="android:textColor">@color/colorSecond</item>
+    </style>
+
+    <style name="OverflowMenuStyle"  parent="@style/Theme.AppCompat.NoActionBar">
+        <!-- 设置Menu菜单的背景色 -->
+        <item name="android:itemBackground">@color/colorPrimaryLight</item>
+        <!-- 设置Menu菜单的字体颜色 -->
+        <item name="android:textColor">@color/colorSecond</item>
+        <!-- 设置Menu菜单的文本字号 -->
+        <item name="android:textSize">14sp</item>
+        <!-- 设置Menu窗口不覆盖Toolbar视图 -->
+        <item name="overlapAnchor">false</item>
+    </style>
+
+    <!-- 自定义控件风格-->
+    <style name="Custom" />
+
+    <style name="Custom.TabRadioButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/tab_bg_selector</item>
+        <item name="android:textColor">@drawable/tab_text_color_selector</item>
+    </style>
+
+    <style name="Custom.ButtonStyle">
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@drawable/button_text_color_selector</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>

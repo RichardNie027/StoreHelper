@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ScannerFragment">
+
+    <TextView
+        android:id="@+id/tvPanel1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.3"
+        android:background="@color/colorSecondDark"
+        app:layout_constraintBottom_toBottomOf="@+id/tvListNoLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvListNoLabel" />
+
+    <TextView
+        android:id="@+id/tvListNoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="盘点单号："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvListNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/tvListNoLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvListNoLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvListNoLabel" />
+
+    <TextView
+        android:id="@+id/tvBinCodingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="盘点货位："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvListNoLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
+
+    <Spinner
+        android:id="@+id/spnBinType"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvBinCodingLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+
+    <TextView
+        android:id="@+id/tvConnector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="—"
+        app:layout_constraintBottom_toBottomOf="@+id/spnBinType"
+        app:layout_constraintStart_toEndOf="@+id/spnBinType"
+        app:layout_constraintTop_toTopOf="@+id/spnBinType" />
+
+    <Spinner
+        android:id="@+id/spnBinCoding"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:spinnerMode="dropdown"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="@+id/tvConnector"
+        app:layout_constraintStart_toEndOf="@+id/tvConnector"
+        app:layout_constraintTop_toTopOf="@+id/tvConnector" />
+
+    <EditText
+        android:id="@+id/etBinCoding"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="必须输入货位"
+        android:inputType="text"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spnBinType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/spnBinType"
+        app:layout_constraintTop_toTopOf="@+id/spnBinType" />
+
+    <TextView
+        android:id="@+id/tvPanel2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.3"
+        android:background="@color/colorSecondDark"
+        app:layout_constraintBottom_toBottomOf="@+id/tvQuantityLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvQuantityLabel" />
+
+    <TextView
+        android:id="@+id/tvQuantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="数量统计： 当前货位"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvBinCodingLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvBinCodingLabel" />
+
+    <TextView
+        android:id="@+id/tvQuantity"
+        android:layout_width="42dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvQuantityLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvQuantityLabel" />
+
+    <TextView
+        android:id="@+id/tvTotalQuantityLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="，总计"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvQuantity"
+        app:layout_constraintStart_toEndOf="@+id/tvQuantity"
+        app:layout_constraintTop_toTopOf="@+id/tvQuantity" />
+
+    <TextView
+        android:id="@+id/tvTotalQuantity"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTotalQuantityLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvTotalQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvTotalQuantityLabel" />
+
+    <TextView
+        android:id="@+id/tvBarcodeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="商品条码："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvTotalQuantityLabel" />
+
+    <EditText
+        android:id="@+id/etBarcode"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="扫描商品条码"
+        android:inputType="text"
+        android:textAlignment="viewStart"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvBarcodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvBatchScanLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="准备扫描"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvBarcodeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/etBarcode" />
+
+    <TextView
+        android:id="@+id/tvBatchScanQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="1"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBatchScanLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvBatchScanLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBatchScanLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.3"
+        android:background="@color/colorSecondDark"
+        app:layout_constraintBottom_toBottomOf="@+id/btnBatchScan"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnBatchScan" />
+
+    <TextView
+        android:id="@+id/tvBatchScanLabel2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="件商品"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBatchScanLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvBatchScanQuantity"
+        app:layout_constraintTop_toTopOf="@+id/tvBatchScanLabel" />
+
+    <Button
+        android:id="@+id/btnBatchScan"
+        style="@style/Custom.ButtonStyle"
+        android:layout_width="77dp"
+        android:layout_height="24dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:text="待扫件数"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBatchScanLabel2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/tvBatchScanLabel2"
+        app:layout_constraintTop_toTopOf="@+id/tvBatchScanLabel2" />
+
+    <TextView
+        android:id="@+id/tvPanel4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.3"
+        android:background="@color/colorSecondDark"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLastBinCodingLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvLastBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvLastBarcodeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="最后条码："
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvBatchScanLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvBatchScanLabel" />
+
+    <TextView
+        android:id="@+id/tvLastBarcode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLastBarcodeLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvLastBarcodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvLastBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvLastBinCodingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="最后货位："
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvLastBarcodeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvLastBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvLastBinCoding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLastBinCodingLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvLastBinCodingLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvLastBinCodingLabel" />
+
+</android.support.constraint.ConstraintLayout>

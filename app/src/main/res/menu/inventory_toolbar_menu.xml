@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_del_top_line"
+        android:title="删行"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_locator_redo"
+        android:title="复盘货位"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_del_inventory_list"
+        android:title="删除整单"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_upload_inventory_list"
+        android:title="上传记录"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_export_inventory_list"
+        android:title="导出文件"
+        app:showAsAction="never" />
+</menu>

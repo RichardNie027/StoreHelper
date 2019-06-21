@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InventoryActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:title="盘点"></android.support.v7.widget.Toolbar>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/rgTabs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <RadioGroup
+        android:id="@+id/rgTabs"
+        android:layout_width="0dp"
+        android:layout_height="28dp"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbScanner"
+            style="@style/Custom.TabRadioButton"
+            android:layout_weight="1"
+            android:checked="true"
+            android:focusable="false"
+            android:text="扫描器" />
+
+        <RadioButton
+            android:id="@+id/rbRecords"
+            style="@style/Custom.TabRadioButton"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="记录" />
+
+        <RadioButton
+            android:id="@+id/rbTotal"
+            style="@style/Custom.TabRadioButton"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="汇总" />
+    </RadioGroup>
+
+</android.support.constraint.ConstraintLayout>

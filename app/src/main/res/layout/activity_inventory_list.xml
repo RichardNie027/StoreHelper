@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".InventoryListActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="新建盘点单">
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tvListNoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="盘点单号："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:id="@+id/tvListNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvListNoLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvListNoLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvListNoLabel" />
+
+    <EditText
+        android:id="@+id/etListNo"
+        android:layout_width="77dp"
+        android:layout_height="40dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvListNo"
+        app:layout_constraintStart_toEndOf="@+id/tvListNo"
+        app:layout_constraintTop_toTopOf="@+id/tvListNo" />
+
+    <TextView
+        android:id="@+id/tvStoreCodeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="盘点门店："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvListNoLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
+
+    <TextView
+        android:id="@+id/tvStoreCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStoreCodeLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreCodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvStoreCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="盘点日期："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvStoreCodeLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvStoreCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDateLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvDateLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvDateLabel" />
+
+    <Button
+        android:id="@+id/btnDate"
+        style="@style/Custom.ButtonStyle"
+        android:layout_width="77dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:onClick="btnDateClick"
+        android:text="修改日期"
+        app:layout_constraintBottom_toBottomOf="@+id/tvDate"
+        app:layout_constraintStart_toEndOf="@+id/tvDate"
+        app:layout_constraintTop_toTopOf="@+id/tvDate" />
+
+    <TextView
+        android:id="@+id/tvIndexLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="盘点次序："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvDateLabel" />
+
+    <TextView
+        android:id="@+id/tvIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIndexLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvIndexLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvIndexLabel" />
+
+    <TextView
+        android:id="@+id/tvUsernameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="盘点人员："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvIndexLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvIndexLabel" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvUsernameLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvUsernameLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvUsernameLabel" />
+
+</android.support.constraint.ConstraintLayout>

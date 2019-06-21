@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <Button
+        android:id="@+id/btnExit"
+        style="@style/Custom.ButtonStyle"
+        android:layout_width="67dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="btnExitClick"
+        android:text="退出"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+    <TextView
+        android:id="@+id/tvStoreCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="门店："
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:text="用户："
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivCollocation"
+        app:srcCompat="@drawable/kucun" />
+
+    <ImageView
+        android:id="@+id/ivCollocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dapei" />
+
+    <ImageView
+        android:id="@+id/ivPerformance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivCollocation"
+        app:srcCompat="@drawable/yeji" />
+
+    <ImageView
+        android:id="@+id/ivInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:onClick="ivInventoryClick"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivSearch"
+        app:srcCompat="@drawable/pandian" />
+
+    <TextView
+        android:id="@+id/tvSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="查货"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivSearch"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivSearch" />
+
+    <TextView
+        android:id="@+id/tvCollocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="搭配"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivCollocation"
+        app:layout_constraintStart_toStartOf="@+id/ivCollocation"
+        app:layout_constraintTop_toBottomOf="@+id/ivCollocation" />
+
+    <TextView
+        android:id="@+id/tvPerformance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="业绩"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
+        app:layout_constraintStart_toStartOf="@+id/ivPerformance"
+        app:layout_constraintTop_toBottomOf="@+id/ivPerformance" />
+
+    <TextView
+        android:id="@+id/tvInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivInventoryClick"
+        android:text="盘点"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivInventory"
+        app:layout_constraintStart_toStartOf="@+id/ivInventory"
+        app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStoreCode"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreCode"
+        app:layout_constraintTop_toTopOf="@+id/tvStoreCode" />
+
+</android.support.constraint.ConstraintLayout>

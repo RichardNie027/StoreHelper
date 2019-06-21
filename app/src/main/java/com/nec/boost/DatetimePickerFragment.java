@@ -1,4 +1,4 @@
-package com.tlg.storehelper.comm;
+package com.nec.boost;
 
 import android.app.TimePickerDialog;
 import android.support.v4.app.DialogFragment;

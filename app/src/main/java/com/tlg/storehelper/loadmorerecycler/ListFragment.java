@@ -6,12 +6,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.nec.utils.TextDrawable;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.utils.ResourceUtil;
 
@@ -259,7 +261,14 @@ public class ListFragment<TAdapter extends RecyclerViewItemAdapter> extends Frag
             }
             if(pageContent.hasMore)
                 loadMoreDelayIfPossible();
-
+            //空白页效果
+            if(myRecyclerViewItemAdapter.getDataSize() == 0) {
+                TextDrawable textDrawable = new TextDrawable(getContext());
+                textDrawable.setText("\n\n\n\n\t此页无数据");
+                textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
+                mRecyclerView.setBackground(textDrawable);
+            } else
+                mRecyclerView.setBackground(null);
         }
     };
 

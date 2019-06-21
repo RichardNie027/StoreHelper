@@ -191,6 +191,15 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     @Override
+    public int getItemCount() {
+        if(mValues == null)
+            return 0;
+        else {
+            return layoutMissing() ? 1 : mValues.size();
+        }
+    }
+
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == LoadMoreRecyclerView.TYPE_STAGGER) {
             int resId = ResourceUtil.getLayoutId(mLayoutNameOfFragmentItemStagger, parent.getContext());
@@ -267,17 +276,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
         return mCardView;
     }
 
-    @Override
-    public int getItemCount() {
-        if(mValues == null)
-            return 0;
-        else {
-            return layoutMissing() ? 1 : mValues.size();
-        }
-    }
-
     /**
-     * 子类中必须重写
+     * 控件赋值，子类中必须重写
      * @param holder
      * @param position
      */
@@ -285,13 +285,17 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (mDisplayMode == ListFragment.DisplayMode.STAGGERED) {
             StaggeredViewHolder staggeredViewHolder = (StaggeredViewHolder) holder;
-            //staggeredViewHolder.iconView.setVisibility(View.VISIBLE);
-            //staggeredViewHolder.mContentView.setText(mValues.get(position).details);
+            /* assign view controls
+            staggeredViewHolder.iconView.setVisibility(View.VISIBLE);
+            staggeredViewHolder.mContentView.setText(mValues.get(position).details);
+            */
         } else {
             LinearViewHolder mHolder = (LinearViewHolder) holder;
-            //mHolder.mItem = mValues.get(position);
-            //mHolder.mContentView.setText(mValues.get(position).content);
-            //mHolder.mIdView.setText(mValues.get(position).id);
+            /* assign view controls
+            mHolder.mItem = mValues.get(position);
+            mHolder.mContentView.setText(mValues.get(position).content);
+            mHolder.mIdView.setText(mValues.get(position).id);
+            */
         }
     }
 
@@ -300,16 +304,21 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
      */
     public class StaggeredViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public View mView;
-        //public View iconView;
-        //public TextView mContentView;
-
+        /* demo of view controls
+        public View iconView;
+        public TextView mContentView;
+        */
         public StaggeredViewHolder(View view) {
             super(view);
+            mView = view;
+            //监听ItemView点击事件
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
-            mView = itemView;
-            //iconView = view.findViewById(R.id.icon);
-            //mContentView = (TextView) view.findViewById(R.id.content);
+            //实例化自定义对象
+            /* demo
+            iconView = view.findViewById(R.id.icon);
+            mContentView = (TextView) view.findViewById(R.id.content);
+            */
         }
 
         @Override
@@ -332,17 +341,22 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
      */
     public class LinearViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public final View mView;
-        //public final TextView mIdView;
-        //public final TextView mContentView;
-        //public DummyItem mItem;
-
+        /* demo of view controls
+        public TextView mIdView;
+        public TextView mContentView;
+        public DummyItem mItem;
+        */
         public LinearViewHolder(View view) {
             super(view);
+            mView = view;
+            //监听ItemView点击事件
             view.setOnClickListener(this);
             view.setOnLongClickListener(this);
-            mView = view;
-            //mIdView = (TextView) view.findViewById(R.id.id);
-            //mContentView = (TextView) view.findViewById(R.id.content);
+            //实例化自定义对象
+            /* demo
+            mIdView = (TextView) view.findViewById(R.id.id);
+            mContentView = (TextView) view.findViewById(R.id.content);
+            */
         }
 
         @Override

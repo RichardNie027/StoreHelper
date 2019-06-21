@@ -16,10 +16,10 @@ public class SimpleDataRequest implements AsynDataRequest {
         PageContent<DummyItemVo> pageContent = new PageContent<DummyItemVo>(page, 25);
 
         int perPage = 6;
-        int maxPage = 4;
+        int maxPage = 5;
         pageContent.hasMore = page < maxPage-1;
         int start = page * perPage;
-        int end = maxPage-1 == page ? start + perPage : start + perPage;
+        int end = maxPage-1 <= page ? maxPage * perPage : start + perPage;
         for (int i = start; i < end; i++) {
             pageContent.datas.add(new DummyItemVo(i+"", "Text of id " + i, makeDetails(i)));
         }

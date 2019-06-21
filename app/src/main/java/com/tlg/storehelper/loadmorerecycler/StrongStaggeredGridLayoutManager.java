@@ -27,4 +27,6 @@ public class StrongStaggeredGridLayoutManager extends StaggeredGridLayoutManager
             Log.e("problem", "meet a IOOBE in RecyclerView");
         }
     }
+
+
 }

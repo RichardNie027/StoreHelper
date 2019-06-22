@@ -53,7 +53,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
     /**
      * item 类型
      */
-    public final static int TYPE_NORMAL = 0;    //unuseful
+    public final static int TYPE_NORMAL = 0;    //item
     public final static int TYPE_HEADER = 1;    //头部--支持头部增加一个headerView
     public final static int TYPE_FOOTER = 2;    //底部--往往是loading_more
     public final static int TYPE_LIST = 3;      //代表item展示的模式是list模式
@@ -441,12 +441,14 @@ public class LoadMoreRecyclerView extends RecyclerView {
      * @param hasMore
      */
     public void notifyMoreFinish(boolean hasMore) {
-        //setAutoLoadMoreEnable(hasMore);
-        getAdapter().notifyItemRemoved(mLoadMorePosition);
+        setAutoLoadMoreEnable(hasMore);
+        setLoadingMore(false);
+        if(!hasMore) {
+            getAdapter().notifyItemRemoved(mLoadMorePosition);
+        }
         int itemCount = mAutoLoadAdapter.getInternalAdapter().getDataSize() - mLoadMorePosition;
         if (mIsFooterEnable) itemCount++;
         if (mAutoLoadAdapter.getHeaderEnable()) itemCount++;
         getAdapter().notifyItemRangeChanged(mLoadMorePosition, itemCount);
-        setLoadingMore(false);
     }
 }

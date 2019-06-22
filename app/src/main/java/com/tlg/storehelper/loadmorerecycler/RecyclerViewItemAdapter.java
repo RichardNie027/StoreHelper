@@ -27,15 +27,19 @@ import java.util.List;
     <TextView
         android:id="@+id/id"
         android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:layout_height="match_parent"
+        android:gravity="center|center_horizontal"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:gravity="center|start"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:textSize="14sp" />
 
 </LinearLayout>
  */
@@ -219,7 +223,9 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
             if(resId != 0) {
                 listItemLinearView = LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
                 listItemLinearView.setClickable(true);
-                //listItemLinearView.setBackground(Drawable);
+                int rippleeId = ResourceUtil.getDrawableId("recycle_view_touch_ripple", parent.getContext());
+                Drawable drawable = parent.getContext().getResources().getDrawable(rippleeId);
+                listItemLinearView.setBackground(drawable);
             } else {
                 listItemLinearView = loadDefaultListItemLinearLayout(parent);
             }

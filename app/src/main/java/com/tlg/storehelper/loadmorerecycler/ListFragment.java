@@ -241,19 +241,19 @@ public class ListFragment<TAdapter extends RecyclerViewItemAdapter> extends Frag
             switch (message.what){
                 case 1: //init
                     myRecyclerViewItemAdapter.setData(pageContent.datas);
-                    mRecyclerView.setAutoLoadMoreEnable(hasMore);
+                    //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(pageContent.hasMore);
                     //myRecyclerViewItemAdapter.notifyDataSetChanged();
                      break;
                 case 2: //SwipeRefreshLayout.OnRefreshListener
                     myRecyclerViewItemAdapter.setData(pageContent.datas);
-                    mRecyclerView.setAutoLoadMoreEnable(hasMore);
+                    //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(hasMore);
                     //myRecyclerViewItemAdapter.notifyDataSetChanged();
                     break;
                 case 3: //LoadMoreRecyclerView.LoadMoreListener
                     myRecyclerViewItemAdapter.addDatas(pageContent.datas);
-                    mRecyclerView.setAutoLoadMoreEnable(hasMore);
+                    //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(hasMore);
                     break;
                 default:

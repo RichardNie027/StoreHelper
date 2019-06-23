@@ -1,6 +1,8 @@
 package com.tlg.storehelper.loadmorerecycler;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.nec.utils.TextDrawable;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.utils.ResourceUtil;
+import com.tlg.storehelper.utils.UiUtil;
 
 import java.lang.reflect.Constructor;
 
@@ -264,9 +267,11 @@ public class ListFragment<TAdapter extends RecyclerViewItemAdapter> extends Frag
             //空白页效果
             if(myRecyclerViewItemAdapter.getDataSize() == 0) {
                 TextDrawable textDrawable = new TextDrawable(getContext());
-                textDrawable.setText("\n\n\n\n\t此页无数据");
+                textDrawable.setText("\n【没有发现任何数据】");
+                textDrawable.setTextColor(Color.LTGRAY);
                 textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
                 mRecyclerView.setBackground(textDrawable);
+
             } else
                 mRecyclerView.setBackground(null);
         }

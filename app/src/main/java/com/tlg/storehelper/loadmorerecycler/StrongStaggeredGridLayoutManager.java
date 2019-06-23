@@ -28,5 +28,8 @@ public class StrongStaggeredGridLayoutManager extends StaggeredGridLayoutManager
         }
     }
 
-
+    @Override
+    public boolean supportsPredictiveItemAnimations() {
+        return false;
+    }
 }

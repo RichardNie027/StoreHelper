@@ -90,6 +90,7 @@ public class InventoryListsActivity extends BaseAppCompatActivity {
                     .append(" a left join ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL).append(" b on a.id=b.pid")
                     .append(" where a.store_code=?")
                     .append(" group by a.id,a.list_no order by a.id desc")
+                    .append(" limit 0,50")
                     .toString();
             Cursor cursor = db.rawQuery(sql, new String[] {GlobalVars.storeCode});
             while(cursor.moveToNext()){

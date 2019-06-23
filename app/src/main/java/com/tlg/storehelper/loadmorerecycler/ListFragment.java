@@ -243,12 +243,14 @@ public class ListFragment<TAdapter extends RecyclerViewItemAdapter> extends Frag
             boolean hasMore = pageContent.hasMore && !myRecyclerViewItemAdapter.layoutMissing();
             switch (message.what){
                 case 1: //init
+                    mRecyclerView.notifyDataReset();
                     myRecyclerViewItemAdapter.setData(pageContent.datas);
                     //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(pageContent.hasMore);
                     //myRecyclerViewItemAdapter.notifyDataSetChanged();
                      break;
                 case 2: //SwipeRefreshLayout.OnRefreshListener
+                    mRecyclerView.notifyDataReset();
                     myRecyclerViewItemAdapter.setData(pageContent.datas);
                     //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(hasMore);

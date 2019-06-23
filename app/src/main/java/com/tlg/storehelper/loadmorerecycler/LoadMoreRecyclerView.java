@@ -1,6 +1,7 @@
 package com.tlg.storehelper.loadmorerecycler;
 
 import android.content.Context;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -72,7 +73,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
     /**
      * 标记加载更多的position
      */
-    private int mLoadMorePosition;
+    private int mLoadMorePosition = -1;
     /**
      * 加载更多的监听-业务需要实现加载数据
      */
@@ -314,6 +315,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
             mAutoLoadAdapter = new AutoLoadAdapter((RecyclerViewItemAdapter)adapter);
         }
         super.swapAdapter(mAutoLoadAdapter, true);
+        //super.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
     }
 
     /**
@@ -344,8 +346,8 @@ public class LoadMoreRecyclerView extends RecyclerView {
             position = ((StrongLinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
         } else if (getLayoutManager() instanceof GridLayoutManager) {
             position = ((GridLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
-        } else if (getLayoutManager() instanceof StaggeredGridLayoutManager) {
-            StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) getLayoutManager();
+        } else if (getLayoutManager() instanceof StrongStaggeredGridLayoutManager) {
+            StrongStaggeredGridLayoutManager layoutManager = (StrongStaggeredGridLayoutManager) getLayoutManager();
             int[] lastPositions = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()]);
             position = getMinPositions(lastPositions);
         } else {
@@ -381,8 +383,8 @@ public class LoadMoreRecyclerView extends RecyclerView {
             position = ((StrongLinearLayoutManager) layoutManager).findLastVisibleItemPosition();
         } else if (layoutManager instanceof GridLayoutManager) {
             position = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
-        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
-            StaggeredGridLayoutManager _layoutManager = (StaggeredGridLayoutManager) layoutManager;
+        } else if (layoutManager instanceof StrongStaggeredGridLayoutManager) {
+            StrongStaggeredGridLayoutManager _layoutManager = (StrongStaggeredGridLayoutManager) layoutManager;
             int[] lastPositions = _layoutManager.findLastVisibleItemPositions(new int[_layoutManager.getSpanCount()]);
             position = getMaxPosition(lastPositions);
         } else {
@@ -432,6 +434,10 @@ public class LoadMoreRecyclerView extends RecyclerView {
         mIsFooterEnable = autoLoadMore;
     }
 
+    public void notifyDataReset() {
+        setLoadingMore(false);
+        mLoadMorePosition = -1;
+    }
     /**
      * 通知更多的数据已经加载
      *
@@ -443,12 +449,13 @@ public class LoadMoreRecyclerView extends RecyclerView {
     public void notifyMoreFinish(boolean hasMore) {
         setAutoLoadMoreEnable(hasMore);
         setLoadingMore(false);
-        if(!hasMore) {
+        if(!hasMore && mLoadMorePosition > 0) {
             getAdapter().notifyItemRemoved(mLoadMorePosition);
         }
-        int itemCount = mAutoLoadAdapter.getInternalAdapter().getDataSize() - mLoadMorePosition;
+        int position = mLoadMorePosition < 0 ? 0 : mLoadMorePosition;
+        int itemCount = mAutoLoadAdapter.getInternalAdapter().getDataSize() - position;
         if (mIsFooterEnable) itemCount++;
         if (mAutoLoadAdapter.getHeaderEnable()) itemCount++;
-        getAdapter().notifyItemRangeChanged(mLoadMorePosition, itemCount);
+        getAdapter().notifyItemRangeChanged(position, itemCount);
     }
 }

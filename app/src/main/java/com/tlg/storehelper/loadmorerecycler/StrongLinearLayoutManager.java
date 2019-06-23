@@ -30,4 +30,9 @@ public class StrongLinearLayoutManager extends LinearLayoutManager {
             Log.e("problem", "meet a IOOBE in RecyclerView");
         }
     }
+
+    @Override
+    public boolean supportsPredictiveItemAnimations() {
+        return false;
+    }
 }

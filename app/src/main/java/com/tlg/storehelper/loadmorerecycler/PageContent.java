@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class PageContent<T> implements Serializable {
 
-    public int page = 0;
+    public int page = 0;    //zero-base
     public int pageCount = 0;
     public int recordPerPage = 24;
     public int recordCount = 0;

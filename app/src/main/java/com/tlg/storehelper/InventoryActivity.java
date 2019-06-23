@@ -19,7 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.tlg.storehelper.base.BaseAppCompatActivity;
-import com.tlg.storehelper.loadmorerecycler.ListFragment;
+import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 import com.tlg.storehelper.utils.DateUtil;
 import com.tlg.storehelper.dao.Inventory;
 import com.tlg.storehelper.dao.InventoryDetail;
@@ -75,8 +75,8 @@ public class InventoryActivity extends BaseAppCompatActivity
         mFragments = new ArrayList<Fragment>(3);
         updateStatisticInfo(null);
         mFragments.add(ScannerFragment.newInstance(mStatisticInfo));
-        mFragments.add(ListFragment.newInstance(RecordRecyclerViewItemAdapter.class, new SimpleDataRequest(), ListFragment.DisplayMode.LINEAR, 3));
-        mFragments.add(RecordFragment.newInstance("3","33"));
+        mFragments.add(RecordFragment.newInstance(RecordRecyclerViewItemAdapter.class, new RecordListDataRequest()));
+        mFragments.add(LoadMoreFragment.newInstance(RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), LoadMoreFragment.DisplayMode.LINEAR, 3));
         // init view pager
         mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mAdapter);
@@ -138,9 +138,9 @@ public class InventoryActivity extends BaseAppCompatActivity
 
     /**
      * 重新统计盘点单信息
-     * @param specailBinCoding 统计货位数量相关。未指定货位（NULL：统计最后货位；空白：统计无货位）
+     * @param binCoding_lastSetNull 统计货位数量相关。未指定货位（NULL：统计最后货位；空白：统计无货位）
      */
-    private void updateStatisticInfo(String specailBinCoding) {
+    private void updateStatisticInfo(String binCoding_lastSetNull) {
         mStatisticInfo.id = mInventory.id;
         mStatisticInfo.listNo = mInventory.list_no;
         mStatisticInfo.quantity = 0;
@@ -150,12 +150,12 @@ public class InventoryActivity extends BaseAppCompatActivity
         if(mInventoryDetailList.size() > 0) {
             mStatisticInfo.lastBarcode = mInventoryDetailList.get(0).barcode;
             mStatisticInfo.lastBinCoding = mInventoryDetailList.get(0).bin_coding;
-            if(specailBinCoding == null)
-                specailBinCoding = mStatisticInfo.lastBinCoding;
+            if(binCoding_lastSetNull == null)
+                binCoding_lastSetNull = mStatisticInfo.lastBinCoding;
             int quantities = 0;
             int totalQuantities = 0;
             for(InventoryDetail detail: mInventoryDetailList) {
-                if(detail.bin_coding.equals(specailBinCoding)) {
+                if(detail.bin_coding.equals(binCoding_lastSetNull)) {
                     quantities = quantities + detail.quantity;
                 }
                 totalQuantities = totalQuantities + detail.quantity;

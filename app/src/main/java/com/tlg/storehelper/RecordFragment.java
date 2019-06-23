@@ -4,75 +4,48 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class RecordFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import com.tlg.storehelper.base.RecycleViewItemClickListener;
+import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class RecordFragment extends LoadMoreFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private RecordFragment _this;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-
     public RecordFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment RecordFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static RecordFragment newInstance(String param1, String param2) {
-        RecordFragment fragment = new RecordFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-        _this = this;
+        mLayoutOfFragmentItemList = "fragment_record";
+        mIdOfSwipeRefreshLayout = "refresh_layout";
+        mIdOfRecycleView = "recycle_list";
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_record, container, false);
-        initView(rootView);
-        return rootView;
+        mDataBundle.putLong("mInventoryListId", 1); //TODO: need set value
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        initView(view);
+        return view;
     }
 
     private void initView(View rootView) {
         // find view
-        mSwipeRefreshLayout = rootView.findViewById(R.id.swipeRefreshLayout);
 
         // initial controls
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        myRecyclerViewItemAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
-            public void onRefresh() {
-                // do something, such as re-request from server or other
-                _this.mSwipeRefreshLayout.setRefreshing(false); //刷新操作(重新请求数据)完成后要回调来停止隐藏刷新动画
+            public void onItemClick(View view, int postion) {
+                Log.i("info", "click at " + postion);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, int postion) {
+                Log.i("info", "long click at " + postion);
+                return true;
             }
         });
     }
@@ -82,9 +55,6 @@ public class RecordFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
         }
     }
 

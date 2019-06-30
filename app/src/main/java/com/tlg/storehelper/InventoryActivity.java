@@ -84,7 +84,7 @@ public class InventoryActivity extends BaseAppCompatActivity
         setSupportActionBar(mToolbar);
         //处理异常
         if(mListId == -1L) {
-            Toast.makeText(this, "出错了，盘点单信息丢失", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getInstance(), "出错了，盘点单信息丢失", Toast.LENGTH_SHORT).show();
             //todo: disable controls.
             return;
         } else {
@@ -331,7 +331,7 @@ public class InventoryActivity extends BaseAppCompatActivity
             mRecordListNeedRefresh = true;
             mRecordTotalNeedRefresh = true;
         } else {
-            Toast.makeText(this, "新增数据失败，请检查", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getInstance(), "新增数据失败，请检查", Toast.LENGTH_SHORT).show();
         }
         return id;
     }
@@ -351,7 +351,7 @@ public class InventoryActivity extends BaseAppCompatActivity
             mRecordListNeedRefresh = false;
             mRecordTotalNeedRefresh = true;
         } else {
-            Toast.makeText(this, "删除记录出错，请检查", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getInstance(), "删除记录出错，请检查", Toast.LENGTH_SHORT).show();
         }
         return num;
     }

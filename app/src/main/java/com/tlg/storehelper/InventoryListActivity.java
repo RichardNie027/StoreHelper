@@ -157,10 +157,10 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
                 return true;
             case R.id.action_save:
                 if(!saveNewInventory()) {
-                    Toast.makeText(this, "盘点单保存失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyApplication.getInstance(), "盘点单保存失败", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                //Toast.makeText(this, "新盘点单", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyApplication.getInstance(), "新盘点单", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, InventoryActivity.class);
                 intent.putExtra("list_id", mNewId);
                 startActivityForResult(intent, 3);

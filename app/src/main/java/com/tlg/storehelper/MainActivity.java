@@ -99,7 +99,7 @@ public class MainActivity extends BaseAppCompatActivity {
     public void btnLoginClick(View v) {
         String username = mEditTextName.getText().toString();
         if(username.equals("")) {
-            Toast.makeText(this, "用户名不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getInstance(), "用户名不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
         GlobalVars.username = username;

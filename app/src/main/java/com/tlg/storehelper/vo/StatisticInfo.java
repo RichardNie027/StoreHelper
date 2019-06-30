@@ -1,6 +1,8 @@
 package com.tlg.storehelper.vo;
 
-public class StatisticInfo {
+import java.io.Serializable;
+
+public class StatisticInfo implements Serializable {
     public long id;
     public String listNo;
     public int quantity;

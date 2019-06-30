@@ -15,7 +15,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
     public RecordRecyclerViewItemAdapter() {
         super();
         itemClickable = true;
-        itemLongClickable = false;
+        itemLongClickable = true;
         reassignListItemLayout();
         //设置ViewHolder的类，在构造实例后紧接调用！
         setViewHolderClass(this, MyLinearViewHolder.class, MyStaggeredViewHolder.class);
@@ -24,7 +24,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
     public RecordRecyclerViewItemAdapter(List<InventoryDetailVo> items) {
         super(items);
         itemClickable = true;
-        itemLongClickable = false;
+        itemLongClickable = true;
         reassignListItemLayout();
         //设置ViewHolder的类，在构造实例后紧接调用！
         setViewHolderClass(this, RecordRecyclerViewItemAdapter.MyLinearViewHolder.class, RecordRecyclerViewItemAdapter.MyStaggeredViewHolder.class);
@@ -42,25 +42,29 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
             if(mHolder.iconView != null)
                 mHolder.iconView.setVisibility(View.VISIBLE);
             mHolder.mItem = mValues.get(position);
+            mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.id);  //tag1:id
+            mHolder.mView.setTag(R.id.tag_second, mHolder.mItem.idx);  //tag2:idx
             if(mHolder.mIdxView != null)
-                mHolder.mIdxView.setText(String.valueOf(mValues.get(position).idx));
+                mHolder.mIdxView.setText(String.valueOf(mHolder.mItem.idx));
             if(mHolder.mBinCodingView != null)
-                mHolder.mBinCodingView.setText(mValues.get(position).bin_coding);
+                mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
             if(mHolder.mBarCodeView != null)
-                mHolder.mBarCodeView.setText(mValues.get(position).barcode);
+                mHolder.mBarCodeView.setText(mHolder.mItem.barcode);
             if(mHolder.mQuantityView != null)
-                mHolder.mQuantityView.setText(String.valueOf(mValues.get(position).quantity));
+                mHolder.mQuantityView.setText(String.valueOf(mHolder.mItem.quantity));
         } else if (mDisplayMode == LoadMoreFragment.DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
+            mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.id);  //tag1:id
+            mHolder.mView.setTag(R.id.tag_second, mHolder.mItem.idx);  //tag2:idx
             if(mHolder.mIdxView != null)
-                mHolder.mIdxView.setText(String.valueOf(mValues.get(position).idx));
+                mHolder.mIdxView.setText(String.valueOf(mHolder.mItem.idx));
             if(mHolder.mBinCodingView != null)
-                mHolder.mBinCodingView.setText(mValues.get(position).bin_coding);
+                mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
             if(mHolder.mBarCodeView != null)
-                mHolder.mBarCodeView.setText(mValues.get(position).barcode);
+                mHolder.mBarCodeView.setText(mHolder.mItem.barcode);
             if(mHolder.mQuantityView != null)
-                mHolder.mQuantityView.setText(String.valueOf(mValues.get(position).quantity));
+                mHolder.mQuantityView.setText(String.valueOf(mHolder.mItem.quantity));
         } else {
             ;
         }

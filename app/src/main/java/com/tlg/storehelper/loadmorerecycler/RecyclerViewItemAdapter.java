@@ -103,8 +103,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     private Class mLinearViewHolderClass;
     /**瀑布显示的ViewHolder类*/
     private Class mStaggeredViewHolderClass;
-    /**Item的Click监听器，通过 setOnItemClickListener 方法设置*/
-    protected RecycleViewItemClickListener mClickListener = null;
+    /**Item的Click监听器的代理，通过 setOnItemClickListener 方法设置*/
+    protected RecycleViewItemClickListener mClickListenerAgent = null;
 
     /**
      * 构造函数，之类中必须调用setViewHolderClass函数：
@@ -125,11 +125,11 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     /**
-     * 设置Item点击监听器
-     * @param listener
+     * 设置Item点击监听器的代理
+     * @param listenerAgent
      */
-    public void setOnItemClickListener(RecycleViewItemClickListener listener) {
-        this.mClickListener = listener;
+    public void setOnItemClickListenerAgent(RecycleViewItemClickListener listenerAgent) {
+        this.mClickListenerAgent = listenerAgent;
     }
 
     /**
@@ -331,16 +331,16 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
 
         @Override
         public void onClick(View view) {
-            if(mClickListener != null)
-                mClickListener.onItemClick(view, getPosition());
+            if(mClickListenerAgent != null)
+                mClickListenerAgent.onItemClick(view, getPosition());
         }
 
         @Override
         public boolean onLongClick(View view) {
             if(!itemLongClickable)
                 return false;
-            if(mClickListener != null)
-                return mClickListener.onItemLongClick(view, getPosition());
+            if(mClickListenerAgent != null)
+                return mClickListenerAgent.onItemLongClick(view, getPosition());
             else
                 return false;
         }
@@ -374,16 +374,16 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
 
         @Override
         public void onClick(View view) {
-            if(mClickListener != null)
-                mClickListener.onItemClick(view, getPosition());
+            if(mClickListenerAgent != null)
+                mClickListenerAgent.onItemClick(view, getPosition());
         }
 
         @Override
         public boolean onLongClick(View view) {
             if(!itemLongClickable)
                 return false;
-            if(mClickListener != null)
-                return mClickListener.onItemLongClick(view, getPosition());
+            if(mClickListenerAgent != null)
+                return mClickListenerAgent.onItemLongClick(view, getPosition());
             else
                 return false;
         }

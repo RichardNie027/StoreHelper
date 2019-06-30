@@ -1,6 +1,8 @@
 package com.tlg.storehelper.dao;
 
-public class GoodsBarcode {
+import java.io.Serializable;
+
+public class GoodsBarcode implements Serializable {
     /**ID*/
     public String id;
     /**商品ID*/

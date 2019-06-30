@@ -1,8 +1,9 @@
 package com.tlg.storehelper.dao;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Inventory {
+public class Inventory implements Serializable {
     /**ID，自增*/
     public long id;
     /**店编*/

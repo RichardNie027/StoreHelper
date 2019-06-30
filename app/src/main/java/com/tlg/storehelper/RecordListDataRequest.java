@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * 明细记录的数据请求
- * 没有使用InventoryActivity的属性mInventoryDetailList，而重新分批加载数据
+ * 没有使用InventoryActivity的属性mInventoryDetailList（无序号），而是重新分批加载数据
  */
 public class RecordListDataRequest implements AsynDataRequest {
 
@@ -34,7 +34,7 @@ public class RecordListDataRequest implements AsynDataRequest {
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle) {
-        this.mRecordPerPage = 6;
+        this.mRecordPerPage = 12;
         this.mPage = page;
         PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mRecordPerPage);
 

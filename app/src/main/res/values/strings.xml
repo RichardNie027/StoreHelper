@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">StoreHelper</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
+    <item type="id" name="tag_first"/>
+    <item type="id" name="tag_second"/>
 
 </resources>

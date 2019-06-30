@@ -1,15 +1,18 @@
 package com.tlg.storehelper;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 
@@ -54,15 +57,36 @@ public class RecordFragment extends LoadMoreFragment {
         // initial controls
         mTvListNo.setText(mInventoryListNo);
 
-        myRecyclerViewItemAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
+        myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
-                Log.i("info", "click at " + postion);
+                Log.d("info", "click at " + postion);
             }
 
             @Override
-            public boolean onItemLongClick(View view, int postion) {
-                Log.i("info", "long click at " + postion);
+            public boolean onItemLongClick(final View view, int postion) {
+                Log.d("info", "long-click at " + postion);
+                final long id = Long.parseLong(view.getTag(R.id.tag_first).toString());
+                int idx = Integer.parseInt(view.getTag(R.id.tag_second).toString());
+                new AlertDialog.Builder(MyApplication.getInstance())
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setTitle("删除提示")
+                        .setMessage("是否删除序号为" + idx + "记录？")
+                        .setCancelable(true)
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(mListener != null)
+                                    mListener.onInventoryDeleteRecord(id);
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.e("INFO", "没有删除记录");
+                            }
+                        })
+                        .show();
                 return true;
             }
         });
@@ -93,10 +117,10 @@ public class RecordFragment extends LoadMoreFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-//        /**
-//         * 删除扫码记录触发
-//         * @param id
-//         */
-//        void onInventoryDeleteRecord(long id);
+        /**
+         * 删除扫码记录触发
+         * @param id
+         */
+        void onInventoryDeleteRecord(long id);
     }
 }

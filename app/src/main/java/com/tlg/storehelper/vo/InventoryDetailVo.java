@@ -1,9 +1,11 @@
 package com.tlg.storehelper.vo;
 
+import java.io.Serializable;
+
 /**
  * 用于显示盘点单明细记录
  */
-public class InventoryDetailVo {
+public class InventoryDetailVo implements Serializable {
     /**ID，自增*/
     public long id;
     /**序号*/

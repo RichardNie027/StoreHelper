@@ -1,6 +1,8 @@
 package com.tlg.storehelper.vo;
 
-public class InventoryListVo {
+import java.io.Serializable;
+
+public class InventoryListVo implements Serializable {
     /**ID，自增*/
     public long id;
     /**盘点单号*/

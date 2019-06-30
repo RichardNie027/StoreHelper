@@ -32,10 +32,11 @@ import com.tlg.storehelper.utils.SQLiteUtil;
 import com.tlg.storehelper.vo.StatisticInfo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class InventoryActivity extends BaseAppCompatActivity
-        implements ScannerFragment.OnFragmentInteractionListener {
+        implements ScannerFragment.OnFragmentInteractionListener, RecordFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
     private ViewPager mViewPager;
@@ -250,7 +251,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                         .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteDetailRecordThenSubsequentActions();
+                                deleteDetailRecordThenSubsequentActions(-1L);
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -339,17 +340,30 @@ public class InventoryActivity extends BaseAppCompatActivity
     /**
      * 调用 deleteDetailRecord 向本地数据库删除数据（末条），
      * 后续动作：1、调整 mInventoryDetailList；2、更新统计；3、需要刷新的状态
+     * @param id 待删除记录ID，-1L则删除最新一条记录
      * @return 影响的记录数，0出错
      */
-    private long deleteDetailRecordThenSubsequentActions() {
-        int num = deleteDetailRecord();
+    private long deleteDetailRecordThenSubsequentActions(long id) {
+        int num = deleteDetailRecord(id);
         if(num != 0) {
-            mInventoryDetailList.remove(0);
+            if(id == -1L)
+                mInventoryDetailList.remove(0);
+            else {
+                Iterator<InventoryDetail> iterator = mInventoryDetailList.iterator();
+                while(iterator.hasNext()) {
+                    InventoryDetail inventoryDetail = iterator.next();
+                    if(inventoryDetail.id == id) {
+                        iterator.remove();
+                        break;
+                    }
+                }
+            }
             updateStatisticInfo(mLastBinCoding);
             mRecordFragment.doRefreshOnRecyclerView();
             mScannerNeedRefresh = true;
             mRecordListNeedRefresh = false;
             mRecordTotalNeedRefresh = true;
+            Toast.makeText(MyApplication.getInstance(), "记录已经删除", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(MyApplication.getInstance(), "删除记录出错，请检查", Toast.LENGTH_SHORT).show();
         }
@@ -389,10 +403,11 @@ public class InventoryActivity extends BaseAppCompatActivity
     }
 
     /**
-     * 向本地数据库删除数据（末条）
+     * 向本地数据库删除数据
+     * @param id 待删除记录ID，-1L则删除最新一条记录
      * @return 影响的记录数，0出错
      */
-    private int deleteDetailRecord() {
+    private int deleteDetailRecord(long id) {
         int result = 0;
         SQLiteOpenHelper helper = new SQLiteDbHelper(getApplicationContext());
         SQLiteDatabase db = null;
@@ -400,7 +415,9 @@ public class InventoryActivity extends BaseAppCompatActivity
             db = helper.getWritableDatabase();
             db.beginTransaction();
             if(!mInventoryDetailList.isEmpty()) {
-                result = db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id=?", new String[]{Long.toString(mInventoryDetailList.get(0).id)});
+                if(id == -1L)
+                    id = mInventoryDetailList.get(0).id;    //删除最新一条
+                result = db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id=?", new String[]{Long.toString(id)});
                 if(result == 0)
                     throw new Exception("删除记录出错");
             }
@@ -433,6 +450,11 @@ public class InventoryActivity extends BaseAppCompatActivity
         mLastBinCoding = specialBinCoding;
         updateStatisticInfo(specialBinCoding);
         return mStatisticInfo;
+    }
+
+    @Override
+    public void onInventoryDeleteRecord(long id) {
+        deleteDetailRecordThenSubsequentActions(id);
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {

@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.nec.application.MyApplication;
 import com.tlg.storehelper.dao.InventoryDetail;
@@ -17,6 +19,10 @@ import com.tlg.storehelper.vo.InventoryDetailVo;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 明细记录的数据请求
+ * 没有使用InventoryActivity的属性mInventoryDetailList，而重新分批加载数据
+ */
 public class RecordListDataRequest implements AsynDataRequest {
 
     private long mInventoryListId;
@@ -27,18 +33,18 @@ public class RecordListDataRequest implements AsynDataRequest {
     private List<InventoryDetailVo> mInventoryDetailList = new ArrayList<InventoryDetailVo>();
 
     @Override
-    public void fetchData(int page, int what, Handler handler, Bundle bundle) {
+    public void fetchData(int page, int what, Handler handler, Bundle dataBundle) {
         this.mRecordPerPage = 6;
         this.mPage = page;
         PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mRecordPerPage);
 
-        mInventoryListId = bundle.getLong("mInventoryListId");
+        mInventoryListId = dataBundle.getLong(RecordFragment.sInventoryListIdLabel);
         loadData();
 
         pageContent.hasMore = page < mPageCount-1;
         for (int i = 0; i < mInventoryDetailList.size(); i++) {
             InventoryDetailVo vo = mInventoryDetailList.get(i);
-            vo.idx = mPage * mRecordPerPage + mInventoryDetailList.size() - i;
+            vo.idx = mRecordCount - i - (mPage * mRecordPerPage);
             pageContent.datas.add(vo);
         }
 
@@ -91,7 +97,8 @@ public class RecordListDataRequest implements AsynDataRequest {
             }
             cursor.close();
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            Log.e("ERROR", t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
         }

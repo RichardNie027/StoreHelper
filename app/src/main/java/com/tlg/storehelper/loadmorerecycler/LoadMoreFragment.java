@@ -8,12 +8,15 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nec.application.MyApplication;
 import com.nec.utils.TextDrawable;
 import com.tlg.storehelper.utils.ResourceUtil;
 
@@ -66,11 +69,11 @@ import static com.tlg.storehelper.loadmorerecycler.AsynDataRequest.PAGE_CONTENT;
  * 定制布局文件，对应更新子类的sLayoutOfFragmentItemList
  *
  * 调用示例：
- * LoadMoreFragment.newInstance(RecordRecyclerViewItemAdapter.class, new SimpleDataRequest(), LoadMoreFragment.DisplayMode.LINEAR, 3)
+ * RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle, LoadMoreFragment.DisplayMode.LINEAR, 3);
  *
  * @param <TAdapter extends RecyclerViewItemAdapter>
  */
-public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends Fragment {
+public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends Fragment {
     ////////////////资源前提 START////////////////
     /**列表Fragmeng布局xml文件名，必要，需要定制布局文件且以文件名对此变量赋值*/
     protected String mLayoutOfFragmentItemList = "fragment_default_load_more_list";
@@ -137,7 +140,7 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
      * 3、加载更多LoadMoreRecyclerView.LoadMoreListener：上拉加载（初始加载的首批数据不足一屏时，自动触发）*/
     protected Bundle mDataBundle = new Bundle();
     /**Item适配器RecyclerViewItemAdapter的子类*/
-    private Class<TAdapter> mAdapterClass;
+    protected Class<TAdapter> mAdapterClass;
 
     //private OnListFragmentInteractionListener mListener;
 
@@ -150,27 +153,67 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
 
     /**
      * 默认地创建Linear显示模式的实例
-     * @param clazz
-     * @param asynDataRequest
+     * @param fragmentClass 子类
+     * @param itemAdapterClass 行适配器的类
+     * @param asynDataRequest 异步数据请求
+     * @param paramBundle 传递参数（数据请求条件、页面参数）
      * @return
      */
-    public static LoadMoreFragment newInstance(Class clazz, AsynDataRequest asynDataRequest, Bundle dataBundle) {
-        return newInstance(clazz, asynDataRequest, dataBundle, DisplayMode.LINEAR, 2);
+    public static <T extends LoadMoreFragment> T newInstance(Class<? extends T> fragmentClass,
+                                                             Class<? extends RecyclerViewItemAdapter> itemAdapterClass,
+                                                             AsynDataRequest asynDataRequest,
+                                                             Bundle paramBundle) {
+        return newInstance(fragmentClass, itemAdapterClass, asynDataRequest, paramBundle, DisplayMode.LINEAR, 2);
     }
 
-    public static LoadMoreFragment newInstance(Class clazz, AsynDataRequest asynDataRequest, Bundle dataBundle, DisplayMode displayMode) {
-        return newInstance(clazz, asynDataRequest, dataBundle, displayMode, 2);
+    /**
+     * 创建Linear/Staggered(默认2列)显示模式的实例
+     * @param fragmentClass 子类
+     * @param itemAdapterClass 行适配器的类
+     * @param asynDataRequest 异步数据请求
+     * @param paramBundle 传递参数（数据请求条件、页面参数）
+     * @param displayMode 显示模式
+     * @return
+     */
+    public static <T extends LoadMoreFragment> T newInstance(Class<? extends T> fragmentClass,
+                                                             Class<? extends RecyclerViewItemAdapter> itemAdapterClass,
+                                                             AsynDataRequest asynDataRequest,
+                                                             Bundle paramBundle,
+                                                             DisplayMode displayMode) {
+        return newInstance(fragmentClass, itemAdapterClass, asynDataRequest, paramBundle, displayMode, 2);
     }
 
-    public static LoadMoreFragment newInstance(Class clazz, AsynDataRequest asynDataRequest, Bundle dataBundle, DisplayMode displayMode, int columns) {
-        LoadMoreFragment fragment = new LoadMoreFragment();
+    /**
+     * 创建Linear/Staggered显示模式的实例
+     * @param fragmentClass 子类
+     * @param itemAdapterClass 行适配器的类
+     * @param asynDataRequest 异步数据请求
+     * @param paramBundle 传递参数（数据请求条件、页面参数）
+     * @param displayMode 显示模式
+     * @param columns Staggered显示列数
+     * @return
+     */
+    public static <T extends LoadMoreFragment> T newInstance(Class<? extends T> fragmentClass,
+                                                             Class<? extends RecyclerViewItemAdapter> itemAdapterClass,
+                                                             AsynDataRequest asynDataRequest,
+                                                             Bundle paramBundle,
+                                                             DisplayMode displayMode,
+                                                             int columns) {
+        T fragment = null;
+        try {
+            Class clazz = fragmentClass.asSubclass(LoadMoreFragment.class);
+            fragment = (T) clazz.newInstance();
+        } catch (ClassCastException | java.lang.InstantiationException | IllegalAccessException e) {
+            return null;
+        }
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columns);
         args.putInt(ARG_DISPLAY_MODE, displayMode.value);
         args.putSerializable(ASYN_DATA_REQUEST, asynDataRequest);
-        args.putAll(dataBundle);    //处理数据条件
+        if(paramBundle != null && !paramBundle.isEmpty())
+            args.putAll(paramBundle);    //包含数据请求条件、页面参数
         fragment.setArguments(args);
-        fragment.mAdapterClass = clazz;
+        fragment.mAdapterClass = itemAdapterClass;
         return fragment;
     }
 
@@ -178,15 +221,33 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            mDisplayMode = DisplayMode.fromValue(getArguments().getInt(ARG_DISPLAY_MODE));
-            mAsynDataRequest = (AsynDataRequest) getArguments().getSerializable(ASYN_DATA_REQUEST);
+        Bundle bundle = getArguments();
+        if (bundle != null && !bundle.isEmpty()) {
+            mColumnCount = bundle.getInt(ARG_COLUMN_COUNT);
+            mDisplayMode = DisplayMode.fromValue(bundle.getInt(ARG_DISPLAY_MODE));
+            mAsynDataRequest = (AsynDataRequest) bundle.getSerializable(ASYN_DATA_REQUEST);
+            doParamBundle(bundle);
         }
     }
 
-    protected void composeDataBundle(Bundle sourceBundle, Bundle targetBundle) {
-        //;
+    /**
+     * ##子类需要重写方法##
+     * 解析Bundle参数：
+     * 1、组装mDataBundle（数据获取AsynDataRequest需要）；
+     * 2、为页面传参，需要在LoadMoreFragment子类定义新的属性。
+     * @param bundle 通过newInstance方法传入的参数集
+     */
+    protected void doParamBundle(Bundle bundle) {
+        //1、组装mDataBundle
+        //mDataBundle.putLong("dataParam1", bundle.getLong("dataParam1"));
+        //mDataBundle.putInt("dataParam1", bundle.getInt("dataParam1"));
+        //mDataBundle.putFloat("dataParam1", bundle.getFloat("dataParam1"));
+        //mDataBundle.putString("dataParam1", bundle.getString("dataParam1"));
+        //mDataBundle.putBoolean("dataParam1", bundle.getBoolean("dataParam1"));
+        //mDataBundle.putSerializable("dataParam1", bundle.getSerializable("dataParam1"));
+
+        //2、为页面传参
+        //mParam1 = bundle.getString("dataParam1"); //需要定义类属性mParam1
     }
 
     @Override
@@ -202,20 +263,19 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
         mRecyclerView.setHasFixedSize(true);
         if(switchControlResId != 0) {
             mSwitchModeView = view.findViewById(switchControlResId);
-            mSwitchModeView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    modeAdaptation(view, mDisplayMode==DisplayMode.LINEAR?DisplayMode.STAGGERED:DisplayMode.LINEAR);
-                }
-            });
+            if(mSwitchModeView != null) {
+                mSwitchModeView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        modeAdaptation(view, mDisplayMode == DisplayMode.LINEAR ? DisplayMode.STAGGERED : DisplayMode.LINEAR);
+                    }
+                });
+            }
         }
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mSwipeRefreshLayout.setRefreshing(false);
-                myRecyclerViewItemAdapter.clearData();
-                mPage = 0;
-                mAsynDataRequest.fetchData(mPage, 2, mHandler, mDataBundle); //发起数据异步请求
+                doRefreshOnRecyclerView();
             }
         });
         if (mDisplayMode == DisplayMode.STAGGERED) {
@@ -224,6 +284,7 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
             mRecyclerView.setLayoutManager(new StrongLinearLayoutManager(getActivity()));
         }
 
+        //自动加载初始数据
         try {
             //myRecyclerViewItemAdapter = mAdapterClass.newInstance();
             Constructor constructor = mAdapterClass.getDeclaredConstructor();
@@ -231,7 +292,8 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
             modeAdaptation(mSwitchModeView, mDisplayMode);
             mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle);     //发起数据异步请求
         } catch (Throwable t) {
-            t.printStackTrace();
+            Log.e("ERROR", t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         }
         mRecyclerView.setAdapter(myRecyclerViewItemAdapter);
         mRecyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
@@ -247,6 +309,14 @@ public class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends 
             }
         });
         return view;
+    }
+
+    /**刷新RecyclerView*/
+    public void doRefreshOnRecyclerView() {
+        mSwipeRefreshLayout.setRefreshing(false);
+        myRecyclerViewItemAdapter.clearData();
+        mPage = 0;
+        mAsynDataRequest.fetchData(mPage, 2, mHandler, mDataBundle); //发起数据异步请求
     }
 
     @Override

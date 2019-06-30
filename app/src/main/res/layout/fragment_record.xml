@@ -65,10 +65,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="货架"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
         app:layout_constraintStart_toEndOf="@+id/tvIdxLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
 
     <TextView
         android:id="@+id/tvBarCodeLabel"
@@ -89,10 +90,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="数量"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"

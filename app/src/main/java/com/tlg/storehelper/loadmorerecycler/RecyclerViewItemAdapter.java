@@ -3,12 +3,10 @@ package com.tlg.storehelper.loadmorerecycler;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
@@ -92,6 +90,22 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     /**Stagger模式的列数*/
     protected int mColumnCount = 1;
 
+    /**Item是否可以点击，子类构造函数里或外部尽早设置*/
+    public boolean itemClickable = true;
+    /**Item是否可以长按点击，可点击是长按的前提，子类构造函数里或外部尽早设置*/
+    public boolean itemLongClickable = true;
+    /**Item点击可视化，默认打开，子类构造函数里或外部尽早设置*/
+    public boolean itemClickVisible = true;
+
+    /**ItemRecyclerViewAdapter之类的实例，用于调取内部类*/
+    private RecyclerViewItemAdapter mViewHolderOuter;
+    /**行显示的ViewHolder类*/
+    private Class mLinearViewHolderClass;
+    /**瀑布显示的ViewHolder类*/
+    private Class mStaggeredViewHolderClass;
+    /**Item的Click监听器，通过 setOnItemClickListener 方法设置*/
+    protected RecycleViewItemClickListener mClickListener = null;
+
     /**
      * 构造函数，之类中必须调用setViewHolderClass函数：
      * super();
@@ -109,23 +123,6 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     public RecyclerViewItemAdapter(List<T> items) {
         mValues = items;
     }
-
-    /**
-     * ItemRecyclerViewAdapter之类的实例，用于调取内部类
-     */
-    private RecyclerViewItemAdapter viewHolderOuter;
-    /**
-     * 行显示的ViewHolder类
-     */
-    private Class linearViewHolderClass;
-    /**
-     * 瀑布显示的ViewHolder类
-     */
-    private Class staggeredViewHolderClass;
-    /**
-     * Item的Click监听器
-     */
-    protected RecycleViewItemClickListener mClickListener = null;
 
     /**
      * 设置Item点击监听器
@@ -147,9 +144,9 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
      * @param <T_Stagger> RecyclerViewItemAdapter.StaggeredViewHolder子类
      */
     public <T_Linear extends LinearViewHolder, T_Stagger extends StaggeredViewHolder> void setViewHolderClass(RecyclerViewItemAdapter outerInstance, Class<T_Linear> clazz_linear, Class<T_Stagger> clazz_stagger) {
-        viewHolderOuter = outerInstance;
-        linearViewHolderClass = clazz_linear;
-        staggeredViewHolderClass = clazz_stagger;
+        mViewHolderOuter = outerInstance;
+        mLinearViewHolderClass = clazz_linear;
+        mStaggeredViewHolderClass = clazz_stagger;
     }
 
     /**
@@ -162,7 +159,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
         RecyclerView.ViewHolder obj = null;
         try {
             Constructor constructor = clazz.getConstructors()[0];
-            obj = (RecyclerView.ViewHolder) constructor.newInstance(viewHolderOuter, view);
+            obj = (RecyclerView.ViewHolder) constructor.newInstance(mViewHolderOuter, view);
         } catch (Exception e) {
             obj = null;
         }
@@ -210,26 +207,28 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
             View listItemStaggerView = null;
             if(resId != 0) {
                 listItemStaggerView = LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
-                listItemStaggerView.setClickable(true);
+                listItemStaggerView.setClickable(itemClickable);
             } else {
                 listItemStaggerView = loadDefaultListItemStaggerLayout(parent);
             }
             ViewGroup.LayoutParams layoutParams = listItemStaggerView.getLayoutParams();
             layoutParams.width = UiUtil.dip2px(parent.getContext(), UiUtil.sScreenWidthInDp/mColumnCount);
-            return createViewHolder(staggeredViewHolderClass, listItemStaggerView);
+            return createViewHolder(mStaggeredViewHolderClass, listItemStaggerView);
         } else {
             int resId = ResourceUtil.getLayoutId(mLayoutNameOfFragmentItemLinear, parent.getContext());
             View listItemLinearView = null;
             if(resId != 0) {
                 listItemLinearView = LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
-                listItemLinearView.setClickable(true);
-                int rippleeId = ResourceUtil.getDrawableId("recycle_view_touch_ripple", parent.getContext());
-                Drawable drawable = parent.getContext().getResources().getDrawable(rippleeId);
-                listItemLinearView.setBackground(drawable);
+                listItemLinearView.setClickable(itemClickable);
+                if(itemClickable && itemClickVisible) {
+                    int rippleeId = ResourceUtil.getDrawableId("recycle_view_touch_ripple", parent.getContext());
+                    Drawable drawable = parent.getContext().getResources().getDrawable(rippleeId);
+                    listItemLinearView.setBackground(drawable);
+                }
             } else {
                 listItemLinearView = loadDefaultListItemLinearLayout(parent);
             }
-            return createViewHolder(linearViewHolderClass, listItemLinearView);
+            return createViewHolder(mLinearViewHolderClass, listItemLinearView);
         }
     }
 
@@ -318,8 +317,11 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
             super(view);
             mView = view;
             //监听ItemView点击事件
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
+            if(itemClickable) {
+                view.setOnClickListener(this);
+                if(itemLongClickable)
+                    view.setOnLongClickListener(this);
+            }
             //实例化自定义对象
             /* demo
             iconView = view.findViewById(R.id.icon);
@@ -335,6 +337,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
 
         @Override
         public boolean onLongClick(View view) {
+            if(!itemLongClickable)
+                return false;
             if(mClickListener != null)
                 return mClickListener.onItemLongClick(view, getPosition());
             else
@@ -356,8 +360,11 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
             super(view);
             mView = view;
             //监听ItemView点击事件
-            view.setOnClickListener(this);
-            view.setOnLongClickListener(this);
+            if(itemClickable) {
+                view.setOnClickListener(this);
+                if(itemLongClickable)
+                    view.setOnLongClickListener(this);
+            }
             //实例化自定义对象
             /* demo
             mIdView = (TextView) view.findViewById(R.id.id);
@@ -373,6 +380,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
 
         @Override
         public boolean onLongClick(View view) {
+            if(!itemLongClickable)
+                return false;
             if(mClickListener != null)
                 return mClickListener.onItemLongClick(view, getPosition());
             else

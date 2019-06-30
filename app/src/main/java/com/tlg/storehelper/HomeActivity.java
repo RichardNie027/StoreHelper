@@ -11,6 +11,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.comm.GlobalVars;
 
@@ -52,23 +53,24 @@ public class HomeActivity extends BaseAppCompatActivity {
 
     @Override
     public void finish() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(HomeActivity.this);
-        dialog.setTitle("温馨提示");
-        dialog.setMessage("是否退出本程序？");
-        dialog.setCancelable(false);
-        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                System.exit(0);
-            }
-        });
-        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(HomeActivity.this, "欢迎继续使用", Toast.LENGTH_LONG).show();
-            }
-        });
-        dialog.show();
+        new AlertDialog.Builder(MyApplication.getInstance())
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("温馨提示")
+                .setMessage("是否退出本程序？")
+                .setCancelable(false)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        System.exit(0);
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(MyApplication.getInstance(), "欢迎继续使用", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .show();
     }
 
     private class StoreCodeOnItemSelectedListener implements AdapterView.OnItemSelectedListener{

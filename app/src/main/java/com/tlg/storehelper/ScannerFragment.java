@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
@@ -214,25 +216,36 @@ public class ScannerFragment extends Fragment {
         im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
+    /**如果货位改变，重新统计，并更新显示*/
     private void validateBinCodingChanged(String _mFullBinCoding) {
         if(!_mFullBinCoding.equals(mFullBinCoding)) {   //货位改变
             mFullBinCoding = _mFullBinCoding;
             recalculateQuantity();
-            System.out.println("货位改变" + _mFullBinCoding);
+            Log.d("INFO", "货位改变" + _mFullBinCoding);
         }
     }
 
+    /**根据统计信息，更新显示
+     * @param statisticInfo 按形参更新，NULL则取类属性mStatisticInfo(通过接口交互已经有值)
+     */
+    public void updateStatisticDisplay(StatisticInfo statisticInfo) {
+        if(statisticInfo == null)
+            statisticInfo = mStatisticInfo;
+        mTvListNo.setText(statisticInfo.listNo);
+        mTvQuantity.setText(Integer.toString(statisticInfo.quantity));
+        mTvTotalQuantity.setText(Integer.toString(statisticInfo.totalQuantity));
+        mTvLastBarcode.setText(statisticInfo.lastBarcode);
+        mTvLastBinCoding.setText(statisticInfo.lastBinCoding);
+    }
+
+    /**重新统计，并更新显示*/
     private void recalculateQuantity() {
         if(mListener != null)
             mStatisticInfo = mListener.onInventoryRecalculate(mFullBinCoding);
         if(!mStatisticInfo.lastBinCoding.equals("")) {
 
         }
-        mTvListNo.setText(mStatisticInfo.listNo);
-        mTvQuantity.setText(Integer.toString(mStatisticInfo.quantity));
-        mTvTotalQuantity.setText(Integer.toString(mStatisticInfo.totalQuantity));
-        mTvLastBarcode.setText(mStatisticInfo.lastBarcode);
-        mTvLastBinCoding.setText(mStatisticInfo.lastBinCoding);
+        updateStatisticDisplay(mStatisticInfo);
     }
 
     private class BinTypeOnItemSelectedListener implements AdapterView.OnItemSelectedListener{
@@ -282,7 +295,7 @@ public class ScannerFragment extends Fragment {
 
     public void onScanBarcodeAsNewRecord(String barcode, String binCoding, int num) {
         if(mEtBinCoding.getVisibility()==View.VISIBLE && mEtBinCoding.getText().toString().trim().length() == 0) {
-            Toast.makeText(this.getContext(), "货位不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getInstance(), "货位不能为空", Toast.LENGTH_SHORT).show();
             mEtBinCoding.requestFocus();
             return;
         }
@@ -295,7 +308,7 @@ public class ScannerFragment extends Fragment {
         if (mListener != null) {
             StatisticInfo _statisticInfo = mListener.onInventoryNewRecord(binCoding, barcode, num);
             if(_statisticInfo == null) {
-                //TODO:扫码增加记录的失败处理
+                //扫码增加记录失败
                 return;
             }
             mStatisticInfo = _statisticInfo;
@@ -314,9 +327,9 @@ public class ScannerFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -343,7 +356,7 @@ public class ScannerFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         /**
-         * 扫描条形码触发
+         * 扫描条形码触发，保存新记录，返回盘点单统计信息
          * @param binCoding
          * @param barcode
          * @param num

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
@@ -15,17 +16,32 @@ import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 public class RecordFragment extends LoadMoreFragment {
 
     private OnFragmentInteractionListener mListener;
+    private String mInventoryListNo;
+
+    private TextView mTvListNo;
+
+    public static final String sInventoryListIdLabel = "inventory_list_id";
+    public static final String sInventoryListNoLabel = "inventory_list_no";
 
     public RecordFragment() {
+        //资源名称
         mLayoutOfFragmentItemList = "fragment_record";
         mIdOfSwipeRefreshLayout = "refresh_layout";
         mIdOfRecycleView = "recycle_list";
     }
 
     @Override
+    protected void doParamBundle(Bundle bundle) {
+        //1、组装mDataBundle
+        mDataBundle.putLong(sInventoryListIdLabel, bundle.getLong(sInventoryListIdLabel, -1));
+        //2、为页面传参
+        mInventoryListNo = bundle.getString(sInventoryListNoLabel, "");
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDataBundle.putLong("mInventoryListId", 1); //TODO: need set value
         View view = super.onCreateView(inflater, container, savedInstanceState);
         initView(view);
         return view;
@@ -33,8 +49,10 @@ public class RecordFragment extends LoadMoreFragment {
 
     private void initView(View rootView) {
         // find view
+        mTvListNo = rootView.findViewById(R.id.tvListNo);
 
         // initial controls
+        mTvListNo.setText(mInventoryListNo);
 
         myRecyclerViewItemAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
@@ -75,10 +93,10 @@ public class RecordFragment extends LoadMoreFragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        /**
-         * 删除扫码记录触发
-         * @param id
-         */
-        void onInventoryDeleteRecord(long id);
+//        /**
+//         * 删除扫码记录触发
+//         * @param id
+//         */
+//        void onInventoryDeleteRecord(long id);
     }
 }

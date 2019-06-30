@@ -31,6 +31,6 @@ public interface AsynDataRequest extends Serializable {
      * @param handler 消息句柄
      * @param bundle 条件参数
      */
-    public void fetchData(int page, int what, Handler handler, Bundle bundle);
+    public void fetchData(int page, int what, Handler handler, Bundle dataBundle);
 
 }

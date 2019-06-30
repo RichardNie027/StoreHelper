@@ -13,9 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="序号"
+        android:textAlignment="center"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -24,10 +25,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="货架"
+        android:textAlignment="textStart"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIdx"
         app:layout_constraintStart_toEndOf="@+id/tvIdx"
-        app:layout_constraintTop_toTopOf="@+id/tvIdx"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdx" />
+        app:layout_constraintTop_toTopOf="@+id/tvIdx" />
 
     <TextView
         android:id="@+id/tvBarCode"
@@ -36,6 +39,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:text="商品条码"
+        android:textAlignment="textStart"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvIdx"
         app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
@@ -48,9 +52,21 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="数量"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvIdx"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvIdx"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdx" />
+        app:layout_constraintTop_toTopOf="@+id/tvIdx" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/colorSecondDark"/>
 
 </android.support.constraint.ConstraintLayout>

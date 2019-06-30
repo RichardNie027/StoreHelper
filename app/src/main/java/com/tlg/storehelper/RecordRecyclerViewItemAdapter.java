@@ -14,17 +14,23 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
 
     public RecordRecyclerViewItemAdapter() {
         super();
-        reassignLitItemLayout();
+        itemClickable = true;
+        itemLongClickable = false;
+        reassignListItemLayout();
+        //设置ViewHolder的类，在构造实例后紧接调用！
         setViewHolderClass(this, MyLinearViewHolder.class, MyStaggeredViewHolder.class);
     }
 
     public RecordRecyclerViewItemAdapter(List<InventoryDetailVo> items) {
         super(items);
-        reassignLitItemLayout();
+        itemClickable = true;
+        itemLongClickable = false;
+        reassignListItemLayout();
+        //设置ViewHolder的类，在构造实例后紧接调用！
         setViewHolderClass(this, RecordRecyclerViewItemAdapter.MyLinearViewHolder.class, RecordRecyclerViewItemAdapter.MyStaggeredViewHolder.class);
     }
 
-    private void reassignLitItemLayout() {
+    private void reassignListItemLayout() {
         mLayoutNameOfFragmentItemLinear = "fragment_record_load_more_list_item_linear";
         mLayoutNameOfFragmentItemStagger = "fragment_record_load_more_list_item_stagger";
     }

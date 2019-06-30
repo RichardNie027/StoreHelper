@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.nec.boost.DatetimePickerFragment;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -97,7 +99,8 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
             }
             cursor.close();
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            Log.e("ERROR", t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "记录序号生成错误", Toast.LENGTH_SHORT);
             result = "01";
         } finally {
             db.close();
@@ -124,12 +127,13 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
             ContentValues contentValues = SQLiteUtil.toContentValues(inventory, "id");
             long ret = db.insert(SQLiteDbHelper.TABLE_INVENTORY, "id", contentValues);
             if(ret == -1)
-                throw new Exception("Error occur when saving new inventory.");
+                throw new Exception("保存盘点单失败");
             mNewId = ret;
             db.setTransactionSuccessful();
             result = true;
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            Log.e("ERROR", t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "保存盘点单失败", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
                 db.endTransaction();

@@ -1,23 +1,27 @@
 package com.tlg.storehelper;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 import com.tlg.storehelper.utils.DateUtil;
@@ -31,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryActivity extends BaseAppCompatActivity
-        implements ScannerFragment.OnFragmentInteractionListener, RecordFragment.OnFragmentInteractionListener {
+        implements ScannerFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
     private ViewPager mViewPager;
@@ -39,11 +43,27 @@ public class InventoryActivity extends BaseAppCompatActivity
     private List<Fragment> mFragments;
     private FragmentPagerAdapter mAdapter;
 
-    private long mListId; //调用者传递过来的“盘点ID”，-1L为错误
+    /**调用者传递过来的“盘点ID”，-1L为错误*/
+    private long mListId;
     private Inventory mInventory = new Inventory();
-    private List<InventoryDetail> mInventoryDetailList = new ArrayList<>();
+    private List<InventoryDetail> mInventoryDetailList = new ArrayList<InventoryDetail>();
 
-    private StatisticInfo mStatisticInfo = new StatisticInfo();  //盘点单统计信息
+    /**盘点单统计信息*/
+    private StatisticInfo mStatisticInfo = new StatisticInfo();
+    /**最新的货位号*/
+    private String mLastBinCoding;
+
+    /**数据发生变化，扫码页面统计信息需要刷新*/
+    private boolean mScannerNeedRefresh = false;
+    /**扫码数据发生变化，汇总记录需要刷新*/
+    private boolean mRecordListNeedRefresh = false;
+    /**扫码数据发生变化，明细记录需要刷新*/
+    private boolean mRecordTotalNeedRefresh = false;
+
+    /**扫码页面*/
+    private ScannerFragment mScannerFragment;
+    /**扫码明细记录页面*/
+    private RecordFragment mRecordFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +94,15 @@ public class InventoryActivity extends BaseAppCompatActivity
         // init fragment
         mFragments = new ArrayList<Fragment>(3);
         updateStatisticInfo(null);
-        mFragments.add(ScannerFragment.newInstance(mStatisticInfo));
-        mFragments.add(RecordFragment.newInstance(RecordRecyclerViewItemAdapter.class, new RecordListDataRequest()));
-        mFragments.add(LoadMoreFragment.newInstance(RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), LoadMoreFragment.DisplayMode.LINEAR, 3));
+        mScannerFragment = ScannerFragment.newInstance(mStatisticInfo);
+        mFragments.add(mScannerFragment);
+
+        Bundle dataBundle = new Bundle();
+        dataBundle.putLong(RecordFragment.sInventoryListIdLabel, mListId);
+        dataBundle.putString(RecordFragment.sInventoryListNoLabel, mInventory.list_no);
+        mRecordFragment = RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle);
+        mFragments.add(mRecordFragment);
+        mFragments.add(RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle, LoadMoreFragment.DisplayMode.LINEAR, 3));
         // init view pager
         mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mAdapter);
@@ -130,7 +156,8 @@ public class InventoryActivity extends BaseAppCompatActivity
                 cursor.close();
             }
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            Log.e("ERROR", t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
         }
@@ -214,9 +241,26 @@ public class InventoryActivity extends BaseAppCompatActivity
                 setResult(4, intent);
                 finish();
                 return true;
-//            case R.id.action_save:
-//                Toast.makeText(this, "保存完成", Toast.LENGTH_SHORT).show();
-//                break;
+            case R.id.action_del_top_line:
+                new AlertDialog.Builder(MyApplication.getInstance())
+                        .setIcon(android.R.drawable.ic_dialog_info)
+                        .setTitle("删除提示")
+                        .setMessage("是否删除最近的一条记录？")
+                        .setCancelable(true)
+                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteDetailRecordThenSubsequentActions();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.e("INFO", "没有删除记录");
+                            }
+                        })
+                        .show();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -232,6 +276,27 @@ public class InventoryActivity extends BaseAppCompatActivity
             RadioButton radioButton = (RadioButton) mTabRadioGroup.getChildAt(position);
             radioButton.setChecked(true);
             invalidateOptionsMenu();//重新加载菜单
+            ///切换页面前刷新数据
+            if(mScannerNeedRefresh || mRecordListNeedRefresh || mRecordTotalNeedRefresh) {
+                switch (position) {
+                    case 0:
+                        if(mScannerNeedRefresh) {
+                            mScannerFragment.updateStatisticDisplay(mStatisticInfo);
+                            mScannerNeedRefresh = false;
+                        }
+                        break;
+                    case 1:
+                        if(mRecordListNeedRefresh) {
+                            mRecordFragment.doRefreshOnRecyclerView();
+                            mRecordListNeedRefresh = false;
+                        }
+                        break;
+                    case 2:
+
+                        mRecordTotalNeedRefresh = false;
+                        break;
+                }
+            }
         }
 
         @Override
@@ -253,11 +318,50 @@ public class InventoryActivity extends BaseAppCompatActivity
     };
 
     /**
+     * 调用 insertDetailRecord 向本地数据库插入数据，
+     * 后续动作：1、调整 mInventoryDetailList；2、更新统计；3、需要刷新的状态
+     * @return 记录ID，-1出错
+     */
+    private long insertDetailRecordThenSubsequentActions(String barcode, String binCoding, int num) {
+        long id = insertDetailRecord(barcode, binCoding, num);
+        if(id != -1) {
+            mInventoryDetailList.add(0, new InventoryDetail(id, mStatisticInfo.id, binCoding, barcode, num));
+            updateStatisticInfo(binCoding);
+            mScannerNeedRefresh = false;
+            mRecordListNeedRefresh = true;
+            mRecordTotalNeedRefresh = true;
+        } else {
+            Toast.makeText(this, "新增数据失败，请检查", Toast.LENGTH_SHORT).show();
+        }
+        return id;
+    }
+
+    /**
+     * 调用 deleteDetailRecord 向本地数据库删除数据（末条），
+     * 后续动作：1、调整 mInventoryDetailList；2、更新统计；3、需要刷新的状态
+     * @return 影响的记录数，0出错
+     */
+    private long deleteDetailRecordThenSubsequentActions() {
+        int num = deleteDetailRecord();
+        if(num != 0) {
+            mInventoryDetailList.remove(0);
+            updateStatisticInfo(mLastBinCoding);
+            mRecordFragment.doRefreshOnRecyclerView();
+            mScannerNeedRefresh = true;
+            mRecordListNeedRefresh = false;
+            mRecordTotalNeedRefresh = true;
+        } else {
+            Toast.makeText(this, "删除记录出错，请检查", Toast.LENGTH_SHORT).show();
+        }
+        return num;
+    }
+
+    /**
      * 向本地数据库插入数据
      * @param barcode
      * @param binCoding
      * @param num
-     * @return
+     * @return 记录ID，-1出错
      */
     private long insertDetailRecord(String barcode, String binCoding, int num) {
         long result = -1L;
@@ -270,10 +374,40 @@ public class InventoryActivity extends BaseAppCompatActivity
             ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail, "id");
             result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id", contentValues);
             if(result == -1L)
-                throw new Exception("新增数据记录出错");
+                throw new Exception("新增记录出错");
             db.setTransactionSuccessful();
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            Log.e("ERROR", t.getMessage(), t);
+            //Toast.makeText(MyApplication.getInstance(), "新增记录出错", Toast.LENGTH_SHORT);
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+            db.close();
+        }
+        return result;
+    }
+
+    /**
+     * 向本地数据库删除数据（末条）
+     * @return 影响的记录数，0出错
+     */
+    private int deleteDetailRecord() {
+        int result = 0;
+        SQLiteOpenHelper helper = new SQLiteDbHelper(getApplicationContext());
+        SQLiteDatabase db = null;
+        try {
+            db = helper.getWritableDatabase();
+            db.beginTransaction();
+            if(!mInventoryDetailList.isEmpty()) {
+                result = db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id=?", new String[]{Long.toString(mInventoryDetailList.get(0).id)});
+                if(result == 0)
+                    throw new Exception("删除记录出错");
+            }
+            db.setTransactionSuccessful();
+        } catch (Throwable t) {
+            Log.e("ERROR", t.getMessage(), t);
+            //Toast.makeText(MyApplication.getInstance(), "删除记录出错", Toast.LENGTH_SHORT);
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -285,26 +419,20 @@ public class InventoryActivity extends BaseAppCompatActivity
 
     @Override
     public StatisticInfo onInventoryNewRecord(String binCoding, String barcode, int num) {
+        mLastBinCoding = binCoding;
         //新增记录
-        long id = insertDetailRecord(barcode, binCoding, num);
-        if(id == -1) {
-            Toast.makeText(this, "新增数据失败，请检查", Toast.LENGTH_SHORT).show();
+        long id = insertDetailRecordThenSubsequentActions(barcode, binCoding, num);
+        if(id == -1)
             return null;
-        }
-        mInventoryDetailList.add(0, new InventoryDetail(id, mStatisticInfo.id, binCoding, barcode, num));
-        updateStatisticInfo(binCoding);
-        return mStatisticInfo;
+        else
+            return mStatisticInfo;
     }
 
     @Override
-    public StatisticInfo onInventoryRecalculate(String specailBinCoding) {
-        updateStatisticInfo(specailBinCoding);
+    public StatisticInfo onInventoryRecalculate(String specialBinCoding) {
+        mLastBinCoding = specialBinCoding;
+        updateStatisticInfo(specialBinCoding);
         return mStatisticInfo;
-    }
-
-    @Override
-    public void onInventoryDeleteRecord(long id) {
-        Toast.makeText(this, id+" was deleted.", Toast.LENGTH_SHORT).show();
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {

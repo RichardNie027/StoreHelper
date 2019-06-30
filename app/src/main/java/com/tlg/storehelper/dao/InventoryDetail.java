@@ -1,7 +1,5 @@
 package com.tlg.storehelper.dao;
 
-import java.util.Date;
-
 public class InventoryDetail {
     /**ID，自增*/
     public long id;

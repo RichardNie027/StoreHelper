@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.utils.SQLiteUtil;
@@ -83,7 +85,8 @@ public class MainActivity extends BaseAppCompatActivity {
             result = true;
             db.setTransactionSuccessful();
         } catch (Throwable t) {
-            System.out.println(t.getMessage());
+            Log.e("ERROR", t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
                 db.endTransaction();

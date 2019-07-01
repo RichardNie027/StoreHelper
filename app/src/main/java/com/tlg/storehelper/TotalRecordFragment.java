@@ -14,7 +14,7 @@ import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 
-public class RecordFragment extends LoadMoreFragment {
+public class TotalRecordFragment extends LoadMoreFragment {
 
     private OnFragmentInteractionListener mListener;
     private String mInventoryListNo;
@@ -24,9 +24,9 @@ public class RecordFragment extends LoadMoreFragment {
     public static final String sInventoryListIdLabel = "inventory_list_id";
     public static final String sInventoryListNoLabel = "inventory_list_no";
 
-    public RecordFragment() {
+    public TotalRecordFragment() {
         //资源名称
-        mLayoutOfFragmentItemList = "fragment_record";
+        mLayoutOfFragmentItemList = "fragment_total_record";
         mIdOfSwipeRefreshLayout = "refresh_layout";
         mIdOfRecycleView = "recycle_list";
     }
@@ -64,24 +64,23 @@ public class RecordFragment extends LoadMoreFragment {
             @Override
             public boolean onItemLongClick(final View view, int postion) {
                 Log.d("info", "long-click at " + postion);
-                final long id = Long.parseLong(view.getTag(R.id.tag_first).toString());
-                int idx = Integer.parseInt(view.getTag(R.id.tag_second).toString());
+                final String bin_coding = view.getTag(R.id.tag_first).toString();
                 new AlertDialog.Builder(MyApplication.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
-                        .setTitle("删除提示")
-                        .setMessage("是否删除序号为" + idx + "记录？")
+                        .setTitle("复盘提示")
+                        .setMessage("是否复盘货位：" + bin_coding + "？")
                         .setCancelable(true)
-                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("复盘", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(mListener != null)
-                                    mListener.onInventoryDeleteRecord(id);
+                                    mListener.onInventoryLocatorRedo(bin_coding);
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.e("INFO", "没有删除记录");
+                                Log.e("info", "没有复盘");
                             }
                         })
                         .show();
@@ -116,9 +115,9 @@ public class RecordFragment extends LoadMoreFragment {
      */
     public interface OnFragmentInteractionListener {
         /**
-         * 删除扫码记录触发
-         * @param id
+         * 货位复盘触发
+         * @param bin_coding
          */
-        void onInventoryDeleteRecord(long id);
+        void onInventoryLocatorRedo(String bin_coding);
     }
 }

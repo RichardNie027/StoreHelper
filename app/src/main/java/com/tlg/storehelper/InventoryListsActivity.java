@@ -74,7 +74,7 @@ public class InventoryListsActivity extends BaseAppCompatActivity {
 
             @Override
             public boolean onItemLongClick(View view, int postion) {
-                Toast.makeText(MyApplication.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyApplication.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

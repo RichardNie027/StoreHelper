@@ -27,15 +27,15 @@
         app:layout_constraintTop_toTopOf="@+id/tvListNoLabel" />
 
     <TextView
-        android:id="@+id/tvPanel1"
+        android:id="@+id/tvPane1"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:alpha="0.6"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvBinCodingLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvIdxLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvBinCodingLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
 
     <TextView
         android:id="@+id/tvPanel2"
@@ -43,10 +43,10 @@
         android:layout_height="0dp"
         android:alpha="0.8"
         android:background="@color/colorPrimaryLight"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvBarCodeLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvBinCodingLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvSizeQuantityLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
 
     <TextView
         android:id="@+id/tvPanel3"
@@ -54,71 +54,50 @@
         android:layout_height="0dp"
         android:alpha="0.6"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvBarCodeLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toEndOf="@+id/tvSizeQuantityLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvSizeQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
 
     <TextView
-        android:id="@+id/tvPanel4"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.8"
-        android:background="@color/colorPrimaryLight"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintEnd_toEndOf="@+id/tvQuantityLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
-
-    <TextView
-        android:id="@+id/tvIdxLabel"
-        android:layout_width="30dp"
+        android:id="@+id/tvBinCodingLabel"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="序号"
+        android:text="货架"
         android:textColor="@color/colorSecond"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
 
     <TextView
-        android:id="@+id/tvBinCodingLabel"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="货架"
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintStart_toEndOf="@+id/tvIdxLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
-
-    <TextView
-        android:id="@+id/tvBarCodeLabel"
+        android:id="@+id/tvQuantityLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:text="商品条码"
+        android:text="商品数量"
+        android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvSizeQuantityLabel"
         app:layout_constraintStart_toEndOf="@+id/tvBinCodingLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
 
     <TextView
-        android:id="@+id/tvQuantityLabel"
-        android:layout_width="30dp"
+        android:id="@+id/tvSizeQuantityLabel"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:text="数量"
+        android:alpha="0.5"
+        android:text="款码统计"
+        android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
@@ -134,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/fragment_record_load_more_list_item_linear" />
+            tools:listitem="@layout/fragment_total_record_load_more_list_item_linear" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

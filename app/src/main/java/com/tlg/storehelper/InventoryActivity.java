@@ -36,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class InventoryActivity extends BaseAppCompatActivity
-        implements ScannerFragment.OnFragmentInteractionListener, RecordFragment.OnFragmentInteractionListener {
+        implements ScannerFragment.OnFragmentInteractionListener, RecordFragment.OnFragmentInteractionListener, TotalRecordFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;
     private ViewPager mViewPager;
@@ -65,6 +65,8 @@ public class InventoryActivity extends BaseAppCompatActivity
     private ScannerFragment mScannerFragment;
     /**扫码明细记录页面*/
     private RecordFragment mRecordFragment;
+    /**货位汇总记录页面*/
+    private TotalRecordFragment mTotalRecordFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +100,17 @@ public class InventoryActivity extends BaseAppCompatActivity
         mScannerFragment = ScannerFragment.newInstance(mStatisticInfo);
         mFragments.add(mScannerFragment);
 
-        Bundle dataBundle = new Bundle();
-        dataBundle.putLong(RecordFragment.sInventoryListIdLabel, mListId);
-        dataBundle.putString(RecordFragment.sInventoryListNoLabel, mInventory.list_no);
-        mRecordFragment = RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle);
+        Bundle dataBundle2 = new Bundle();
+        dataBundle2.putLong(RecordFragment.sInventoryListIdLabel, mListId);
+        dataBundle2.putString(RecordFragment.sInventoryListNoLabel, mInventory.list_no);
+        mRecordFragment = RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle2);
         mFragments.add(mRecordFragment);
-        mFragments.add(RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle, LoadMoreFragment.DisplayMode.LINEAR, 3));
+
+        Bundle dataBundle3 = new Bundle();
+        dataBundle3.putLong(TotalRecordFragment.sInventoryListIdLabel, mListId);
+        dataBundle3.putString(TotalRecordFragment.sInventoryListNoLabel, mInventory.list_no);
+        mTotalRecordFragment = TotalRecordFragment.newInstance(TotalRecordFragment.class, TotalRecordRecyclerViewItemAdapter.class, new TotalRecordListDataRequest(), dataBundle3);
+        mFragments.add(mTotalRecordFragment);
         // init view pager
         mAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mAdapter);
@@ -211,6 +218,7 @@ public class InventoryActivity extends BaseAppCompatActivity
         switch (mViewPager.getCurrentItem()) {
             case 0:
                 menu.findItem(R.id.action_del_top_line).setVisible(false);
+                menu.findItem(R.id.action_menu_more).setVisible(false);
                 menu.findItem(R.id.action_locator_redo).setVisible(false);
                 menu.findItem(R.id.action_del_inventory_list).setVisible(false);
                 menu.findItem(R.id.action_upload_inventory_list).setVisible(false);
@@ -218,6 +226,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                 break;
             case 1:
                 menu.findItem(R.id.action_del_top_line).setVisible(true);
+                menu.findItem(R.id.action_menu_more).setVisible(false);
                 menu.findItem(R.id.action_locator_redo).setVisible(false);
                 menu.findItem(R.id.action_del_inventory_list).setVisible(false);
                 menu.findItem(R.id.action_upload_inventory_list).setVisible(false);
@@ -225,6 +234,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                 break;
             case 2:
                 menu.findItem(R.id.action_del_top_line).setVisible(false);
+                menu.findItem(R.id.action_menu_more).setVisible(true);
                 menu.findItem(R.id.action_locator_redo).setVisible(true);
                 menu.findItem(R.id.action_del_inventory_list).setVisible(true);
                 menu.findItem(R.id.action_upload_inventory_list).setVisible(true);
@@ -262,6 +272,15 @@ public class InventoryActivity extends BaseAppCompatActivity
                         })
                         .show();
                 break;
+            case R.id.action_locator_redo:
+
+                break;
+            case R.id.action_del_inventory_list:
+                break;
+            case R.id.action_upload_inventory_list:
+                break;
+            case R.id.action_export_inventory_list:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -293,8 +312,10 @@ public class InventoryActivity extends BaseAppCompatActivity
                         }
                         break;
                     case 2:
-
-                        mRecordTotalNeedRefresh = false;
+                        if(mRecordTotalNeedRefresh) {
+                            mTotalRecordFragment.doRefreshOnRecyclerView();
+                            mRecordTotalNeedRefresh = false;
+                        }
                         break;
                 }
             }
@@ -455,6 +476,11 @@ public class InventoryActivity extends BaseAppCompatActivity
     @Override
     public void onInventoryDeleteRecord(long id) {
         deleteDetailRecordThenSubsequentActions(id);
+    }
+
+    @Override
+    public void onInventoryLocatorRedo(String bin_coding) {
+        //TODO: redo
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {

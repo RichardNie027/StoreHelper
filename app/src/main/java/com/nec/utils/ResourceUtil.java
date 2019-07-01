@@ -1,4 +1,4 @@
-package com.tlg.storehelper.utils;
+package com.nec.utils;
 
 import java.lang.reflect.Field;
 import android.content.Context;

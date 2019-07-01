@@ -19,8 +19,8 @@ import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.nec.boost.DatetimePickerFragment;
 import com.tlg.storehelper.comm.GlobalVars;
-import com.tlg.storehelper.utils.DateUtil;
-import com.tlg.storehelper.utils.SQLiteUtil;
+import com.nec.utils.DateUtil;
+import com.nec.utils.SQLiteUtil;
 import com.tlg.storehelper.dao.Inventory;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 

@@ -2,7 +2,7 @@ package com.tlg.storehelper;
 
 import android.content.ContentValues;
 
-import com.tlg.storehelper.utils.SQLiteUtil;
+import com.nec.utils.SQLiteUtil;
 import com.tlg.storehelper.dao.Inventory;
 
 import org.junit.Test;

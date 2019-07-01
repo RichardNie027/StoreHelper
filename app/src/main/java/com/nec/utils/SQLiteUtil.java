@@ -1,4 +1,4 @@
-package com.tlg.storehelper.utils;
+package com.nec.utils;
 
 import android.content.ContentValues;
 

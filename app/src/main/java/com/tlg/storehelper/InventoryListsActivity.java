@@ -43,7 +43,7 @@ public class InventoryListsActivity extends BaseAppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
+    protected void onRestart() {    //返回刷新数据
         super.onRestart();
         if(loadData())
             mRecyclerView.getAdapter().notifyDataSetChanged();

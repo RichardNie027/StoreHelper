@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
-import com.tlg.storehelper.utils.ResourceUtil;
-import com.tlg.storehelper.utils.UiUtil;
+import com.nec.utils.ResourceUtil;
+import com.nec.utils.UiUtil;
 
 import java.lang.reflect.Constructor;
 import java.util.List;

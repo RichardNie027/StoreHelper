@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.nec.application.MyApplication;
 import com.nec.utils.TextDrawable;
-import com.tlg.storehelper.utils.ResourceUtil;
+import com.nec.utils.ResourceUtil;
 
 import java.lang.reflect.Constructor;
 

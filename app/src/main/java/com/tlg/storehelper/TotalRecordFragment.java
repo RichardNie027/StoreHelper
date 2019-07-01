@@ -80,7 +80,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.e("info", "没有复盘");
+                                Log.d("info", "没有复盘");
                             }
                         })
                         .show();

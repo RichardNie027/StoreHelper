@@ -91,6 +91,10 @@ public class HomeActivity extends BaseAppCompatActivity {
         startActivity(intent);
     }
 
+    public void ivSearchClick(View v) {
+        Toast.makeText(MyApplication.getInstance(), "待实现", Toast.LENGTH_SHORT).show();
+    }
+
     public void btnExitClick(View v) {
         finish();
     }

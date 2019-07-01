@@ -1,12 +1,10 @@
 package com.tlg.storehelper.loadmorerecycler;
 
 import android.content.Context;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,8 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.tlg.storehelper.utils.ResourceUtil;
-import com.tlg.storehelper.utils.UiUtil;
+import com.nec.utils.ResourceUtil;
+import com.nec.utils.UiUtil;
 
 /* 加载更多list_footer_loading.xml 默认布局文件，与代码实现对等
 <?xml version="1.0" encoding="utf-8"?>

@@ -81,7 +81,7 @@ public class RecordFragment extends LoadMoreFragment {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.e("INFO", "没有删除记录");
+                                Log.d("INFO", "没有删除记录");
                             }
                         })
                         .show();

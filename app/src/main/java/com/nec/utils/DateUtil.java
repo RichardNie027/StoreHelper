@@ -1,4 +1,4 @@
-package com.tlg.storehelper.utils;
+package com.nec.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

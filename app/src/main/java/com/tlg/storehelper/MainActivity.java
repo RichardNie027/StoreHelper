@@ -1,8 +1,8 @@
 package com.tlg.storehelper;
 
+import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -16,7 +16,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.nec.application.MyApplication;
-import com.nec.utils.PermissionUtil;
+import com.nec.grantor.PermissionListener;
+import com.nec.grantor.PermissionsUtil;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.nec.utils.SQLiteUtil;
@@ -39,29 +40,37 @@ public class MainActivity extends BaseAppCompatActivity {
         mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        PermissionUtil.verifyStoragePermissions(this);
+        requestAccessNetwork();
+        requestStorage();
         initView();
     }
 
-    /** 授权结果的回调 */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtil.REQUEST_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    ///授权成功，可以在此创建文件
-                    Log.i("info", "WRITE_EXTERNAL_STORAGE授权成功");
-                } else {
-                    ///被拒绝，授权失败，关闭文件处理的相关动作
-                }
-                return;
+    private void requestAccessNetwork() {
+        PermissionsUtil.requestPermission(getApplication(), new PermissionListener() {
+            @Override
+            public void permissionGranted(@NonNull String[] permissions) {
+                GlobalVars.permissionOfNetwork = true;
             }
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
+
+            @Override
+            public void permissionDenied(@NonNull String[] permissions) {
+                Toast.makeText(MyApplication.getInstance(), "用户拒绝了访问网络", Toast.LENGTH_SHORT).show();
+            }
+        }, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE);
+    }
+
+    private void requestStorage() {
+        PermissionsUtil.requestPermission(getApplication(), new PermissionListener() {
+            @Override
+            public void permissionGranted(@NonNull String[] permissions) {
+                GlobalVars.permissionOfStorage = true;
+            }
+
+            @Override
+            public void permissionDenied(@NonNull String[] permissions) {
+                Toast.makeText(MyApplication.getInstance(), "用户拒绝了读写文件", Toast.LENGTH_SHORT).show();
+            }
+        }, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
 
     private void initView() {

@@ -39,7 +39,7 @@ public class ExcelUtil {
     /**
      * 单元格的格式设置 字体大小 颜色 对齐方式、背景颜色等...
      */
-    public static void format() {
+    public static boolean format() {
         try {
             arial14font = new WritableFont(WritableFont.ARIAL, 14, WritableFont.BOLD);
             arial14font.setColour(jxl.format.Colour.LIGHT_BLUE);
@@ -60,8 +60,10 @@ public class ExcelUtil {
             arial12format.setBorder(jxl.format.Border.ALL,jxl.format.BorderLineStyle.THIN); //设置边框
 
         } catch (WriteException e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.getMessage(), e);
+            return false;
         }
+        return true;
     }
 
     /**
@@ -69,8 +71,10 @@ public class ExcelUtil {
      * @param fileName
      * @param colName
      */
-    public static void initExcel(String fileName, String sheetName, String[] colName) {
-        format();
+    public static boolean initExcel(String fileName, String sheetName, String[] colName) {
+        boolean success = format();
+        if(!success)
+            return success;
         WritableWorkbook workbook = null;
         try {
             File file = new File(fileName);
@@ -88,20 +92,23 @@ public class ExcelUtil {
 
             workbook.write();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("ERROR", e.getMessage(), e);
+            success = false;
         } finally {
             if (workbook != null) {
                 try {
                     workbook.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("ERROR", e.getMessage(), e);
                 }
             }
         }
+        return success;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> void writeObjListToExcel(List<T> objList,String fileName) {
+    public static <T> boolean writeObjListToExcel(List<T> objList,String fileName) {
+        boolean success = true;
         if (objList != null && objList.size() > 0) {
             WritableWorkbook writebook = null;
             InputStream in = null;
@@ -130,10 +137,14 @@ public class ExcelUtil {
                 }
 
                 writebook.write();
-                Toast.makeText(MyApplication.getInstance(), "导出成功", Toast.LENGTH_SHORT).show();
+
+                String fullpath = fileName.substring(0, fileName.lastIndexOf("/"));
+                String finalPath = fullpath.substring(fullpath.lastIndexOf("/"));
+                Toast.makeText(MyApplication.getInstance(), "导出成功，文件目录：" + finalPath, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(MyApplication.getInstance(), "导出失败", Toast.LENGTH_SHORT).show();
                 Log.e("Error", e.getMessage(), e);
+                success = false;
             } finally {
                 if (writebook != null) {
                     try {
@@ -148,10 +159,11 @@ public class ExcelUtil {
                         in.close();
                     } catch (IOException e) {
                         Log.e("Error", e.getMessage(), e);
+                        success = false;
                     }
                 }
             }
-
         }
+        return success;
     }
 }

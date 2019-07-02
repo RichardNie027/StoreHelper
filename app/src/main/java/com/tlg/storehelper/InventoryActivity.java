@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
@@ -22,16 +23,20 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.nec.application.MyApplication;
+import com.nec.utils.ExcelUtil;
 import com.nec.utils.StringUtil;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.nec.utils.DateUtil;
+import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.Inventory;
 import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.utils.SQLiteUtil;
 import com.tlg.storehelper.vo.StatisticInfo;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -551,7 +556,22 @@ public class InventoryActivity extends BaseAppCompatActivity
 
     //导出盘存表
     private void exportInventoryList() {
-        Toast.makeText(MyApplication.getInstance(), "待实现", Toast.LENGTH_SHORT).show();
+        if(!GlobalVars.permissionOfStorage) {
+            Toast.makeText(MyApplication.getInstance(), "缺失文件读写权限，请在设置中修改", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //输出Excel
+        String filePath = Environment.getExternalStorageDirectory() + "/StoreHelperExport";
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        String excelFileName = "/Inventory" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + ".xls";
+        String[] title = {"标识1", "标识2", "货架编码", "商品条码", "数量"};
+        String sheetName = "demoSheetName";
+        filePath = filePath + excelFileName;
+        if(ExcelUtil.initExcel(filePath, sheetName, title))
+            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath);
     }
 
     @Override

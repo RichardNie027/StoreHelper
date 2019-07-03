@@ -16,7 +16,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class PermissionsUtil {
-    public static final String TAG = "PermissionGrantor";
     private static HashMap<String, PermissionListener> listenerMap = new HashMap();
 
     /**
@@ -41,7 +40,7 @@ public class PermissionsUtil {
             , @NonNull String[] permission, boolean showTip, @Nullable TipInfo tip) {
 
         if (listener == null) {
-            Log.e(TAG, "listener is null");
+            Log.e(PermissionsUtil.class.getName(), "listener is null");
             return;
         }
 

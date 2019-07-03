@@ -181,7 +181,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                 cursor.close();
             }
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
@@ -284,13 +284,16 @@ public class InventoryActivity extends BaseAppCompatActivity
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("info", "没有删除记录");
+                                Log.d(InventoryActivity.class.getName(), "没有删除记录");
                             }
                         })
                         .show();
                 break;
             case R.id.action_locator_redo:
-                Toast.makeText(MyApplication.getInstance(), "长按需要复盘的货位", Toast.LENGTH_SHORT).show();
+                if(mInventoryDetailList.size() == 0)
+                    Toast.makeText(MyApplication.getInstance(), "没有盘点内容", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(MyApplication.getInstance(), "长按需要复盘的货位", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_del_inventory_list:
                 new AlertDialog.Builder(MyApplication.getInstance())
@@ -307,7 +310,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("info", "没有删除盘点单");
+                                Log.d(InventoryActivity.class.getName(), "没有删除盘点单");
                             }
                         })
                         .show();
@@ -402,7 +405,7 @@ public class InventoryActivity extends BaseAppCompatActivity
      * @return 成功
      */
     private boolean deleteDetailRecordThenSubsequentActions(long id) {
-        boolean deleteSuccess = deleteDetailRecord(id);
+        boolean deleteSuccess = deleteDetailRecord(id) >= 0;
         if(deleteSuccess) {
             if(id == -1L)
                 mInventoryDetailList.remove(0);
@@ -449,7 +452,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                 throw new Exception("新增记录出错");
             db.setTransactionSuccessful();
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             //Toast.makeText(MyApplication.getInstance(), "新增记录出错", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
@@ -463,10 +466,10 @@ public class InventoryActivity extends BaseAppCompatActivity
     /**
      * 向本地数据库删除盘点明细数据
      * @param id 待删除记录ID，-1L则删除最新一条记录
-     * @return 成功
+     * @return 删除记录数, -1出错
      */
-    private boolean deleteDetailRecord(long id) {
-        int result = 0; //影响的记录数，0出错
+    private int deleteDetailRecord(long id) {
+        int result = 0; //影响的记录数，-1出错
         SQLiteOpenHelper helper = new SQLiteDbHelper(getApplicationContext());
         SQLiteDatabase db = null;
         try {
@@ -477,11 +480,12 @@ public class InventoryActivity extends BaseAppCompatActivity
                     id = mInventoryDetailList.get(0).id;    //删除最新一条
                 result = db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id=?", new String[]{Long.toString(id)});
                 if(result == 0)
-                    throw new Exception("删除记录出错");
+                    throw new Exception("没有记录被删除");
             }
             db.setTransactionSuccessful();
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
+            result = -1;
             //Toast.makeText(MyApplication.getInstance(), "删除记录出错", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
@@ -489,7 +493,7 @@ public class InventoryActivity extends BaseAppCompatActivity
             }
             db.close();
         }
-        return result > 0;
+        return result;
     }
 
     /**
@@ -504,14 +508,14 @@ public class InventoryActivity extends BaseAppCompatActivity
         try {
             db = helper.getWritableDatabase();
             db.beginTransaction();
-            result = db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=?", new String[]{Long.toString(id)});
-            if(result != 0)
-                result = db.delete(SQLiteDbHelper.TABLE_INVENTORY, "id=?", new String[]{Long.toString(id)});
+            db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=?", new String[]{Long.toString(id)});
+            result = db.delete(SQLiteDbHelper.TABLE_INVENTORY, "id=?", new String[]{Long.toString(id)});
             if(result == 0)
-                throw new Exception("删除盘点单出错");
+                throw new Exception("盘点单未被删除");
             db.setTransactionSuccessful();
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
+            result = -1;
             //Toast.makeText(MyApplication.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
@@ -530,7 +534,7 @@ public class InventoryActivity extends BaseAppCompatActivity
     //删除盘存表
     private void delInventoryList() {
         if(!deleteInventory(mListId)) {
-            Toast.makeText(MyApplication.getInstance(), "删盘点单出错，请检查", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getInstance(), "盘点单未被删除，请检查", Toast.LENGTH_SHORT).show();
         } else {
             new AlertDialog.Builder(MyApplication.getInstance())
                     .setIcon(android.R.drawable.ic_dialog_info)
@@ -551,11 +555,19 @@ public class InventoryActivity extends BaseAppCompatActivity
 
     //上传盘存表
     private void uploadInventoryList() {
+        if(mInventoryDetailList.size() == 0) {
+            Toast.makeText(MyApplication.getInstance(), "没有内容需要上传", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Toast.makeText(MyApplication.getInstance(), "待实现", Toast.LENGTH_SHORT).show();
     }
 
     //导出盘存表
     private void exportInventoryList() {
+        if(mInventoryDetailList.size() == 0) {
+            Toast.makeText(MyApplication.getInstance(), "没有内容需要导出", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if(!GlobalVars.permissionOfStorage) {
             Toast.makeText(MyApplication.getInstance(), "缺失文件读写权限，请在设置中修改", Toast.LENGTH_SHORT).show();
             return;
@@ -567,11 +579,11 @@ public class InventoryActivity extends BaseAppCompatActivity
             file.mkdirs();
         }
         String excelFileName = "/Inventory" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + ".xls";
-        String[] title = {"标识1", "标识2", "货架编码", "商品条码", "数量"};
-        String sheetName = "demoSheetName";
+        String[] title = {"标识", "货架编码", "商品条码", "数量"};
+        String sheetName = mInventory.list_no;
         filePath = filePath + excelFileName;
         if(ExcelUtil.initExcel(filePath, sheetName, title))
-            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath);
+            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath, new String[] {"id","bin_coding","barcode","quantity"});
     }
 
     @Override

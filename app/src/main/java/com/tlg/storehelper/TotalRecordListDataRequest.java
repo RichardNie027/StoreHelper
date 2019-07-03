@@ -91,7 +91,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
             }
             cursor.close();
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();

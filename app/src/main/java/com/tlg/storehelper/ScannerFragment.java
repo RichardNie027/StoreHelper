@@ -221,7 +221,7 @@ public class ScannerFragment extends Fragment {
         if(!_mFullBinCoding.equals(mFullBinCoding)) {   //货位改变
             mFullBinCoding = _mFullBinCoding;
             recalculateQuantity();
-            Log.d("INFO", "货位改变" + _mFullBinCoding);
+            Log.d(this.getClass().getName(), "货位改变" + _mFullBinCoding);
         }
     }
 

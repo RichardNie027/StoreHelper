@@ -60,7 +60,7 @@ public class ExcelUtil {
             arial12format.setBorder(jxl.format.Border.ALL,jxl.format.BorderLineStyle.THIN); //设置边框
 
         } catch (WriteException e) {
-            Log.e("ERROR", e.getMessage(), e);
+            Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
             return false;
         }
         return true;
@@ -92,14 +92,14 @@ public class ExcelUtil {
 
             workbook.write();
         } catch (Exception e) {
-            Log.e("ERROR", e.getMessage(), e);
+            Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
             success = false;
         } finally {
             if (workbook != null) {
                 try {
                     workbook.close();
                 } catch (Exception e) {
-                    Log.e("ERROR", e.getMessage(), e);
+                    Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
                 }
             }
         }
@@ -107,7 +107,7 @@ public class ExcelUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> boolean writeObjListToExcel(List<T> objList,String fileName) {
+    public static <T> boolean writeObjListToExcel(List<T> objList,String fileName, String[] orderedFieldNames) {
         boolean success = true;
         if (objList != null && objList.size() > 0) {
             WritableWorkbook writebook = null;
@@ -124,13 +124,21 @@ public class ExcelUtil {
 //				sheet.mergeCells()
 
                 for (int j = 0; j < objList.size(); j++) {
-                    ArrayList<String> list = (ArrayList<String>) objList.get(j);
+                    ArrayList list = CastUtil.cast(objList.get(j), orderedFieldNames);
                     for (int i = 0; i < list.size(); i++) {
-                        sheet.addCell(new Label(i, j + 1, list.get(i),arial12format));
-                        if (list.get(i).length() <= 5){
-                            sheet.setColumnView(i,list.get(i).length()+8); //设置列宽
+                        Object item = list.get(i);
+                        if(item instanceof String)
+                            sheet.addCell(new Label(i, j + 1, (String)item, arial12format));
+                        else if(item instanceof Boolean)
+                            sheet.addCell(new jxl.write.Boolean(i, j + 1, (boolean)item, arial12format));
+                        else if(item instanceof Number)
+                            sheet.addCell(new jxl.write.Number(i, j + 1, ((Number) item).doubleValue(), arial12format));
+                        else
+                            sheet.addCell(new Label(i, j + 1, item.toString(), arial12format));
+                        if (item.toString().length() <= 5){
+                            sheet.setColumnView(i, item.toString().length()+8); //设置列宽
                         }else {
-                            sheet.setColumnView(i,list.get(i).length()+5); //设置列宽
+                            sheet.setColumnView(i, item.toString().length()+5); //设置列宽
                         }
                     }
                     sheet.setRowView(j+1,350); //设置行高
@@ -140,17 +148,17 @@ public class ExcelUtil {
 
                 String fullpath = fileName.substring(0, fileName.lastIndexOf("/"));
                 String finalPath = fullpath.substring(fullpath.lastIndexOf("/"));
-                Toast.makeText(MyApplication.getInstance(), "导出成功，文件目录：" + finalPath, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyApplication.getInstance(), "导出成功，文件目录" + finalPath, Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 Toast.makeText(MyApplication.getInstance(), "导出失败", Toast.LENGTH_SHORT).show();
-                Log.e("Error", e.getMessage(), e);
+                Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
                 success = false;
             } finally {
                 if (writebook != null) {
                     try {
                         writebook.close();
                     } catch (Exception e) {
-                        Log.e("Error", e.getMessage(), e);
+                        Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
                     }
 
                 }
@@ -158,7 +166,7 @@ public class ExcelUtil {
                     try {
                         in.close();
                     } catch (IOException e) {
-                        Log.e("Error", e.getMessage(), e);
+                        Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
                         success = false;
                     }
                 }

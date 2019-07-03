@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecordFragment">
+
+    <TextView
+        android:id="@+id/tvBinCodingLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="盘点货位："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvBinCoding"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvBinCodingLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+
+    <TextView
+        android:id="@+id/tvBarcodeLabel0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="商品条码："
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tvBinCodingLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvBinCodingLabel" />
+
+    <EditText
+        android:id="@+id/etBarcode"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="扫描商品条码"
+        android:inputType="text"
+        android:textAlignment="viewStart"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvBarcodeLabel0"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel0" />
+
+    <TextView
+        android:id="@+id/tvPane1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity1Label"
+        app:layout_constraintStart_toStartOf="@+id/tvBarcodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity2Label"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantity1Label"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity3Label"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantity2Label"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toEndOf="@+id/tvQuantity3Label"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantity3Label"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvBarcodeLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="条码"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity1Label"
+        app:layout_constraintTop_toBottomOf="@+id/tvBarcodeLabel0" />
+
+    <TextView
+        android:id="@+id/tvQuantity1Label"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="原数"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity2Label"
+        app:layout_constraintStart_toEndOf="@+id/tvBarcodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvQuantity2Label"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="完成"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity3Label"
+        app:layout_constraintStart_toEndOf="@+id/tvQuantity1Label"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <TextView
+        android:id="@+id/tvQuantity3Label"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:alpha="0.5"
+        android:text="未完"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvBarcodeLabel" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPanel2">
+
+        <com.tlg.storehelper.loadmorerecycler.LoadMoreRecyclerView
+            android:id="@+id/recycle_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_total_record_load_more_list_item_linear" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</android.support.constraint.ConstraintLayout>

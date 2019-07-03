@@ -34,7 +34,7 @@ public class RecordListDataRequest implements AsynDataRequest {
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle) {
-        this.mRecordPerPage = 12;
+        this.mRecordPerPage = 20;
         this.mPage = page;
         PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mRecordPerPage);
 
@@ -97,7 +97,7 @@ public class RecordListDataRequest implements AsynDataRequest {
             }
             cursor.close();
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();

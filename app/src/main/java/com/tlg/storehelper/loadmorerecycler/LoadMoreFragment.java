@@ -292,7 +292,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
             modeAdaptation(mSwitchModeView, mDisplayMode);
             mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle);     //发起数据异步请求
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         }
         mRecyclerView.setAdapter(myRecyclerViewItemAdapter);
@@ -313,10 +313,10 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
 
     /**刷新RecyclerView*/
     public void doRefreshOnRecyclerView() {
-        mSwipeRefreshLayout.setRefreshing(false);
-        myRecyclerViewItemAdapter.clearData();
-        mPage = 0;
-        mAsynDataRequest.fetchData(mPage, 2, mHandler, mDataBundle); //发起数据异步请求
+//        mSwipeRefreshLayout.setRefreshing(false);
+//        myRecyclerViewItemAdapter.clearData();
+//        mPage = 0;
+        mAsynDataRequest.fetchData(0, 2, mHandler, mDataBundle); //发起数据异步请求
     }
 
     @Override
@@ -333,20 +333,20 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
                 case 1: //init
                     mRecyclerView.notifyDataReset();
                     myRecyclerViewItemAdapter.setData(pageContent.datas);
-                    //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(pageContent.hasMore);
                     //myRecyclerViewItemAdapter.notifyDataSetChanged();
                      break;
                 case 2: //SwipeRefreshLayout.OnRefreshListener
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    myRecyclerViewItemAdapter.clearData();
+                    mPage = 0;
                     mRecyclerView.notifyDataReset();
                     myRecyclerViewItemAdapter.setData(pageContent.datas);
-                    //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(hasMore);
                     //myRecyclerViewItemAdapter.notifyDataSetChanged();
                     break;
                 case 3: //LoadMoreRecyclerView.LoadMoreListener
                     myRecyclerViewItemAdapter.addDatas(pageContent.datas);
-                    //mRecyclerView.setAutoLoadMoreEnable(hasMore);
                     mRecyclerView.notifyMoreFinish(hasMore);
                     break;
                 default:

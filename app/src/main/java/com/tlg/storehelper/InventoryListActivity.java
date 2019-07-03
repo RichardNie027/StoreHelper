@@ -99,7 +99,7 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
             }
             cursor.close();
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "记录序号生成错误", Toast.LENGTH_SHORT);
             result = "01";
         } finally {
@@ -132,7 +132,7 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
             db.setTransactionSuccessful();
             result = true;
         } catch (Throwable t) {
-            Log.e("ERROR", t.getMessage(), t);
+            Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "保存盘点单失败", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {

@@ -27,7 +27,7 @@ public class StrongLinearLayoutManager extends LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {
-            Log.e("problem", "meet a IOOBE in RecyclerView");
+            Log.e(this.getClass().getName(), "meet a IOOBE in RecyclerView");
         }
     }
 

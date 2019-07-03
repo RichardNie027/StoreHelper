@@ -58,12 +58,12 @@ public class TotalRecordFragment extends LoadMoreFragment {
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
-                Log.d("info", "click at " + postion);
+                Log.d(TotalRecordFragment.class.getName(), "click at " + postion);
             }
 
             @Override
             public boolean onItemLongClick(final View view, int postion) {
-                Log.d("info", "long-click at " + postion);
+                Log.d(TotalRecordFragment.class.getName(), "long-click at " + postion);
                 final String bin_coding = view.getTag(R.id.tag_first).toString();
                 new AlertDialog.Builder(MyApplication.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -80,7 +80,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("info", "没有复盘");
+                                Log.d(TotalRecordFragment.class.getName(), "没有复盘");
                             }
                         })
                         .show();

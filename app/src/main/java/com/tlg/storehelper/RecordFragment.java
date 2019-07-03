@@ -58,12 +58,12 @@ public class RecordFragment extends LoadMoreFragment {
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
-                Log.d("info", "click at " + postion);
+                Log.d(this.getClass().getName(), "click at " + postion);
             }
 
             @Override
             public boolean onItemLongClick(final View view, int postion) {
-                Log.d("info", "long-click at " + postion);
+                Log.d(this.getClass().getName(), "long-click at " + postion);
                 final long id = Long.parseLong(view.getTag(R.id.tag_first).toString());
                 int idx = Integer.parseInt(view.getTag(R.id.tag_second).toString());
                 new AlertDialog.Builder(MyApplication.getInstance())
@@ -81,7 +81,7 @@ public class RecordFragment extends LoadMoreFragment {
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d("INFO", "没有删除记录");
+                                Log.d(RecordFragment.class.getName(), "没有删除记录");
                             }
                         })
                         .show();

@@ -58,7 +58,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
     public final static int TYPE_LIST = 3;      //代表item展示的模式是list模式
     public final static int TYPE_STAGGER = 4;   //代码item展示模式是网格模式
 
-    private boolean mIsFooterEnable = false;    //是否允许加载更多
+    private boolean mIsFooterEnable = true;    //是否允许加载更多
 
     /**
      * 自定义实现了头部和底部加载更多的adapter
@@ -455,5 +455,6 @@ public class LoadMoreRecyclerView extends RecyclerView {
         if (mIsFooterEnable) itemCount++;
         if (mAutoLoadAdapter.getHeaderEnable()) itemCount++;
         getAdapter().notifyItemRangeChanged(position, itemCount);
+        //getAdapter().notifyDataSetChanged();
     }
 }

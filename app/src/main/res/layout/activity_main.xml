@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:clickable="true"
     android:focusableInTouchMode="true"
     tools:context=".MainActivity">
@@ -13,92 +14,69 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/bg" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="0dp"
-        android:layout_height="145dp"
-        android:layout_marginTop="16dp"
-        android:background="#1EFF5983"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
-
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="72dp"
-        android:text="用户："
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
-
-    <TextView
-        android:id="@+id/tvPwd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="密码："
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tvUsername"
-        app:layout_constraintTop_toBottomOf="@+id/tvUsername" />
-
     <EditText
+        android:drawableLeft="@drawable/user"
         android:id="@+id/etUsername"
-        android:layout_width="77dp"
-        android:layout_height="40dp"
+        android:theme="@style/Custom.LightEditTextStyle"
+        android:drawablePadding="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="number"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvUsername"
-        app:layout_constraintStart_toEndOf="@+id/tvUsername"
-        app:layout_constraintTop_toTopOf="@+id/tvUsername" />
+        android:hint="请输入系统账号"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@+id/ivBg" />
 
     <EditText
+        android:drawableLeft="@drawable/lock"
         android:id="@+id/etPwd"
-        android:layout_width="77dp"
-        android:layout_height="40dp"
+        android:drawablePadding="20dp"
+        android:theme="@style/Custom.LightEditTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
         android:ems="10"
         android:inputType="numberPassword"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPwd"
-        app:layout_constraintStart_toEndOf="@+id/tvPwd"
-        app:layout_constraintTop_toTopOf="@+id/tvPwd" />
+        android:hint="请输入登录密码"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/etUsername"
+        app:layout_constraintStart_toStartOf="@+id/etUsername"
+        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
 
     <Button
         android:id="@+id/btnLogin"
         style="@style/Custom.ButtonStyle"
-        android:layout_width="77dp"
+        android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
         android:onClick="btnLoginClick"
         android:text="登录"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/etPwd"
-        app:layout_constraintStart_toStartOf="@+id/etPwd"
+        app:layout_constraintEnd_toEndOf="@+id/etUsername"
+        app:layout_constraintStart_toStartOf="@+id/etUsername"
         app:layout_constraintTop_toBottomOf="@+id/etPwd" />
 
     <com.tlg.storehelper.comm.TitleTextView
-        android:id="@+id/tvListNoLabel"
+        android:id="@+id/tvSlogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:text="门店助手"
-        android:textSize="30sp"
+        android:text="不为失败找借口，只为成功找方法！"
+        android:textColor="@color/silver"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 </android.support.constraint.ConstraintLayout>

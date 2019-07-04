@@ -44,8 +44,9 @@ public class TitleTextView extends AppCompatTextView {
                 }else{
                     size = mViewWidth;
                 }
+                int cc = getCurrentTextColor() & 0x00FFFFFF;
                 mLinearGradient = new LinearGradient(-size, 0, 0, 0,
-                        new int[] { 0xffC1194E, 0x33C1194E, 0xffC1194E },
+                        new int[] { 0xff000000|cc, 0x33000000|cc, 0xff000000|cc },
                         new float[] { 0, 0.5f, 1 }, Shader.TileMode.CLAMP); //边缘融合
                 mPaint.setShader(mLinearGradient);
                 mGradientMatrix = new Matrix();

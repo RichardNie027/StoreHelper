@@ -21,14 +21,15 @@ public class RecordFragment extends LoadMoreFragment {
 
     private TextView mTvListNo;
 
+    //传参名称
     public static final String sInventoryListIdLabel = "inventory_list_id";
     public static final String sInventoryListNoLabel = "inventory_list_no";
 
     public RecordFragment() {
         //资源名称
         mLayoutOfFragmentItemList = "fragment_record";
-        mIdOfSwipeRefreshLayout = "refresh_layout";
-        mIdOfRecycleView = "recycle_list";
+        mIdOfSwipeRefreshLayout = "refresh_layout"; //内部资源名称
+        mIdOfRecycleView = "recycle_list";          //内部资源名称
     }
 
     @Override

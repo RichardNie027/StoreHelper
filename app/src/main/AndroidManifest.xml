@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tlg.storehelper">
+    <!-- WiFi以及访问网络的权限 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 外部存储设备文件的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name="com.nec.application.MyApplication"
@@ -10,8 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.nec.grantor.PermissionActivity"></activity>
-        <activity android:name=".InventoryActivity"></activity>
+        <activity android:name=".RedoRecordActivity" />
+        <activity android:name="com.nec.grantor.PermissionActivity" />
+        <activity android:name=".InventoryActivity" />
         <activity android:name=".InventoryListActivity" />
         <activity android:name=".InventoryListsActivity" />
         <activity android:name=".HomeActivity" />
@@ -23,17 +32,5 @@
             </intent-filter>
         </activity>
     </application>
-
-    <!-- WiFi以及访问网络的权限 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" ></uses-permission>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" ></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" ></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" ></uses-permission>
-    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
-    <uses-permission android:name="android.permission.WAKE_LOCK" ></uses-permission>
-    <!-- 外部存储设备文件的权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 外部存储设备文件的权限 -->
-
 
 </manifest>

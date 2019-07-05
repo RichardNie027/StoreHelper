@@ -29,7 +29,7 @@ public interface AsynDataRequest extends Serializable {
      * @param page 页码
      * @param what 数据区分
      * @param handler 消息句柄
-     * @param bundle 条件参数
+     * @param dataBundle 条件参数
      */
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle);
 

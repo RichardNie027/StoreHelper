@@ -44,7 +44,7 @@
         android:alpha="0.8"
         android:background="@color/colorPrimaryLight"
         app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvBarCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvBarcodeLabel"
         app:layout_constraintStart_toStartOf="@+id/tvBinCodingLabel"
         app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
 
@@ -56,7 +56,7 @@
         android:background="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/tvIdxLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvBarCodeLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvBarcodeLabel"
         app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
 
     <TextView
@@ -95,7 +95,7 @@
         app:layout_constraintTop_toTopOf="@+id/tvIdxLabel" />
 
     <TextView
-        android:id="@+id/tvBarCodeLabel"
+        android:id="@+id/tvBarcodeLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

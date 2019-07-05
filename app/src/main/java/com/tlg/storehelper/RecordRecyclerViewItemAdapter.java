@@ -48,8 +48,8 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
                 mHolder.mIdxView.setText(String.valueOf(mHolder.mItem.idx));
             if(mHolder.mBinCodingView != null)
                 mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
-            if(mHolder.mBarCodeView != null)
-                mHolder.mBarCodeView.setText(mHolder.mItem.barcode);
+            if(mHolder.mBarcodeView != null)
+                mHolder.mBarcodeView.setText(mHolder.mItem.barcode);
             if(mHolder.mQuantityView != null)
                 mHolder.mQuantityView.setText(String.valueOf(mHolder.mItem.quantity));
         } else if (mDisplayMode == LoadMoreFragment.DisplayMode.LINEAR) {
@@ -61,8 +61,8 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
                 mHolder.mIdxView.setText(String.valueOf(mHolder.mItem.idx));
             if(mHolder.mBinCodingView != null)
                 mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
-            if(mHolder.mBarCodeView != null)
-                mHolder.mBarCodeView.setText(mHolder.mItem.barcode);
+            if(mHolder.mBarcodeView != null)
+                mHolder.mBarcodeView.setText(mHolder.mItem.barcode);
             if(mHolder.mQuantityView != null)
                 mHolder.mQuantityView.setText(String.valueOf(mHolder.mItem.quantity));
         } else {
@@ -74,7 +74,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
         public View iconView;
         public final TextView mIdxView;
         public final TextView mBinCodingView;
-        public final TextView mBarCodeView;
+        public final TextView mBarcodeView;
         public final TextView mQuantityView;
         public InventoryDetailVo mItem;
 
@@ -83,7 +83,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
             iconView = view.findViewById(R.id.icon);
             mIdxView = (TextView) view.findViewById(R.id.tvIdx);
             mBinCodingView = (TextView) view.findViewById(R.id.tvBinCoding);
-            mBarCodeView = (TextView) view.findViewById(R.id.tvBarCode);
+            mBarcodeView = (TextView) view.findViewById(R.id.tvBarcode);
             mQuantityView = (TextView) view.findViewById(R.id.tvQuantity);
         }
 
@@ -92,7 +92,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
     public class MyLinearViewHolder extends RecyclerViewItemAdapter.LinearViewHolder {
         public final TextView mIdxView;
         public final TextView mBinCodingView;
-        public final TextView mBarCodeView;
+        public final TextView mBarcodeView;
         public final TextView mQuantityView;
         public InventoryDetailVo mItem;
 
@@ -100,13 +100,13 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
             super(view);
             mIdxView = (TextView) view.findViewById(R.id.tvIdx);
             mBinCodingView = (TextView) view.findViewById(R.id.tvBinCoding);
-            mBarCodeView = (TextView) view.findViewById(R.id.tvBarCode);
+            mBarcodeView = (TextView) view.findViewById(R.id.tvBarcode);
             mQuantityView = (TextView) view.findViewById(R.id.tvQuantity);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mIdxView.getText() + ">" + mBinCodingView.getText() + ">" + mBarCodeView.getText() + ">" + mQuantityView.getText() + "'";
+            return super.toString() + " '" + mIdxView.getText() + ">" + mBinCodingView.getText() + ">" + mBarcodeView.getText() + ">" + mQuantityView.getText() + "'";
         }
     }
 }

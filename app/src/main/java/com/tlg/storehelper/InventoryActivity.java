@@ -528,7 +528,20 @@ public class InventoryActivity extends BaseAppCompatActivity
 
     //复盘
     private void locatorRedo(String bin_coding) {
+        Intent intent = new Intent(this, RedoRecordActivity.class);
+        intent.putExtra(RedoRecordFragment.sInventoryListIdLabel, mListId);
+        intent.putExtra(RedoRecordFragment.sInventoryBinCodingLabel, bin_coding);
+        startActivityForResult(intent, 5);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==5 && resultCode == 6 && data != null) { //失败，因关键信息缺失
+            ;
+        } else if(requestCode==5 && resultCode == 7 && data != null) {  //保存成功
+            ;
+        }
     }
 
     //删除盘存表

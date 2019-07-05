@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="@+id/tvIdx" />
 
     <TextView
-        android:id="@+id/tvBarCode"
+        android:id="@+id/tvBarcode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

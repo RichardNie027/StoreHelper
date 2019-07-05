@@ -2,7 +2,7 @@
     <string name="app_name">StoreHelper</string>
 
 
-    <item type="id" name="tag_first"/>
-    <item type="id" name="tag_second"/>
+    <item name="tag_first" type="id" />
+    <item name="tag_second" type="id" />
 
 </resources>

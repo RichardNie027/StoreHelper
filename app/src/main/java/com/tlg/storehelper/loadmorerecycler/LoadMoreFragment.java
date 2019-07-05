@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.nec.application.MyApplication;
 import com.nec.utils.TextDrawable;
 import com.nec.utils.ResourceUtil;
+import com.tlg.storehelper.base.BaseFragment;
 
 import java.lang.reflect.Constructor;
 
@@ -73,8 +74,9 @@ import static com.tlg.storehelper.loadmorerecycler.AsynDataRequest.PAGE_CONTENT;
  *
  * @param <TAdapter extends RecyclerViewItemAdapter>
  */
-public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends Fragment {
-    ////////////////资源前提 START////////////////
+public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter> extends BaseFragment {
+
+    ////////////////资源（Layout/ID）前提 START////////////////
     /**列表Fragmeng布局xml文件名，必要，需要定制布局文件且以文件名对此变量赋值*/
     protected String mLayoutOfFragmentItemList = "fragment_default_load_more_list";
     //布局xml文件的内部资源ID
@@ -84,7 +86,58 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
     protected String mIdOfRecycleView = "recycle_list";
     /**切换模式的视图控件，类型为TextView或Button，非必要*/
     protected String mIdOfModeSwitchButton = "mode_switch_button";
-    ////////////////资源前提 END////////////////
+    ////////////////资源（Layout/ID）前提 END////////////////
+
+
+    ////////////////Fragment参数静态资源名 START////////////////
+    /**内部使用的列数关键字名称，Staggered模式下的列数*/
+    private static String ARG_COLUMN_COUNT = "column-count";
+    /**内部使用的显示模式关键字名称*/
+    private static String ARG_DISPLAY_MODE = "display-mode";
+    /**内部使用的异步数据请求接口AsynDataRequest关键字名称*/
+    private static String ASYN_DATA_REQUEST = "asyn-data-request";
+    ////////////////Fragment参数静态资源名 END////////////////
+
+
+    ////////////////异步数据 START////////////////
+    /**异步数据请求对象*/
+    protected AsynDataRequest mAsynDataRequest;
+    /**当前页码,zero-base*/
+    protected int mPage = 0;
+    /**
+     * 数据条件 Bundle mDataBundle
+     * 在三处使用：
+     * 1、进入页面初始装载数据onCreateView：子类中设置在onCreateView事件前
+     * 2、刷新数据SwipeRefreshLayout.OnRefreshListener：下拉刷新
+     * 3、加载更多LoadMoreRecyclerView.LoadMoreListener：上拉加载（初始加载的首批数据不足一屏时，自动触发）*/
+    protected Bundle mDataBundle = new Bundle();
+    ////////////////异步数据 END////////////////
+
+
+    ////////////////可循环视图 START////////////////
+    /**支持加载更多的RecyclerView*/
+    protected LoadMoreRecyclerView mRecyclerView;
+    /**行项目适配器*/
+    protected TAdapter myRecyclerViewItemAdapter;
+    /**行项目适配器子类（RecyclerViewItemAdapter），用于反射构造*/
+    protected Class<TAdapter> mAdapterClass;
+    ////////////////可循环视图 END////////////////
+
+
+    ////////////////显示模式 START////////////////
+    /**切换模式的控件,TEXTVIEW或BUTTON*/
+    private View mSwitchModeView = null;
+    /**显示模式*/
+    protected DisplayMode mDisplayMode = DisplayMode.LINEAR;
+    /**Staggered模式列数*/
+    protected int mColumnCount = 1;
+    ////////////////显示模式 END////////////////
+
+
+    ////////////////类的其它私有属性////////////////
+    /**被嵌套的SwipeRefreshLayout布局对象*/
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+    //private OnListFragmentInteractionListener mListener;  //在子类中实现
 
     /**
      * 列表显示模式：行、瀑布
@@ -110,39 +163,6 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
         }
     }
 
-    /**内部使用的列数关键字名称，Staggered模式下的列数*/
-    private static String ARG_COLUMN_COUNT = "column-count";
-    /**内部使用的显示模式关键字名称*/
-    private static String ARG_DISPLAY_MODE = "display-mode";
-    /**内部使用的异步数据请求接口AsynDataRequest关键字名称*/
-    private static String ASYN_DATA_REQUEST = "asyn-data-request";
-    /**显示模式*/
-    protected DisplayMode mDisplayMode = DisplayMode.LINEAR;
-    /**Staggered模式列数*/
-    protected int mColumnCount = 1;
-    /**异步数据请求对象*/
-    protected AsynDataRequest mAsynDataRequest;
-
-    /**主体Item适配器*/
-    protected TAdapter myRecyclerViewItemAdapter;
-    /**切换模式的控件,TEXTVIEW或BUTTON*/
-    protected View mSwitchModeView = null;
-    /**支持加载更多的RecyclerView*/
-    protected LoadMoreRecyclerView mRecyclerView;
-    /**被嵌套的SwipeRefreshLayout布局对象*/
-    protected SwipeRefreshLayout mSwipeRefreshLayout;
-    /**当前页码,zero-base*/
-    protected int mPage = 0;
-    /** 数据获取条件
-     * 在三处使用：
-     * 1、进入页面初始装载数据onCreateView：子类中设置在onCreateView事件前
-     * 2、刷新数据SwipeRefreshLayout.OnRefreshListener：下拉刷新
-     * 3、加载更多LoadMoreRecyclerView.LoadMoreListener：上拉加载（初始加载的首批数据不足一屏时，自动触发）*/
-    protected Bundle mDataBundle = new Bundle();
-    /**Item适配器RecyclerViewItemAdapter的子类*/
-    protected Class<TAdapter> mAdapterClass;
-
-    //private OnListFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

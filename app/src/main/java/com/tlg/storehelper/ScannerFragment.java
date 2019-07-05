@@ -23,12 +23,13 @@ import android.widget.Toast;
 
 import com.nec.application.MyApplication;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
+import com.tlg.storehelper.base.BaseFragment;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.tlg.storehelper.vo.InventoryListVo;
 import com.tlg.storehelper.vo.StatisticInfo;
 
-public class ScannerFragment extends Fragment {
+public class ScannerFragment extends BaseFragment {
 
     private static final String ARG1_NAME = "list_id";
     private static final String ARG2_NAME = "list_no";
@@ -38,8 +39,6 @@ public class ScannerFragment extends Fragment {
     private static final String ARG6_NAME = "last_bin_coding";
 
     private OnFragmentInteractionListener mListener;
-
-    private ScannerFragment _this;
 
     private TextView mTvListNo;
     private Spinner mSpnBinType;
@@ -97,7 +96,6 @@ public class ScannerFragment extends Fragment {
             mStatisticInfo.lastBarcode = getArguments().getString(ARG5_NAME);
             mStatisticInfo.lastBinCoding = getArguments().getString(ARG6_NAME);
         }
-        _this = this;
     }
 
     @Override
@@ -209,11 +207,6 @@ public class ScannerFragment extends Fragment {
                 return false;
             }
         });
-    }
-
-    private void hideKeyboard(View view) {
-        InputMethodManager im = (InputMethodManager) _this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     /**如果货位改变，重新统计，并更新显示*/

@@ -25,10 +25,13 @@ import java.util.List;
 public class TotalRecordListDataRequest implements AsynDataRequest {
 
     private long mInventoryListId;
+
+    //分页属性
     private int mRecordPerPage;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
+
     private List<InventoryTotalVo> mInventoryTotalList = new ArrayList<InventoryTotalVo>();
 
     @Override
@@ -37,7 +40,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
         this.mPage = page;
         PageContent<InventoryTotalVo> pageContent = new PageContent<InventoryTotalVo>(page, mRecordPerPage);
 
-        mInventoryListId = dataBundle.getLong(RecordFragment.sInventoryListIdLabel);
+        mInventoryListId = dataBundle.getLong(TotalRecordFragment.sInventoryListIdLabel);
         loadData();
 
         pageContent.hasMore = page < mPageCount-1;

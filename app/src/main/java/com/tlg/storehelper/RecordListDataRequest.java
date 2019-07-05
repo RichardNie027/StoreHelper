@@ -26,10 +26,13 @@ import java.util.List;
 public class RecordListDataRequest implements AsynDataRequest {
 
     private long mInventoryListId;
+
+    //分页属性
     private int mRecordPerPage;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
+
     private List<InventoryDetailVo> mInventoryDetailList = new ArrayList<InventoryDetailVo>();
 
     @Override

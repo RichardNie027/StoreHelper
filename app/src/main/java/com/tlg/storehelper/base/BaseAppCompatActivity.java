@@ -17,6 +17,9 @@ public class BaseAppCompatActivity extends AppCompatActivity implements View.OnF
     //
     protected View[] mHideInputViews;
 
+    //自己的弱引用
+    protected BaseAppCompatActivity _this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +27,7 @@ public class BaseAppCompatActivity extends AppCompatActivity implements View.OnF
         if(mFullScreen) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-
+        _this = this;
     }
 
     @Override
@@ -71,6 +74,14 @@ public class BaseAppCompatActivity extends AppCompatActivity implements View.OnF
                 view.setOnTouchListener(this);
         }
         mHideInputViews = views;
+    }
+
+    /**
+     *   隐藏输入法
+     */
+    public void hideKeyboard(View view) {
+        InputMethodManager im = (InputMethodManager) _this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
 }

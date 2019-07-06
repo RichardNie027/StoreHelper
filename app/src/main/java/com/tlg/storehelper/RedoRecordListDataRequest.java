@@ -13,11 +13,10 @@ import com.nec.application.MyApplication;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.tlg.storehelper.loadmorerecycler.AsynDataRequest;
 import com.tlg.storehelper.loadmorerecycler.PageContent;
-import com.tlg.storehelper.vo.InventoryRedoDetailVo;
 import com.tlg.storehelper.vo.InventoryRedoVo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class RedoRecordListDataRequest implements AsynDataRequest {
 
     private List<InventoryRedoVo> mInventoryRedoList = new ArrayList<>();
     private List<String> mInventoryRedoKeyList = new ArrayList<>();
-    private Map<String, Integer> mRedoDataMap = new HashMap<>();
+    private Map<String, Integer> mRedoDataMap = new LinkedHashMap<>();
 
     private RequireRedoDataListener mListener;
 
@@ -74,17 +73,19 @@ public class RedoRecordListDataRequest implements AsynDataRequest {
     }
 
     private void loadData() {
-        List<InventoryRedoVo> mRedoNewList = mListener.beforeDataRequest();   //先获取复盘新条码数据
-        if(mRedoNewList != null && mPage == 0 && mRedoNewList.size() > 0) {
+        Map<String, Integer> redoNewDataMap = null;
+        if(mListener != null)
+            redoNewDataMap = mListener.beforeDataRequest();   //先获取复盘新条码数据，有则视为第一页，数据库数据从第二页开始
+        boolean hasNewData = redoNewDataMap != null && !redoNewDataMap.isEmpty();
+        if(mPage == 0 && hasNewData) {
             mInventoryRedoList.clear();
             mInventoryRedoKeyList.clear();
             mRedoDataMap.clear();
-            for(InventoryRedoVo vo: mRedoNewList) {
-                InventoryRedoVo inventoryDetailVo = new InventoryRedoVo(vo.barcode, vo.quantity1, vo.quantity2, vo.quantity3);
+            for(String key: redoNewDataMap.keySet()) {
+                InventoryRedoVo inventoryDetailVo = new InventoryRedoVo(key, 0, redoNewDataMap.get(key), -redoNewDataMap.get(key));
                 mInventoryRedoList.add(inventoryDetailVo);
                 mInventoryRedoKeyList.add(inventoryDetailVo.barcode);
             }
-            return;
         }
 
         SQLiteOpenHelper helper = new SQLiteDbHelper(MyApplication.getInstance());
@@ -97,38 +98,42 @@ public class RedoRecordListDataRequest implements AsynDataRequest {
             //取记录总数
             sql = new StringBuffer().append("select count(distinct barcode)").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=? and bin_coding=?")
-                    .append(" group by barcode")
+                    .append(" group by pid,bin_coding")
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId)});
+            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), mInventoryBinCoding});
             if (cursor.moveToFirst()) {
                 mRecordCount = cursor.getInt(0);
             } else {
                 mRecordCount = 0;
             }
-            mPageCount =  (int)Math.ceil((double)mRecordCount/(double)mRecordPerPage) + 1;
-            if(mRedoNewList != null)
-                mRecordCount += mRedoNewList.size();    //先计算页数，再累加
-            cursor.close();
-
-            //取记录明细
-            mInventoryRedoList.clear();
-            mInventoryRedoKeyList.clear();
-            mRedoDataMap.clear();
-            sql = new StringBuffer().append("select barcode, sum(quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
-                    .append(" where pid=? and bin_coding=?")
-                    .append(" group by barcode")
-                    .append(" order by barcode asc")
-                    .append(" limit ?,").append(mRecordPerPage)
-                    .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), mInventoryBinCoding, Integer.toString((mPage+((mRedoNewList != null && !mRedoNewList.isEmpty())?1:0))*mRecordPerPage)});
-            while (cursor.moveToNext()) {
-                String barcode = cursor.getString(cursor.getColumnIndex("barcode"));
-                int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
-                InventoryRedoVo inventoryDetailVo = new InventoryRedoVo(barcode, quantity, 0, 0);
-                mInventoryRedoList.add(inventoryDetailVo);
-                mInventoryRedoKeyList.add(inventoryDetailVo.barcode);
+            mPageCount =  (int)Math.ceil((double)mRecordCount/(double)mRecordPerPage);
+            if(redoNewDataMap != null && !redoNewDataMap.isEmpty()) {
+                mRecordCount += redoNewDataMap.size();    //先计算页数，再累加
+                mPageCount++;
             }
             cursor.close();
+
+            if(mPage > 0 || !hasNewData) {
+                //取记录明细
+                mInventoryRedoList.clear();
+                mInventoryRedoKeyList.clear();
+                mRedoDataMap.clear();
+                sql = new StringBuffer().append("select barcode, sum(quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
+                        .append(" where pid=? and bin_coding=?")
+                        .append(" group by barcode")
+                        .append(" order by barcode asc")
+                        .append(" limit ?,").append(mRecordPerPage)
+                        .toString();
+                cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), mInventoryBinCoding, Integer.toString((mPage + (hasNewData ? -1 : 0)) * mRecordPerPage)});
+                while (cursor.moveToNext()) {
+                    String barcode = cursor.getString(cursor.getColumnIndex("barcode"));
+                    int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
+                    InventoryRedoVo inventoryDetailVo = new InventoryRedoVo(barcode, quantity, 0, 0);
+                    mInventoryRedoList.add(inventoryDetailVo);
+                    mInventoryRedoKeyList.add(inventoryDetailVo.barcode);
+                }
+                cursor.close();
+            }
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
@@ -154,7 +159,7 @@ public class RedoRecordListDataRequest implements AsynDataRequest {
          * 获得复盘出现的新商品记录
          * @return
          */
-        List<InventoryRedoVo> beforeDataRequest();
+        Map<String, Integer> beforeDataRequest();
     }
 
 }

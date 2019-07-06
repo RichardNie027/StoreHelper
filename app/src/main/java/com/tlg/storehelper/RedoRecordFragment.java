@@ -1,12 +1,11 @@
 package com.tlg.storehelper;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -18,15 +17,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nec.application.MyApplication;
-import com.nec.utils.DateUtil;
-import com.tlg.storehelper.base.RecycleViewItemClickListener;
+
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 import com.tlg.storehelper.vo.InventoryRedoDetailVo;
-import com.tlg.storehelper.vo.InventoryRedoVo;
+
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,8 +37,14 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     private TextView mTvBinCoding;
     private EditText mEtBarcode;
 
+    /**复盘明细（已有条码）*/
     private List<InventoryRedoDetailVo> redoDetailList = new ArrayList<>();
+    /**复盘明细（新条码）*/
     private List<InventoryRedoDetailVo> redoNewDetailList = new ArrayList<>();
+    /**复盘按条码汇总（已有条码）*/
+    private Map<String, Integer> mRedoDataMap = new LinkedHashMap<>();
+    /**复盘按条码汇总（新条码）*/
+    private Map<String, Integer> mRedoNewDataMap = new LinkedHashMap<>();
 
     //传参名称
     public static final String sInventoryListIdLabel = "inventory_list_id";
@@ -142,10 +146,15 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             mEtBarcode.selectAll();
             return;
         }
-        if(barcodeCheck(barcode))
+        if(barcodeCheck(barcode)) {
             redoDetailList.add(new InventoryRedoDetailVo(redoDetailList.size(), barcode));
-        else
+            int value = mRedoDataMap.containsKey(barcode) ? mRedoDataMap.get(barcode) + 1 : 1;
+            mRedoDataMap.put(barcode, value);
+        } else {
             redoNewDetailList.add(new InventoryRedoDetailVo(redoNewDetailList.size(), barcode));
+            int value = mRedoNewDataMap.containsKey(barcode) ? mRedoNewDataMap.get(barcode) + 1 : 1;
+            mRedoNewDataMap.put(barcode, value);
+        }
         doRefreshOnRecyclerView();
     }
 
@@ -189,21 +198,26 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
 
     @Override
     public Map<String, Integer> onNeedRedoData(List<String> barcodeList) {
-        Map<String, Integer> mRedoDataMap = new HashMap<>(barcodeList.size());
+        Map<String, Integer> redoDataMap = new LinkedHashMap<>(barcodeList.size());
         for(int i=0; i<barcodeList.size(); i++) {
-            mRedoDataMap.put(barcodeList.get(i), 0);
+            redoDataMap.put(barcodeList.get(i), 0);
         }
-        for(InventoryRedoDetailVo vo: redoDetailList) {
-            if (mRedoDataMap.containsKey(vo.barcode)) {
-                mRedoDataMap.put(vo.barcode, mRedoDataMap.get(vo.barcode) + 1);
+        for(String key: mRedoDataMap.keySet()) {
+            if (redoDataMap.containsKey(key)) {
+                redoDataMap.put(key, redoDataMap.get(key) + mRedoDataMap.get(key));
             }
         }
-        return mRedoDataMap;
+        for(String key: mRedoNewDataMap.keySet()) {
+            if (redoDataMap.containsKey(key)) {
+                redoDataMap.put(key, redoDataMap.get(key) + mRedoNewDataMap.get(key));
+            }
+        }
+        return redoDataMap;
     }
 
     @Override
-    public List<InventoryRedoVo> beforeDataRequest() {
-        return null;
+    public Map<String, Integer> beforeDataRequest() {
+        return mRedoNewDataMap;
     }
 
     /**

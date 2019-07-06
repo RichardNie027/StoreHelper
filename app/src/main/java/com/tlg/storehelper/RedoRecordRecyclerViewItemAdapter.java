@@ -63,8 +63,8 @@ public class RedoRecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<I
                 mHolder.mQuantity2View.setText(String.valueOf(mHolder.mItem.quantity2));
             if(mHolder.mQuantity3View != null)
                 mHolder.mQuantity3View.setText(String.valueOf(mHolder.mItem.quantity3));
-            if (mHolder.mItem.quantity1 == 0 && mHolder.mItem.quantity1 > 0)
-                holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.orchid));
+            if (mHolder.mItem.quantity1 == 0 && mHolder.mItem.quantity2 > 0)
+                holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.lightskyblue));
             else if (mHolder.mItem.quantity2 == 0)
                 holder.itemView.setBackgroundColor(holder.itemView.getResources().getColor(R.color.snow));
             else if (mHolder.mItem.quantity3 == 0)

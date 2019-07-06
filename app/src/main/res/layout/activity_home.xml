@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".HomeActivity">
+
+    <ImageView
+        android:id="@+id/ivBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:alpha="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bg1" />
 
     <Button
         android:id="@+id/btnExit"
@@ -50,7 +61,7 @@
         android:onClick="ivSearchClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivCollocation"
-        app:srcCompat="@drawable/kucun" />
+        app:srcCompat="@drawable/search" />
 
     <ImageView
         android:id="@+id/ivCollocation"
@@ -63,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dapei" />
+        app:srcCompat="@drawable/collocation" />
 
     <ImageView
         android:id="@+id/ivPerformance"
@@ -73,7 +84,7 @@
         android:onClick="ivSearchClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivCollocation"
-        app:srcCompat="@drawable/yeji" />
+        app:srcCompat="@drawable/performance" />
 
     <ImageView
         android:id="@+id/ivInventory"
@@ -83,7 +94,17 @@
         android:onClick="ivInventoryClick"
         app:layout_constraintStart_toStartOf="@+id/ivSearch"
         app:layout_constraintTop_toBottomOf="@+id/ivSearch"
-        app:srcCompat="@drawable/pandian" />
+        app:srcCompat="@drawable/inventory" />
+
+    <ImageView
+        android:id="@+id/ivSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:onClick="ivInventoryClick"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivInventory"
+        app:srcCompat="@drawable/settings" />
 
     <TextView
         android:id="@+id/tvSearch"
@@ -92,6 +113,7 @@
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
         android:text="查货"
+        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivSearch"
         app:layout_constraintStart_toStartOf="@+id/ivSearch"
@@ -104,6 +126,7 @@
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
         android:text="搭配"
+        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivCollocation"
         app:layout_constraintStart_toStartOf="@+id/ivCollocation"
@@ -116,6 +139,7 @@
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
         android:text="业绩"
+        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
         app:layout_constraintStart_toStartOf="@+id/ivPerformance"
@@ -128,10 +152,24 @@
         android:layout_marginTop="8dp"
         android:onClick="ivInventoryClick"
         android:text="盘点"
+        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivInventory"
         app:layout_constraintStart_toStartOf="@+id/ivInventory"
         app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
+
+    <TextView
+        android:id="@+id/tvSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivSearchClick"
+        android:text="设置"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivSettings"
+        app:layout_constraintStart_toStartOf="@+id/ivSettings"
+        app:layout_constraintTop_toBottomOf="@+id/ivSettings" />
 
     <Spinner
         android:id="@+id/spinner"

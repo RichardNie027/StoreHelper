@@ -108,8 +108,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                     .show();
             return;
         } else {
-            //装置数据
-            loadData(true, true);
+            loadData(true, true);   //装载数据
         }
         // init fragment
         mFragments = new ArrayList<Fragment>(3);
@@ -341,6 +340,7 @@ public class InventoryActivity extends BaseAppCompatActivity
                 switch (position) {
                     case 0:
                         if(mScannerNeedRefresh) {
+                            updateStatisticInfo(mLastBinCoding);
                             mScannerFragment.updateStatisticDisplay(mStatisticInfo);
                             mScannerNeedRefresh = false;
                         }
@@ -538,9 +538,13 @@ public class InventoryActivity extends BaseAppCompatActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==5 && resultCode == 6 && data != null) { //失败，因关键信息缺失
-            ;
-        } else if(requestCode==5 && resultCode == 7 && data != null) {  //保存成功
-            ;
+            finish();
+        } else if(requestCode==5 && resultCode == 7 && data != null) {  //更新成功
+            loadData(true, true);   //装载数据
+            mScannerNeedRefresh = true;
+            mRecordListNeedRefresh = true;
+            mTotalRecordFragment.doRefreshOnRecyclerView();
+            mRecordTotalNeedRefresh = false;
         }
     }
 

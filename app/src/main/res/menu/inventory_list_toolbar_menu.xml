@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/action_save"
-        android:title="保存"
+        android:title="确认"
         app:showAsAction="ifRoom" />
 </menu>

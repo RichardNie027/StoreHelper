@@ -1,5 +1,6 @@
 package com.tlg.storehelper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 import com.nec.application.MyApplication;
 
+import com.nec.utils.SQLiteUtil;
+import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
 import com.tlg.storehelper.vo.InventoryRedoDetailVo;
@@ -38,9 +41,9 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     private EditText mEtBarcode;
 
     /**复盘明细（已有条码）*/
-    private List<InventoryRedoDetailVo> redoDetailList = new ArrayList<>();
+    private List<InventoryRedoDetailVo> mRedoDetailList = new ArrayList<>();    //被汇总数量的MAP替代
     /**复盘明细（新条码）*/
-    private List<InventoryRedoDetailVo> redoNewDetailList = new ArrayList<>();
+    private List<InventoryRedoDetailVo> mRedoNewDetailList = new ArrayList<>(); //被汇总数量的MAP替代
     /**复盘按条码汇总（已有条码）*/
     private Map<String, Integer> mRedoDataMap = new LinkedHashMap<>();
     /**复盘按条码汇总（新条码）*/
@@ -72,6 +75,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        //mSwipeRefreshLayout.setEnabled(false);
         initView(view);
         return view;
     }
@@ -147,11 +151,11 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             return;
         }
         if(barcodeCheck(barcode)) {
-            redoDetailList.add(new InventoryRedoDetailVo(redoDetailList.size(), barcode));
+            //mRedoDetailList.add(new InventoryRedoDetailVo(mRedoDetailList.size(), barcode));  //被汇总数量的MAP替代
             int value = mRedoDataMap.containsKey(barcode) ? mRedoDataMap.get(barcode) + 1 : 1;
             mRedoDataMap.put(barcode, value);
         } else {
-            redoNewDetailList.add(new InventoryRedoDetailVo(redoNewDetailList.size(), barcode));
+            //mRedoNewDetailList.add(new InventoryRedoDetailVo(mRedoNewDetailList.size(), barcode));    //被汇总数量的MAP替代
             int value = mRedoNewDataMap.containsKey(barcode) ? mRedoNewDataMap.get(barcode) + 1 : 1;
             mRedoNewDataMap.put(barcode, value);
         }
@@ -180,6 +184,47 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             db.close();
         }
         return result;
+    }
+
+    public boolean doUpdteInventory() {
+        long result = 0; //影响的记录数
+        SQLiteOpenHelper helper = new SQLiteDbHelper(this.getActivity().getApplicationContext());
+        SQLiteDatabase db = null;
+        try {
+            db = helper.getWritableDatabase();
+            db.beginTransaction();
+            db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=? and bin_coding=?", new String[]{Long.toString(mInventoryListId), mInventoryBinCoding});
+            for(String key: mRedoDataMap.keySet()) {
+                InventoryDetail inventoryDetail = new InventoryDetail(-1L, mInventoryListId, mInventoryBinCoding, key, mRedoDataMap.get(key));
+                ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail, "id");
+                result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id", contentValues);
+                if (result == -1L)
+                    throw new Exception("新增记录出错");
+            }
+            for(String key: mRedoNewDataMap.keySet()) {
+                InventoryDetail inventoryDetail = new InventoryDetail(-1L, mInventoryListId, mInventoryBinCoding, key, mRedoNewDataMap.get(key));
+                ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail, "id");
+                result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id", contentValues);
+                if (result == -1L)
+                    throw new Exception("新增记录出错");
+            }
+            //mRedoDetailList.clear();      //被汇总数量的MAP替代
+            mRedoDataMap.clear();
+            //mRedoNewDetailList.clear();   //被汇总数量的MAP替代
+            mRedoNewDataMap.clear();
+
+            db.setTransactionSuccessful();
+        } catch (Throwable t) {
+            Log.e(this.getClass().getName(), t.getMessage(), t);
+            result = -1;
+            //Toast.makeText(MyApplication.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+            db.close();
+        }
+        return result != -1;
     }
 
     @Override

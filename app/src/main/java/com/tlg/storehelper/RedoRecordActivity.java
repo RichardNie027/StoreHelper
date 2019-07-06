@@ -110,7 +110,7 @@ public class RedoRecordActivity extends BaseAppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.inventory_toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.inventory_list_toolbar_menu, menu);
         return true;
     }
 
@@ -120,30 +120,41 @@ public class RedoRecordActivity extends BaseAppCompatActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    private boolean mInventoryUpdated = false;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent = new Intent();
-                setResult(4, intent);
+                if(mInventoryUpdated)
+                    setResult(7, intent);
+                else
+                    setResult(0, intent);
                 finish();
                 return true;
-            case R.id.action_del_top_line:
+            case R.id.action_save:
                 new AlertDialog.Builder(MyApplication.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
-                        .setTitle("删除提示")
-                        .setMessage("是否删除最近的一条记录？")
+                        .setTitle("更新提示")
+                        .setMessage("用复盘数据更新盘点单？")
                         .setCancelable(true)
-                        .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ;
+                                if(!mRedoRecordFragment.doUpdteInventory()) {
+                                    Toast.makeText(MyApplication.getInstance(), "更新货位盘点数据失败，请检查", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    mInventoryUpdated = true;
+                                    Toast.makeText(MyApplication.getInstance(), "货位盘点数据已更新", Toast.LENGTH_SHORT).show();
+                                    mRedoRecordFragment.doRefreshOnRecyclerView();
+                                }
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Log.d(RedoRecordActivity.class.getName(), "没有删除记录");
+                                Log.d(RedoRecordActivity.class.getName(), "复盘数据没有更新");
                             }
                         })
                         .show();

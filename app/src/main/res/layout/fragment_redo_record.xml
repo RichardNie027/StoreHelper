@@ -167,4 +167,53 @@
             tools:listitem="@layout/fragment_total_record_load_more_list_item_linear" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tvTip4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:background="@color/lightyellow"
+        android:text=" 不足 "
+        android:textSize="9dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvTip3"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+
+    <TextView
+        android:id="@+id/tvTip3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:background="@color/yellow"
+        android:text=" 超出 "
+        android:textSize="9dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvTip2"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+
+    <TextView
+        android:id="@+id/tvTip2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:background="@color/lightskyblue"
+        android:text=" 新增 "
+        android:textSize="9dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvTip1"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+
+    <TextView
+        android:id="@+id/tvTip1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@color/grassgreen"
+        android:text=" 一致 "
+        android:textSize="9dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+
 </android.support.constraint.ConstraintLayout>

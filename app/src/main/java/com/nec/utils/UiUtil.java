@@ -6,7 +6,13 @@ import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
 
+import com.nec.application.MyApplication;
+
 public class UiUtil {
+
+    public static int dip2px(float dipValue) {
+        return dip2px(MyApplication.getInstance(), dipValue);
+    }
 
     /**
      * dp转为px

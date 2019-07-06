@@ -178,11 +178,11 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
     }
 
     public void btnDateClick(View v) {
-        DatetimePickerFragment newFragment = new DatetimePickerFragment();
-        newFragment.datetimePickerResult = this;
-        newFragment.datePickerMode = true;
-        newFragment.setCalendar(mCalendar);
-        newFragment.show(getSupportFragmentManager(),"date picker");
+        DatetimePickerFragment dateFragment = new DatetimePickerFragment();
+        dateFragment.datetimePickerResult = this;
+        dateFragment.datePickerMode = true;
+        dateFragment.setCalendar(mCalendar);
+        dateFragment.show(getSupportFragmentManager(),"date picker");
     }
 
     @Override

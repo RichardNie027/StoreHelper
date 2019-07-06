@@ -11,6 +11,13 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 import java.util.Locale;
 
+/*  DEMO:
+        DatetimePickerFragment dateFragment = new DatetimePickerFragment();
+        dateFragment.datetimePickerResult = this;
+        dateFragment.datePickerMode = true;
+        dateFragment.setCalendar(mCalendar);
+        dateFragment.show(getSupportFragmentManager(),"date picker");
+ */
 public class DatetimePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 

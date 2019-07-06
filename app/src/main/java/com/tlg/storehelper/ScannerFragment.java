@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nec.application.MyApplication;
+import com.nec.boost.CustomDialog;
+import com.nec.utils.ResourceUtil;
+import com.nec.utils.UiUtil;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.base.BaseFragment;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -143,7 +147,7 @@ public class ScannerFragment extends BaseFragment {
         rootView.findViewById(R.id.btnBatchScan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                inputBatchNumber();
             }
         });
 
@@ -313,6 +317,29 @@ public class ScannerFragment extends BaseFragment {
             mBatchScanQuantity = 1;
             mTvBatchScanQuantity.setText("1");
         }
+    }
+
+
+    private void inputBatchNumber() {
+        CustomDialog dialog = new CustomDialog(MyApplication.getInstance(), R.layout.dialog_fragment_scanner_quantity, R.style.Custom_Dialog, new int[] {R.id.btnDialogOk});
+        dialog.drawable = ResourceUtil.getDrawable(ResourceUtil.getColor("snow"), ResourceUtil.getColor("colorPrimaryLight"), UiUtil.dip2px(0.8f), UiUtil.dip2px(15f));
+        //dialog.modal = true;
+        dialog.setOnDialogItemClickListener(new CustomDialog.OnDialogItemClickListener() {
+            @Override
+            public void OnDialogItemClick(CustomDialog dialog, View view) {
+                switch (view.getId()){
+                    case R.id.btnDialogOk:
+                        EditText etQuantity = view.getRootView().findViewById(R.id.etQuantity);
+                        int quantity = etQuantity==null ? 1 : Integer.parseInt(etQuantity.getText().toString());
+                        mBatchScanQuantity = quantity;
+                        mTvBatchScanQuantity.setText(String.valueOf(mBatchScanQuantity));
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        dialog.show();
     }
 
     @Override

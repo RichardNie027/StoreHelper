@@ -276,10 +276,5 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        /**
-         * 删除扫码记录触发
-         * @param id
-         */
-        void onInventoryDeleteRecord(long id);
     }
 }

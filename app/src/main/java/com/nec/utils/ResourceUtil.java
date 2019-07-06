@@ -2,15 +2,11 @@ package com.nec.utils;
 
 import java.lang.reflect.Field;
 import android.content.Context;
-import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+
+import com.nec.application.MyApplication;
 
 public class ResourceUtil {
-    private Context mContext;
-
-    public void init(Context context) {
-        if (context != null)
-            mContext = context;
-    }
 
     /**
      *
@@ -18,10 +14,8 @@ public class ResourceUtil {
      * @return int The associated resource identifier.  Returns 0 if no such
      *         resource was found.  (0 is not a valid resource ID.)
      */
-    public int getLayoutId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "layout", mContext.getPackageName());
+    public static int getLayoutId(String paramString) {
+        return ResourceUtil.getLayoutId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -42,11 +36,8 @@ public class ResourceUtil {
      * @return int The associated resource identifier.  Returns 0 if no such
      *         resource was found.  (0 is not a valid resource ID.)
      */
-    public int getStringId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "string",
-                mContext.getPackageName());
+    public static int getStringId(String paramString) {
+        return ResourceUtil.getStringId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -68,10 +59,8 @@ public class ResourceUtil {
      * @return int The associated resource identifier.  Returns 0 if no such
      *         resource was found.  (0 is not a valid resource ID.)
      */
-    public int getDrawableId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "drawable", mContext.getPackageName());
+    public static int getDrawableId(String paramString) {
+        return ResourceUtil.getDrawableId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -86,17 +75,8 @@ public class ResourceUtil {
         return context.getResources().getIdentifier(paramString, "drawable", context.getPackageName());
     }
 
-    /**
-     *
-     * @param paramString String resource name.
-     * @return int The associated resource identifier.  Returns 0 if no such
-     *         resource was found.  (0 is not a valid resource ID.)
-     */
-    public int getStyleId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "style",
-                mContext.getPackageName());
+    public static int getStyleId(String paramString) {
+        return ResourceUtil.getStyleId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -112,17 +92,8 @@ public class ResourceUtil {
                 context.getPackageName());
     }
 
-    /**
-     *
-     * @param paramString String resource name.
-     * @return int The associated resource identifier.  Returns 0 if no such
-     *         resource was found.  (0 is not a valid resource ID.)
-     */
-    public int getId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "id",
-                mContext.getPackageName());
+    public static int getId(String paramString) {
+        return ResourceUtil.getId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -137,6 +108,11 @@ public class ResourceUtil {
         return context.getResources().getIdentifier(paramString, "id",
                 context.getPackageName());
     }
+
+    public static int getColor(String paramString) {
+        return ResourceUtil.getColor(paramString, MyApplication.getInstance());
+    }
+
     /**获取颜色值*/
     public static int getColor(String paramString, Context context) {
         int colorId = getColorId(paramString, context);
@@ -148,26 +124,8 @@ public class ResourceUtil {
         }
     }
 
-    /**
-     *
-     * @param paramString String resource name.
-     * @return int The associated resource identifier.  Returns 0 if no such
-     *         resource was found.  (0 is not a valid resource ID.)
-     */
-    public int getColorId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "color", mContext.getPackageName());
-    }
-    /**获取颜色值*/
-    public int getColor(String paramString) {
-        int colorId = getColorId(paramString);
-        if (colorId == 0)
-            return 0;
-        else {
-            int color = mContext.getResources().getColor(colorId);
-            return color;
-        }
+    public static int getColorId(String paramString) {
+        return ResourceUtil.getColorId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -188,11 +146,8 @@ public class ResourceUtil {
      * @return int The associated resource identifier.  Returns 0 if no such
      *         resource was found.  (0 is not a valid resource ID.)
      */
-    public int getDimenId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "dimen",
-                mContext.getPackageName());
+    public static int getDimenId(String paramString) {
+        return ResourceUtil.getDimenId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -214,10 +169,8 @@ public class ResourceUtil {
      * @return int The associated resource identifier.  Returns 0 if no such
      *         resource was found.  (0 is not a valid resource ID.)
      */
-    public int getAnimId(String paramString) {
-        if (mContext == null)
-            return 0;
-        return mContext.getResources().getIdentifier(paramString, "anim", mContext.getPackageName());
+    public static int getAnimId(String paramString) {
+        return ResourceUtil.getAnimId(paramString, MyApplication.getInstance());
     }
 
     /**
@@ -233,16 +186,8 @@ public class ResourceUtil {
     }
 
     // 通过反射实现
-    public final int[] getStyleableIntArray(String name) {
-        try {
-            if (mContext == null)
-                return null;
-            Field field = Class.forName(mContext.getPackageName() + ".R$styleable").getDeclaredField(name);
-            int[] ret = (int[]) field.get(null);
-            return ret;
-        } catch (Throwable t) {
-        }
-        return null;
+    public static final int[] getStyleableIntArray(String name) {
+        return ResourceUtil.getStyleableIntArray(name, MyApplication.getInstance());
     }
 
     public static final int[] getStyleableIntArray(String name, Context context) {
@@ -257,17 +202,8 @@ public class ResourceUtil {
         return null;
     }
 
-    public final int getStyleableIntArrayIndex(String name) {
-        try {
-            if (mContext == null)
-                return 0;
-            // use reflection to access the resource class
-            Field field = Class.forName(mContext.getPackageName() + ".R$styleable").getDeclaredField(name);
-            int ret = (Integer) field.get(null);
-            return ret;
-        } catch (Throwable t) {
-        }
-        return 0;
+    public static final int getStyleableIntArrayIndex(String name) {
+        return ResourceUtil.getStyleableIntArrayIndex(name, MyApplication.getInstance());
     }
 
     public static final int getStyleableIntArrayIndex(String name, Context context) {
@@ -281,5 +217,31 @@ public class ResourceUtil {
         } catch (Throwable t) {
         }
         return 0;
+    }
+
+    /**
+     * 产生shape类型的drawable
+     *
+     * DEMO：
+     * GradientDrawable()
+     <?xml version="1.0" encoding="utf-8"?>
+     <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <solid android:color="@color/white" />
+        <corners android:radius="5dp" />
+        <stroke android:width="1dp" android:color="@color/red" />
+     </shape>
+
+     * @param solidColor
+     * @param strokeColor
+     * @param strokeWidth
+     * @param radius
+     * @return
+     */
+    public static GradientDrawable getDrawable(int solidColor, int strokeColor, int strokeWidth, float radius) {
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setColor(solidColor);
+        drawable.setStroke(strokeWidth, strokeColor);
+        drawable.setCornerRadius(radius);
+        return drawable;
     }
 }

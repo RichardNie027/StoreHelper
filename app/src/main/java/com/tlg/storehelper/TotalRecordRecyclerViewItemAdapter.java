@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
-import com.tlg.storehelper.loadmorerecycler.RecyclerViewItemAdapter;
+import com.tlg.storehelper.loadmoreview.LoadMoreFragment;
+import com.tlg.storehelper.loadmoreview.RecyclerViewItemAdapter;
 import com.tlg.storehelper.vo.InventoryTotalVo;
 
 import java.util.List;

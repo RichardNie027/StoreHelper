@@ -159,7 +159,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPanel2">
 
-        <com.tlg.storehelper.loadmorerecycler.LoadMoreRecyclerView
+        <com.tlg.storehelper.loadmoreview.LoadMoreRecyclerView
             android:id="@+id/recycle_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

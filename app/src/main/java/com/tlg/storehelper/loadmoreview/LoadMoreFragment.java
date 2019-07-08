@@ -1,11 +1,10 @@
-package com.tlg.storehelper.loadmorerecycler;
+package com.tlg.storehelper.loadmoreview;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Layout;
 import android.util.Log;
@@ -23,7 +22,7 @@ import com.tlg.storehelper.base.BaseFragment;
 
 import java.lang.reflect.Constructor;
 
-import static com.tlg.storehelper.loadmorerecycler.AsynDataRequest.PAGE_CONTENT;
+import static com.tlg.storehelper.loadmoreview.AsynDataRequest.PAGE_CONTENT;
 
 /* fragment_default_load_more_list.xml 默认配置
 <?xml version="1.0" encoding="utf-8"?>
@@ -83,7 +82,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
     /**布局文件中SwipeRefreshLayout的ID，必要*/
     protected String mIdOfSwipeRefreshLayout = "refresh_layout";
     /**布局文件中LoadMoreRecyclerView的ID，必要*/
-    protected String mIdOfRecycleView = "recycle_list";
+    protected String mIdOfRecyclerView = "recycle_list";
     /**切换模式的视图控件，类型为TextView或Button，非必要*/
     protected String mIdOfModeSwitchButton = "mode_switch_button";
     ////////////////资源（Layout/ID）前提 END////////////////
@@ -275,7 +274,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
                              Bundle savedInstanceState) {
         // find view
         View view = inflater.inflate(ResourceUtil.getLayoutId(mLayoutOfFragmentItemList, getContext()), container, false);
-        mRecyclerView = (LoadMoreRecyclerView) view.findViewById(ResourceUtil.getId(mIdOfRecycleView, getContext()));
+        mRecyclerView = (LoadMoreRecyclerView) view.findViewById(ResourceUtil.getId(mIdOfRecyclerView, getContext()));
         int switchControlResId = ResourceUtil.getId(mIdOfModeSwitchButton, getContext());
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(ResourceUtil.getId(mIdOfSwipeRefreshLayout, getContext()));
 

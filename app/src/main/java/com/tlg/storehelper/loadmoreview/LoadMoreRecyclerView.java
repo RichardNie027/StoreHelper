@@ -1,4 +1,4 @@
-package com.tlg.storehelper.loadmorerecycler;
+package com.tlg.storehelper.loadmoreview;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;

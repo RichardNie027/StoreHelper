@@ -145,7 +145,7 @@ public class InventoryListsActivity extends BaseAppCompatActivity {
 
         @Override
         public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_inventory_lists_recycleview, parent, false);
+            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_inventory_lists_recyclerview, parent, false);
             RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view, mClickListener);
             return recyclerViewHolder;
         }

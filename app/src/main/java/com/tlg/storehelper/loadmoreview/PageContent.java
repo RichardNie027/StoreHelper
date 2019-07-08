@@ -1,4 +1,4 @@
-package com.tlg.storehelper.loadmorerecycler;
+package com.tlg.storehelper.loadmoreview;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.tlg.storehelper.loadmorerecycler;
+package com.tlg.storehelper.loadmoreview;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
@@ -150,7 +150,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     /**
-     *
+     * 构造指定类的Holder
      * @param clazz
      * @param view
      * @return

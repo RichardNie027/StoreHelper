@@ -22,7 +22,7 @@ import com.nec.application.MyApplication;
 import com.nec.utils.SQLiteUtil;
 import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
-import com.tlg.storehelper.loadmorerecycler.LoadMoreFragment;
+import com.tlg.storehelper.loadmoreview.LoadMoreFragment;
 import com.tlg.storehelper.vo.InventoryRedoDetailVo;
 
 
@@ -57,7 +57,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         //资源名称
         mLayoutOfFragmentItemList = "fragment_redo_record";
         mIdOfSwipeRefreshLayout = "refresh_layout"; //内部资源名称
-        mIdOfRecycleView = "recycle_list";          //内部资源名称
+        mIdOfRecyclerView = "recycle_list";          //内部资源名称
     }
 
     @Override

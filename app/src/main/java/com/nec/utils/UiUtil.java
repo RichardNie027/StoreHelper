@@ -10,21 +10,35 @@ import com.nec.application.MyApplication;
 
 public class UiUtil {
 
-    public static int dip2px(float dipValue) {
-        return dip2px(MyApplication.getInstance(), dipValue);
+    public static int dp2px(float dpValue) {
+        return dp2px(MyApplication.getInstance(), dpValue);
+    }
+
+    public static int sp2px(float spValue) {
+        return sp2px(MyApplication.getInstance(), spValue);
     }
 
     /**
-     * dp转为px
+     * 单位大小dp转为像素px
      *
      * @param context  上下文
-     * @param dipValue dp值
+     * @param dpValue dp值
      * @return
      */
-    public static int dip2px(Context context, float dipValue) {
-        Resources r = context.getResources();
+    public static int dp2px(Context context, float dpValue) {
         return (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, dipValue, r.getDisplayMetrics());
+                TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * 文字大小sp转为像素px
+     * @param context 上下文
+     * @param spValue sp值
+     * @return
+     */
+    public static int sp2px(Context context, float spValue) {
+        final float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return Math.round((spValue - 0.5f) * fontScale);
     }
 
     /**屏幕宽度（像素）*/

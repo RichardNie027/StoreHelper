@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.nec.utils.ResUtil;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
-import com.nec.utils.ResourceUtil;
 import com.nec.utils.UiUtil;
 
 import java.lang.reflect.Constructor;
@@ -203,7 +203,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == LoadMoreRecyclerView.TYPE_STAGGER) {
-            int resId = ResourceUtil.getLayoutId(mLayoutNameOfFragmentItemStagger, parent.getContext());
+            int resId = ResUtil.getLayoutId(mLayoutNameOfFragmentItemStagger, parent.getContext());
             View listItemStaggerView = null;
             if(resId != 0) {
                 listItemStaggerView = LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
@@ -212,16 +212,16 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
                 listItemStaggerView = loadDefaultListItemStaggerLayout(parent);
             }
             ViewGroup.LayoutParams layoutParams = listItemStaggerView.getLayoutParams();
-            layoutParams.width = UiUtil.dip2px(parent.getContext(), UiUtil.sScreenWidthInDp/mColumnCount);
+            layoutParams.width = UiUtil.dp2px(parent.getContext(), UiUtil.sScreenWidthInDp/mColumnCount);
             return createViewHolder(mStaggeredViewHolderClass, listItemStaggerView);
         } else {
-            int resId = ResourceUtil.getLayoutId(mLayoutNameOfFragmentItemLinear, parent.getContext());
+            int resId = ResUtil.getLayoutId(mLayoutNameOfFragmentItemLinear, parent.getContext());
             View listItemLinearView = null;
             if(resId != 0) {
                 listItemLinearView = LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
                 listItemLinearView.setClickable(itemClickable);
                 if(itemClickable && itemClickVisible) {
-                    int rippleeId = ResourceUtil.getDrawableId("recycle_view_touch_ripple", parent.getContext());
+                    int rippleeId = ResUtil.getDrawableId("recycle_view_touch_ripple", parent.getContext());
                     Drawable drawable = parent.getContext().getResources().getDrawable(rippleeId);
                     listItemLinearView.setBackground(drawable);
                 }
@@ -245,16 +245,16 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     private View loadDefaultListItemLinearLayout(ViewGroup parent) {
         missingLinearLayout = true;
         LinearLayout mLinearLayout = new LinearLayout(parent.getContext());
-        LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, UiUtil.dip2px(parent.getContext(),30));
+        LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, UiUtil.dp2px(parent.getContext(),30));
         mLinearLayout.setLayoutParams(mLayoutParams1);
         parent.addView(mLinearLayout);
 
         TextView textView = new TextView(parent.getContext());
-        textView.setTextColor(ResourceUtil.getColor("colorPrimary", parent.getContext()));
+        textView.setTextColor(ResUtil.getColor("colorPrimary", parent.getContext()));
         textView.setTextSize(14);
         textView.setText("未实现具体布局");
         LinearLayout.LayoutParams mLayoutParams2 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-        mLayoutParams2.setMarginStart(UiUtil.dip2px(parent.getContext(),10));
+        mLayoutParams2.setMarginStart(UiUtil.dp2px(parent.getContext(),10));
         textView.setLayoutParams(mLayoutParams2);
         mLinearLayout.addView(textView);
         return mLinearLayout;
@@ -265,17 +265,17 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
         missingStaggerLayout = true;
         CardView mCardView = new CardView(parent.getContext());
         LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-        int margin1 = UiUtil.dip2px(parent.getContext(),3);
+        int margin1 = UiUtil.dp2px(parent.getContext(),3);
         mLayoutParams1.setMargins(margin1, margin1, margin1, margin1);
         mCardView.setLayoutParams(mLayoutParams1);
         parent.addView(mCardView);
 
         TextView textView = new TextView(parent.getContext());
-        textView.setTextColor(ResourceUtil.getColor("colorPrimary", parent.getContext()));
+        textView.setTextColor(ResUtil.getColor("colorPrimary", parent.getContext()));
         textView.setTextSize(14);
         textView.setText("未实现具体布局");
         LinearLayout.LayoutParams mLayoutParams2 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-        mLayoutParams2.setMargins(0, UiUtil.dip2px(parent.getContext(),50), 0, 0);
+        mLayoutParams2.setMargins(0, UiUtil.dp2px(parent.getContext(),50), 0, 0);
         textView.setLayoutParams(mLayoutParams2);
         mCardView.addView(textView);
         return mCardView;

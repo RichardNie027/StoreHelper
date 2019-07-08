@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.nec.utils.ResourceUtil;
+import com.nec.utils.ResUtil;
 import com.nec.utils.UiUtil;
 
 /* 加载更多list_footer_loading.xml 默认布局文件，与代码实现对等
@@ -217,7 +217,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
                 return new HeaderViewHolder(LayoutInflater.from(parent.getContext()).inflate(mHeaderResId, parent, false));
             }
             if (viewType == TYPE_FOOTER) {
-                int footerResId = ResourceUtil.getLayoutId(sLayoutOfFooterLoading, parent.getContext());
+                int footerResId = ResUtil.getLayoutId(sLayoutOfFooterLoading, parent.getContext());
                 View footerView = null;
                 if(footerResId != 0) {
                     footerView = LayoutInflater.from(parent.getContext()).inflate(footerResId , parent, false);
@@ -233,27 +233,27 @@ public class LoadMoreRecyclerView extends RecyclerView {
         /**加载默认的FooterBar*/
         private View loadDefaultFooterLayout(ViewGroup parent) {
             LinearLayout mLinearLayout = new LinearLayout(parent.getContext());
-            mLinearLayout.setBackgroundColor(ResourceUtil.getColor("colorSecond", parent.getContext()));
+            mLinearLayout.setBackgroundColor(ResUtil.getColor("colorSecond", parent.getContext()));
             mLinearLayout.setGravity(Gravity.CENTER);
             mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-            int mPadding = UiUtil.dip2px(parent.getContext(),10);
+            int mPadding = UiUtil.dp2px(parent.getContext(),10);
             mLinearLayout.setPadding(mPadding, mPadding, mPadding, mPadding);
             LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             mLinearLayout.setLayoutParams(mLayoutParams1);
             parent.addView(mLinearLayout);
 
             ProgressBar progressBar = new ProgressBar(parent.getContext());
-            int mProgressBarSize = UiUtil.dip2px(parent.getContext(),25);
+            int mProgressBarSize = UiUtil.dp2px(parent.getContext(),25);
             LinearLayout.LayoutParams mLayoutParams2 = new LinearLayout.LayoutParams(mProgressBarSize, mProgressBarSize);
             progressBar.setLayoutParams(mLayoutParams2);
             mLinearLayout.addView(progressBar);
 
             TextView textView = new TextView(parent.getContext());
-            textView.setTextColor(ResourceUtil.getColor("colorPrimaryLight", parent.getContext()));
+            textView.setTextColor(ResUtil.getColor("colorPrimaryLight", parent.getContext()));
             textView.setTextSize(14);
             textView.setText("加载中");
             LinearLayout.LayoutParams mLayoutParams3 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-            mLayoutParams3.setMarginStart(UiUtil.dip2px(parent.getContext(),10));
+            mLayoutParams3.setMarginStart(UiUtil.dp2px(parent.getContext(),10));
             textView.setLayoutParams(mLayoutParams3);
             mLinearLayout.addView(textView);
             return mLinearLayout;

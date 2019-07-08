@@ -1,19 +1,13 @@
 package com.tlg.storehelper;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,13 +18,9 @@ import android.widget.Toast;
 
 import com.nec.application.MyApplication;
 import com.nec.boost.CustomDialog;
-import com.nec.utils.ResourceUtil;
+import com.nec.utils.ResUtil;
 import com.nec.utils.UiUtil;
-import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.base.BaseFragment;
-import com.tlg.storehelper.comm.GlobalVars;
-import com.tlg.storehelper.dao.SQLiteDbHelper;
-import com.tlg.storehelper.vo.InventoryListVo;
 import com.tlg.storehelper.vo.StatisticInfo;
 
 public class ScannerFragment extends BaseFragment {
@@ -322,7 +312,7 @@ public class ScannerFragment extends BaseFragment {
 
     private void inputBatchNumber() {
         CustomDialog dialog = new CustomDialog(MyApplication.getInstance(), R.layout.dialog_fragment_scanner_quantity, R.style.Custom_Dialog, new int[] {R.id.btnDialogOk});
-        dialog.drawable = ResourceUtil.getDrawable(ResourceUtil.getColor("snow"), ResourceUtil.getColor("colorPrimaryLight"), UiUtil.dip2px(0.8f), UiUtil.dip2px(15f));
+        dialog.drawable = ResUtil.getDrawable(ResUtil.getColor("snow"), ResUtil.getColor("colorPrimaryLight"), UiUtil.dp2px(0.8f), UiUtil.dp2px(15f));
         //dialog.modal = true;
         dialog.setOnDialogItemClickListener(new CustomDialog.OnDialogItemClickListener() {
             @Override

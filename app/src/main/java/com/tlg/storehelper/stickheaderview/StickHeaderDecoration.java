@@ -9,6 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.nec.utils.UiUtil;
+
 /**
  * 自定义装饰器（实现分组+吸顶效果）
  */
@@ -25,21 +27,21 @@ public class StickHeaderDecoration extends RecyclerView.ItemDecoration {
 
     private Rect mTextRect;
 
-    public StickHeaderDecoration(Context context) {
-        mItemHeaderHeight = dp2px(context, 40);
-        mTextPaddingLeft = dp2px(context, 6);
+    public StickHeaderDecoration(Context context, int headerHeight, int textPaddingLeft, int textSizeinSp, int textColor, int backgroundColor, int dividerColor) {
+        mItemHeaderHeight = UiUtil.dp2px(context, headerHeight);
+        mTextPaddingLeft = UiUtil.dp2px(context, textPaddingLeft);
 
         mTextRect = new Rect();
 
         mItemHeaderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mItemHeaderPaint.setColor(Color.BLUE);
+        mItemHeaderPaint.setColor(backgroundColor);
 
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mTextPaint.setTextSize(46);
-        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setTextSize(UiUtil.sp2px(textSizeinSp));
+        mTextPaint.setColor(textColor);
 
         mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mLinePaint.setColor(Color.GRAY);
+        mLinePaint.setColor(dividerColor);
 
     }
 
@@ -123,14 +125,6 @@ public class StickHeaderDecoration extends RecyclerView.ItemDecoration {
                 outRect.top = 1;
             }
         }
-    }
-
-    /**
-     * dp转换成px
-     */
-    private int dp2px(Context context, float dpValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 
 }

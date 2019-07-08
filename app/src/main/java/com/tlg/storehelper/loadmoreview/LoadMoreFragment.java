@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nec.application.MyApplication;
+import com.nec.utils.ResUtil;
 import com.nec.utils.TextDrawable;
-import com.nec.utils.ResourceUtil;
 import com.tlg.storehelper.base.BaseFragment;
 
 import java.lang.reflect.Constructor;
@@ -273,10 +273,10 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // find view
-        View view = inflater.inflate(ResourceUtil.getLayoutId(mLayoutOfFragmentItemList, getContext()), container, false);
-        mRecyclerView = (LoadMoreRecyclerView) view.findViewById(ResourceUtil.getId(mIdOfRecyclerView, getContext()));
-        int switchControlResId = ResourceUtil.getId(mIdOfModeSwitchButton, getContext());
-        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(ResourceUtil.getId(mIdOfSwipeRefreshLayout, getContext()));
+        View view = inflater.inflate(ResUtil.getLayoutId(mLayoutOfFragmentItemList, getContext()), container, false);
+        mRecyclerView = (LoadMoreRecyclerView) view.findViewById(ResUtil.getId(mIdOfRecyclerView, getContext()));
+        int switchControlResId = ResUtil.getId(mIdOfModeSwitchButton, getContext());
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(ResUtil.getId(mIdOfSwipeRefreshLayout, getContext()));
 
         // control view
         mRecyclerView.setHasFixedSize(true);

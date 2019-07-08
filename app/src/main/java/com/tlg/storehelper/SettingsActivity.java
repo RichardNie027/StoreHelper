@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.nec.utils.ResUtil;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.stickheaderview.StickHeaderDecoration;
@@ -45,7 +46,8 @@ public class SettingsActivity extends BaseAppCompatActivity {
         loadData();
 
         SettingsActivity.MyStickHeaderRecyclerViewAdapter recycleViewAdapter = new MyStickHeaderRecyclerViewAdapter(mDatas);
-        mRecyclerView.addItemDecoration(new StickHeaderDecoration(this));
+        recycleViewAdapter.setViewHolderClass(recycleViewAdapter, MyStickHeaderRecyclerViewAdapter.MyViewHolder.class);
+        mRecyclerView.addItemDecoration(new StickHeaderDecoration(this, 20, 16, 14, ResUtil.getColor("white"), ResUtil.getColor("colorPrimaryLight"), ResUtil.getColor("silver")));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(recycleViewAdapter);
 
@@ -65,9 +67,11 @@ public class SettingsActivity extends BaseAppCompatActivity {
     }
 
     private void loadData() {
-        mDatas.add(new MyStickHeaderViewGroupData(0, true, "应用名称", "店铺助手", "第一组"));
-        mDatas.add(new MyStickHeaderViewGroupData(101, false, "更新日期", "2019.07.08", "第二组"));
-        mDatas.add(new MyStickHeaderViewGroupData(109, false, "版本", "1.0", "第二组"));
+        mDatas.add(new MyStickHeaderViewGroupData(0, false, "应用名称", "店铺助手", "基本信息"));
+        mDatas.add(new MyStickHeaderViewGroupData(1, false, "版本", "1.0", "基本信息"));
+        mDatas.add(new MyStickHeaderViewGroupData(2, true, "下载", "最新版本 1.1", "基本信息"));
+        mDatas.add(new MyStickHeaderViewGroupData(101, true, "缓存清理", "0M 缓存占用，点击清理", "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(102, true, "数据清理", "12M 盘点数据，点击清理", "应用管理"));
     }
 
     @Override
@@ -110,6 +114,7 @@ public class SettingsActivity extends BaseAppCompatActivity {
             MyViewHolder mHolder = (MyViewHolder) holder;
             mHolder.mTvCaption.setText(mValues.get(position).caption);
             mHolder.mTvContent.setText(mValues.get(position).content);
+            mHolder.mView.setClickable(mValues.get(position).clickable);
         }
 
         public class MyViewHolder extends StickHeaderViewHolder implements View.OnClickListener {

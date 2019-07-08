@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.nec.utils.ResourceUtil;
+import com.nec.utils.ResUtil;
 
 public class CustomDialog extends Dialog implements View.OnClickListener {
 
@@ -27,7 +27,7 @@ public class CustomDialog extends Dialog implements View.OnClickListener {
         super(context, themeResId);     //加载dialog的样式
         this.mContext = context;
         this.mLayoutResID = layoutResID;
-        this.drawable = ResourceUtil.getDrawable(ResourceUtil.getColor("whilte"), ResourceUtil.getColor("whilte"), 0, 0);
+        this.drawable = ResUtil.getDrawable(ResUtil.getColor("whilte"), ResUtil.getColor("whilte"), 0, 0);
         this.modal = false;
         this.mListenedItem = listenedItem;
     }

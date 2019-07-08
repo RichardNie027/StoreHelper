@@ -2,11 +2,12 @@ package com.tlg.storehelper.stickheaderview;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nec.utils.ResourceUtil;
+import com.nec.utils.ResUtil;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
@@ -17,6 +18,9 @@ import java.util.List;
  * 2、定义layout资源xml的名称
  * 3、子类中必须重写onBindViewHolder
  * 4、必须定义内部类iewHolder的新子类
+ *
+ * 调用事项：
+ * 1、setViewHolderClass(holder外部类即Adaper的实例, holder子类)
  */
 public abstract class StickHeaderRecyclerViewAdapter<T extends StickHeaderViewGroupData> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -54,17 +58,18 @@ public abstract class StickHeaderRecyclerViewAdapter<T extends StickHeaderViewGr
             Constructor constructor = clazz.getConstructors()[0];
             obj = (RecyclerView.ViewHolder) constructor.newInstance(mViewHolderOuter, view);
         } catch (Exception e) {
+            Log.e(this.getClass().getName(), "创建ViewHolder出错了。" + clazz==null? "holderClazz为空，可能未调用setViewHolderClass方法":"", e);
             obj = null;
         }
         return obj;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int resId = ResourceUtil.getLayoutId(sLayoutOfRecyclerView, parent.getContext());
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        int resId = ResUtil.getLayoutId(sLayoutOfRecyclerView, parent.getContext());
         View itemView = null;
         if(resId != 0) {
-            int itemViewResId = ResourceUtil.getLayoutId(sLayoutOfRecyclerView, parent.getContext());
+            int itemViewResId = ResUtil.getLayoutId(sLayoutOfRecyclerView, parent.getContext());
             if(itemViewResId != 0) {
                 itemView = LayoutInflater.from(parent.getContext()).inflate(itemViewResId , parent, false);
             }

@@ -41,7 +41,7 @@
 
         <RadioButton
             android:id="@+id/rbScanner"
-            style="@style/Custom.TabRadioButton"
+            style="@style/Custom.TabRadioButtonStyle"
             android:layout_weight="1"
             android:checked="true"
             android:focusable="false"
@@ -49,14 +49,14 @@
 
         <RadioButton
             android:id="@+id/rbRecords"
-            style="@style/Custom.TabRadioButton"
+            style="@style/Custom.TabRadioButtonStyle"
             android:layout_weight="1"
             android:focusable="false"
             android:text="记录" />
 
         <RadioButton
             android:id="@+id/rbTotal"
-            style="@style/Custom.TabRadioButton"
+            style="@style/Custom.TabRadioButtonStyle"
             android:layout_weight="1"
             android:focusable="false"
             android:text="汇总" />

@@ -7,34 +7,66 @@
     tools:context=".RecordFragment">
 
     <TextView
-        android:id="@+id/tvBinCodingLabel"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvTip4"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="盘点货位："
-        android:textSize="14sp"
+        android:background="@color/lightyellow"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        android:text=" 不足 "
+        android:textSize="14dp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvTip3"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvBinCoding"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvTip3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="-"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
-        app:layout_constraintStart_toEndOf="@+id/tvBinCodingLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
+        android:background="@color/yellow"
+        android:text=" 超出 "
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTip4"
+        app:layout_constraintEnd_toStartOf="@+id/tvTip2"
+        app:layout_constraintStart_toEndOf="@+id/tvTip4"
+        app:layout_constraintTop_toTopOf="@+id/tvTip4" />
+
+    <TextView
+        android:id="@+id/tvTip2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/lightskyblue"
+        android:text=" 新增 "
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTip4"
+        app:layout_constraintEnd_toStartOf="@+id/tvTip1"
+        app:layout_constraintStart_toEndOf="@+id/tvTip3"
+        app:layout_constraintTop_toTopOf="@+id/tvTip4" />
+
+    <TextView
+        android:id="@+id/tvTip1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@color/grassgreen"
+        android:text=" 一致 "
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTip4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvTip2"
+        app:layout_constraintTop_toTopOf="@+id/tvTip4" />
 
     <TextView
         android:id="@+id/tvBarcodeLabel0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:text="商品条码："
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/tvBinCodingLabel"
-        app:layout_constraintTop_toBottomOf="@+id/tvBinCodingLabel" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTip4" />
 
     <EditText
         android:id="@+id/etBarcode"
@@ -167,53 +199,5 @@
             tools:listitem="@layout/fragment_total_record_load_more_list_item_linear" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/tvTip4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:background="@color/lightyellow"
-        android:text=" 不足 "
-        android:textSize="9dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvTip3"
-        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
-
-    <TextView
-        android:id="@+id/tvTip3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:background="@color/yellow"
-        android:text=" 超出 "
-        android:textSize="9dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvTip2"
-        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
-
-    <TextView
-        android:id="@+id/tvTip2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="0dp"
-        android:background="@color/lightskyblue"
-        android:text=" 新增 "
-        android:textSize="9dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvTip1"
-        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
-
-    <TextView
-        android:id="@+id/tvTip1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:background="@color/grassgreen"
-        android:text=" 一致 "
-        android:textSize="9dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />
 
 </android.support.constraint.ConstraintLayout>

@@ -77,7 +77,7 @@ public class MainActivity extends BaseAppCompatActivity {
         // find view
         mEditTextName = findViewById(R.id.etUsername);
         mEditTextPwd = findViewById(R.id.etPwd);
-        // view setup
+        // initialize controls
         setOnFocusChangeListener(mEditTextName, mEditTextPwd);
         //setHideInputViews(mEditTextName, mEditTextPwd);
 

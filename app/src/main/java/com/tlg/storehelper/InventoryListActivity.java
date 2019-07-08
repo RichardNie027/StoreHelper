@@ -61,7 +61,7 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
         // toolbar
         setSupportActionBar(mToolbar);
 
-        // view setup
+        // initialize controls
         setOnFocusChangeListener(mEtListNo);
         mCalendar = Calendar.getInstance(Locale.CHINA);
         processDatetimePickerResult(mCalendar);

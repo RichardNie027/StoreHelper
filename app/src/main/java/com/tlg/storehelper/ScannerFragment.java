@@ -115,7 +115,7 @@ public class ScannerFragment extends BaseFragment {
         mTvLastBarcode = rootView.findViewById(R.id.tvLastBarcode);
         mTvLastBinCoding = rootView.findViewById(R.id.tvLastBinCoding);
 
-        // initial controls
+        // initialize controls
         //((BaseAppCompatActivity)this.getActivity()).setOnFocusChangeListener(mEtBarcode, mEtBinCoding);
         //mBtnBatchScan.setFocusable(false);
 

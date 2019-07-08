@@ -37,7 +37,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     private long mInventoryListId;
     private String mInventoryBinCoding;
 
-    private TextView mTvBinCoding;
+    private TextView tvTip4, tvTip3, tvTip2, tvTip1;
     private EditText mEtBarcode;
 
     /**复盘明细（已有条码）*/
@@ -93,11 +93,14 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
 
     private void initView(View rootView) {
         // find view
-        mTvBinCoding = rootView.findViewById(R.id.tvBinCoding);
+        tvTip4 = rootView.findViewById(R.id.tvTip4);
+        tvTip3 = rootView.findViewById(R.id.tvTip3);
+        tvTip2 = rootView.findViewById(R.id.tvTip2);
+        tvTip1 = rootView.findViewById(R.id.tvTip1);
         mEtBarcode = rootView.findViewById(R.id.etBarcode);
 
-        // initial controls
-        mTvBinCoding.setText(mInventoryBinCoding);
+        // initialize controls
+        displayStatistic();
 
         ///设置“条形码”控件
         //回车键响应
@@ -141,6 +144,13 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
                 }
             }
         });
+    }
+
+    private void displayStatistic() {
+        tvTip4.setText("不足： " + 0);
+        tvTip3.setText("超出： " + 0);
+        tvTip2.setText("新增： " + mRedoNewDataMap.size());
+        tvTip1.setText("一致： " + 0);
     }
 
     public void onScanBarcodeAsNewRecord(String barcode) {

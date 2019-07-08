@@ -53,7 +53,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
         // find view
         mTvListNo = rootView.findViewById(R.id.tvListNo);
 
-        // initial controls
+        // initialize controls
         mTvListNo.setText(mInventoryListNo);
 
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {

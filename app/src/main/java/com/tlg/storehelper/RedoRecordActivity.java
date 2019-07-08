@@ -72,6 +72,8 @@ public class RedoRecordActivity extends BaseAppCompatActivity {
         mToolbar = findViewById(R.id.toolbar);
         //toolbar
         setSupportActionBar(mToolbar);
+        // initialize controls
+        mToolbar.setTitle("复盘：" + mBinCoding);
         //处理异常
         if(mListId == -1L || mBinCoding.isEmpty()) {
             new AlertDialog.Builder(MyApplication.getInstance())

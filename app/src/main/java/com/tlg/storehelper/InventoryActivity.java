@@ -110,7 +110,7 @@ public class InventoryActivity extends BaseAppCompatActivity
         } else {
             loadData(true, true);   //装载数据
         }
-        // init fragment
+        // initialize controls
         mFragments = new ArrayList<Fragment>(3);
         updateStatisticInfo(null);
         mScannerFragment = ScannerFragment.newInstance(mStatisticInfo);

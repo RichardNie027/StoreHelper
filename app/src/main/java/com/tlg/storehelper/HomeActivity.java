@@ -97,7 +97,7 @@ public class HomeActivity extends BaseAppCompatActivity {
     }
 
     public void ivSearchClick(View v) {
-        Toast.makeText(MyApplication.getInstance(), "待实现", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MyApplication.getInstance(), "此功能正在路上", Toast.LENGTH_SHORT).show();
     }
 
     public void btnExitClick(View v) {

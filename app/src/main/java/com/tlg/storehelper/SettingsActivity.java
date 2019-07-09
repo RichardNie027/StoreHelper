@@ -1,7 +1,12 @@
 package com.tlg.storehelper;
 
+import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -9,10 +14,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.nec.application.MyApplication;
 import com.nec.utils.ResUtil;
 import com.tlg.storehelper.base.BaseAppCompatActivity;
 import com.tlg.storehelper.base.RecycleViewItemClickListener;
+import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.tlg.storehelper.stickheaderview.StickHeaderDecoration;
 import com.tlg.storehelper.stickheaderview.StickHeaderRecyclerViewAdapter;
 import com.tlg.storehelper.stickheaderview.StickHeaderViewGroupData;
@@ -55,6 +63,42 @@ public class SettingsActivity extends BaseAppCompatActivity {
         recycleViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
+                switch (Integer.parseInt(view.getTag().toString())) {
+                    case 2:
+                        //TODO: download new app file in new thread.
+                        break;
+                    case 101:
+                        Toast.makeText(MyApplication.getInstance(), "缓存已经清理", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 102:
+                        new AlertDialog.Builder(MyApplication.getInstance())
+                                .setIcon(android.R.drawable.ic_dialog_info)
+                                .setTitle("删除提示")
+                                .setMessage("是否删除所有的盘点单？")
+                                .setCancelable(true)
+                                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        int del_result = deleteAllInventoty();
+                                        if (del_result < 0)
+                                            Toast.makeText(MyApplication.getInstance(), "盘点数据清除失败", Toast.LENGTH_SHORT).show();
+                                        else if (del_result == 0)
+                                            Toast.makeText(MyApplication.getInstance(), "没有盘点数据需要清除", Toast.LENGTH_SHORT).show();
+                                        else
+                                            Toast.makeText(MyApplication.getInstance(), "盘点数据已经全部清除", Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Log.d(InventoryActivity.class.getName(), "没有删除记录");
+                                    }
+                                })
+                                .show();
+                        break;
+                    default:
+                        ;
+                }
                 Log.d(SettingsActivity.class.getName(), "clicked");
             }
 
@@ -70,8 +114,44 @@ public class SettingsActivity extends BaseAppCompatActivity {
         mDatas.add(new MyStickHeaderViewGroupData(0, false, "应用名称", "店铺助手", "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(1, false, "版本", "1.0", "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(2, true, "下载", "最新版本 1.1", "基本信息"));
-        mDatas.add(new MyStickHeaderViewGroupData(101, true, "缓存清理", "0M 缓存占用，点击清理", "应用管理"));
-        mDatas.add(new MyStickHeaderViewGroupData(102, true, "数据清理", "12M 盘点数据，点击清理", "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(101, true, "缓存清理", "点击清理", "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(102, true, "数据清理", "点击清理", "应用管理"));
+    }
+
+    /**
+     * 向本地数据库删除全部盘点单
+     * @return >0成功 =0无数据 <0失败
+     */
+    private int deleteAllInventoty() {
+        int result = 0; //影响的记录数，0出错
+        SQLiteOpenHelper helper = new SQLiteDbHelper(getApplicationContext());
+        SQLiteDatabase db = null;
+        try {
+            db = helper.getWritableDatabase();
+            db.beginTransaction();
+            String sql = new StringBuffer().append("select count(*)").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
+                    .toString();
+            Cursor cursor = db.rawQuery(sql, null);
+            int recordCount = cursor.moveToFirst() ? cursor.getInt(0) : 0;
+            cursor.close();
+            if(recordCount > 0) {
+                db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, null, null);
+                result = db.delete(SQLiteDbHelper.TABLE_INVENTORY, null, null);
+                if (result == 0)
+                    throw new Exception("没有盘点单被删除");
+                db.setTransactionSuccessful();
+            }
+        } catch (Throwable t) {
+            Log.e(this.getClass().getName(), t.getMessage(), t);
+            result = -1;
+            //Toast.makeText(MyApplication.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+            db.close();
+        }
+        return result;
     }
 
     @Override
@@ -112,6 +192,7 @@ public class SettingsActivity extends BaseAppCompatActivity {
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             MyViewHolder mHolder = (MyViewHolder) holder;
+            mHolder.itemView.setTag(mValues.get(position).id);
             mHolder.mTvCaption.setText(mValues.get(position).caption);
             mHolder.mTvContent.setText(mValues.get(position).content);
             mHolder.mView.setClickable(mValues.get(position).clickable);

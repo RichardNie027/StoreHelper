@@ -24,6 +24,7 @@ import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.tlg.storehelper.loadmoreview.LoadMoreFragment;
 import com.tlg.storehelper.vo.InventoryRedoDetailVo;
+import com.tlg.storehelper.vo.InventoryRedoVo;
 
 
 import java.util.ArrayList;
@@ -40,10 +41,10 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     private TextView tvTip4, tvTip3, tvTip2, tvTip1;
     private EditText mEtBarcode;
 
-    /**复盘明细（已有条码）*/
-    private List<InventoryRedoDetailVo> mRedoDetailList = new ArrayList<>();    //被汇总数量的MAP替代
-    /**复盘明细（新条码）*/
-    private List<InventoryRedoDetailVo> mRedoNewDetailList = new ArrayList<>(); //被汇总数量的MAP替代
+    /**盘点单原始按条码汇总记录*/
+    private List<InventoryRedoVo> mInventoryRedoList = new ArrayList<>();
+    /**反应实际扫码的按条码汇总记录*/
+    private List<InventoryRedoVo> mInventoryRedoRealList = new ArrayList<>();
     /**复盘按条码汇总（已有条码）*/
     private Map<String, Integer> mRedoDataMap = new LinkedHashMap<>();
     /**复盘按条码汇总（新条码）*/
@@ -75,7 +76,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        //mSwipeRefreshLayout.setEnabled(false);
+        mSwipeRefreshLayout.setEnabled(false);
         initView(view);
         return view;
     }
@@ -83,6 +84,8 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     @Override
     public void onResume() {
         super.onResume();
+        doRefreshOnRecyclerView();
+        displayStatistic();
         mRecyclerView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -98,6 +101,9 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         tvTip2 = rootView.findViewById(R.id.tvTip2);
         tvTip1 = rootView.findViewById(R.id.tvTip1);
         mEtBarcode = rootView.findViewById(R.id.etBarcode);
+
+        // load data
+        loadData();
 
         // initialize controls
         displayStatistic();
@@ -146,11 +152,56 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         });
     }
 
+    private void loadData() {
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApplication.getInstance());
+        SQLiteDatabase db = null;
+        try {
+            db = helper.getReadableDatabase();
+            String sql = null;
+            Cursor cursor = null;
+
+            //记录明细汇总
+            mInventoryRedoList.clear();
+            sql = new StringBuffer().append("select barcode, sum(quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
+                    .append(" where pid=? and bin_coding=?")
+                    .append(" group by barcode")
+                    .append(" order by barcode asc")
+                    .toString();
+            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), mInventoryBinCoding});
+            while (cursor.moveToNext()) {
+                String barcode = cursor.getString(cursor.getColumnIndex("barcode"));
+                int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
+                InventoryRedoVo inventoryDetailVo = new InventoryRedoVo(barcode, quantity, 0, 0);
+                mInventoryRedoList.add(inventoryDetailVo);
+            }
+            cursor.close();
+        } catch (Throwable t) {
+            Log.e(this.getClass().getName(), t.getMessage(), t);
+            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+        } finally {
+            db.close();
+        }
+    }
+
     private void displayStatistic() {
-        tvTip4.setText("不足： " + 0);
-        tvTip3.setText("超出： " + 0);
-        tvTip2.setText("新增： " + mRedoNewDataMap.size());
-        tvTip1.setText("一致： " + 0);
+        int sum1 = 0;
+        int sum2 = 0;
+        int sum3 = 0;
+        int sum4 = 0;
+        for(InventoryRedoVo vo: mInventoryRedoRealList) {
+            if(vo.quantity3 == 0)
+                sum4++;
+            else if(vo.quantity1 == 0)
+                sum3++;
+            else if(vo.quantity3 > 0)
+                sum1++;
+            else
+                sum2++;
+        }
+        tvTip4.setText("未完 " + sum1);
+        tvTip3.setText("超出 " + sum2);
+        tvTip2.setText("新增 " + sum3);
+        tvTip1.setText("一致 " + sum4);
     }
 
     public void onScanBarcodeAsNewRecord(String barcode) {
@@ -161,15 +212,14 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             return;
         }
         if(barcodeCheck(barcode)) {
-            //mRedoDetailList.add(new InventoryRedoDetailVo(mRedoDetailList.size(), barcode));  //被汇总数量的MAP替代
             int value = mRedoDataMap.containsKey(barcode) ? mRedoDataMap.get(barcode) + 1 : 1;
             mRedoDataMap.put(barcode, value);
         } else {
-            //mRedoNewDetailList.add(new InventoryRedoDetailVo(mRedoNewDetailList.size(), barcode));    //被汇总数量的MAP替代
             int value = mRedoNewDataMap.containsKey(barcode) ? mRedoNewDataMap.get(barcode) + 1 : 1;
             mRedoNewDataMap.put(barcode, value);
         }
         doRefreshOnRecyclerView();
+        displayStatistic();
     }
 
     private boolean barcodeCheck(String barcode) {
@@ -218,9 +268,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
                 if (result == -1L)
                     throw new Exception("新增记录出错");
             }
-            //mRedoDetailList.clear();      //被汇总数量的MAP替代
             mRedoDataMap.clear();
-            //mRedoNewDetailList.clear();   //被汇总数量的MAP替代
             mRedoNewDataMap.clear();
 
             db.setTransactionSuccessful();
@@ -234,6 +282,8 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             }
             db.close();
         }
+        if(result != -1)
+            loadData();
         return result != -1;
     }
 
@@ -252,27 +302,19 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     }
 
     @Override
-    public Map<String, Integer> onNeedRedoData(List<String> barcodeList) {
-        Map<String, Integer> redoDataMap = new LinkedHashMap<>(barcodeList.size());
-        for(int i=0; i<barcodeList.size(); i++) {
-            redoDataMap.put(barcodeList.get(i), 0);
-        }
-        for(String key: mRedoDataMap.keySet()) {
-            if (redoDataMap.containsKey(key)) {
-                redoDataMap.put(key, redoDataMap.get(key) + mRedoDataMap.get(key));
+    public List<InventoryRedoVo> onNeedData() {
+        mInventoryRedoRealList.clear();
+        mInventoryRedoRealList.addAll(mInventoryRedoList);
+        for(InventoryRedoVo vo: mInventoryRedoRealList) {
+            if (mRedoDataMap.containsKey(vo.barcode)) {
+                vo.quantity2 = mRedoDataMap.get(vo.barcode);
             }
+            vo.quantity3 = vo.quantity1 - vo.quantity2;
         }
         for(String key: mRedoNewDataMap.keySet()) {
-            if (redoDataMap.containsKey(key)) {
-                redoDataMap.put(key, redoDataMap.get(key) + mRedoNewDataMap.get(key));
-            }
+            mInventoryRedoRealList.add(0, new InventoryRedoVo(key, 0, mRedoNewDataMap.get(key), -mRedoNewDataMap.get(key)));
         }
-        return redoDataMap;
-    }
-
-    @Override
-    public Map<String, Integer> beforeDataRequest() {
-        return mRedoNewDataMap;
+        return mInventoryRedoRealList;
     }
 
     /**

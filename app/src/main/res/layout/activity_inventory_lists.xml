@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InventoryListsActivity">
+    tools:context=".activity.inventory.InventoryListsActivity">
 
     <!--android:layout_height="?attr/actionBarSize"-->
     <android.support.v7.widget.Toolbar

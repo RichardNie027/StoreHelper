@@ -7,7 +7,7 @@
     android:background="@color/white"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context=".MainActivity">
+    tools:context=".activity.common.MainActivity">
 
     <ImageView
         android:id="@+id/ivBg"

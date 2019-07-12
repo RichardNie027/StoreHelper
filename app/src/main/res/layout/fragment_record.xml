@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecordFragment">
+    tools:context=".activity.inventory.RecordFragment">
 
     <TextView
         android:id="@+id/tvListNoLabel"
@@ -131,7 +131,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPanel2">
 
-        <com.tlg.storehelper.loadmoreview.LoadMoreRecyclerView
+        <com.nec.lib.loadmoreview.LoadMoreRecyclerView
             android:id="@+id/recycle_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context=".InventoryListActivity">
+    tools:context=".activity.inventory.InventoryListActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

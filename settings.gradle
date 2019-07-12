@@ -1,1 +1,2 @@
-include ':app'
+include ':app', ':neclib'
+project(':neclib').projectDir = new File("../Library", 'neclib')

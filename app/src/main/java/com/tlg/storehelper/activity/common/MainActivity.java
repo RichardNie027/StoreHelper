@@ -18,27 +18,34 @@ import com.google.gson.reflect.TypeToken;
 import com.nec.lib.application.MyApplication;
 import com.nec.lib.grantor.PermissionListener;
 import com.nec.lib.grantor.PermissionsUtil;
-import com.nec.lib.base.BaseAppCompatActivity;
+import com.nec.lib.base.BaseRxAppCompatActivity;
+import com.nec.lib.httprequest.use.BaseObserver;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.nec.lib.utils.SQLiteUtil;
 import com.tlg.storehelper.dao.GoodsBarcode;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.utils.UiUtil;
+import com.tlg.storehelper.httprequest.net.api.RegentService;
+import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainActivity extends BaseAppCompatActivity {
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+public class MainActivity extends BaseRxAppCompatActivity {
 
     private EditText mEditTextName;
     private EditText mEditTextPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mFullScreen = true;
+        mFullScreen = true; //super前
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestAccessNetwork();
@@ -78,14 +85,45 @@ public class MainActivity extends BaseAppCompatActivity {
         // find view
         mEditTextName = findViewById(R.id.etUsername);
         mEditTextPwd = findViewById(R.id.etPwd);
+
         // initialize controls
         setOnFocusChangeListener(mEditTextName, mEditTextPwd);
         //setHideInputViews(mEditTextName, mEditTextPwd);
 
+        // 初始化系统的屏幕尺寸信息
         UiUtil.getAndroiodScreenProperty(this);
 
         //load data
+        httpRequest();
         loadData();
+    }
+
+    private void httpRequest() {
+        RegentService.getInstance()
+                .getGoodsBarcodes()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(this.bindToLifecycle())
+                .subscribe(new BaseObserver<GoodsBarcodeEntity>(this, true) {
+
+                    @Override
+                    public void onSuccess(GoodsBarcodeEntity response) {
+                        Log.d(MainActivity.class.getName(), "请求成功");
+                        Toast.makeText(MainActivity.this, response.getMsg(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    protected void onRequestStart() {
+                        super.onRequestStart();
+                        Log.d(MainActivity.class.getName(), "请求开始");
+                    }
+
+                    @Override
+                    protected void onRequestEnd() {
+                        super.onRequestEnd();
+                        Log.d(MainActivity.class.getName(), "请求结束");
+                    }
+                });
     }
 
     private List<GoodsBarcode> analysisGoodsBarcodeList() {

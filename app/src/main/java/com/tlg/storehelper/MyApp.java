@@ -11,7 +11,7 @@ public class MyApp extends MyApplication {
     public void onCreate() {
         super.onCreate();
 
-        String baseUrl = "http://localhost:8080/JsonTest/api/";
+        String baseUrl = "http://192.168.0.8:8080/JsonTest/api/";
         ArrayMap<String, String> headMap = new ArrayMap<String, String>();
         headMap.put("key1", "value1");
         headMap.put("key2", "value2");
@@ -32,7 +32,7 @@ public class MyApp extends MyApplication {
 
         ApiConfig build = new ApiConfig.Builder()
                 .setBaseUrl(baseUrl)//BaseUrl，这个地方加入后项目中默认使用该url
-                .setInvalidateToken(0)//Token失效码
+                .setInvalidateToken(-100)//Token失效码
                 .setSucceedCode(200)//成功返回码
                 .setFilter("com.tlg.storehelper.activity.broadcastFilter")//失效广播Filter设置
                 .setDefaultTimeout(2000)//响应时间，可以不设置，默认为2000毫秒
@@ -40,5 +40,6 @@ public class MyApp extends MyApplication {
                 .setOpenHttps(false)//开启HTTPS验证
                 //.setSslSocketConfigure(sslSocketConfigure)//HTTPS认证配置
                 .build();
+        build.init(this);
     }
 }

@@ -10,7 +10,7 @@ import retrofit2.http.QueryMap;
 
 public interface RegentApi {
 
-    @GET("good_barcode_list")
+    @GET("goods_barcodes.do")
     Observable<GoodsBarcodeEntity> getGoodsBarcodes(@QueryMap ArrayMap<String, Object> map);
 
 }

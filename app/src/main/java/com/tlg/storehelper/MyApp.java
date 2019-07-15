@@ -11,7 +11,7 @@ public class MyApp extends MyApplication {
     public void onCreate() {
         super.onCreate();
 
-        String baseUrl = "http://192.168.0.8:8080/JsonTest/api/";
+        String baseUrl = "http://192.168.1.176:8080/JsonTest/api/";
         ArrayMap<String, String> headMap = new ArrayMap<String, String>();
         headMap.put("key1", "value1");
         headMap.put("key2", "value2");

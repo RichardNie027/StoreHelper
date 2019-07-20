@@ -5,8 +5,8 @@ import com.nec.lib.httprequest.net.revert.BaseResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginEntity extends BaseResponseEntity {
+public class SimpleListEntity<T> extends BaseResponseEntity {
 
-    public List<String> result = new ArrayList<>();
+    public List<T> result = new ArrayList<>();
 
 }

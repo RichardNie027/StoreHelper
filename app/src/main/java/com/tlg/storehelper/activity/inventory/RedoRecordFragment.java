@@ -17,9 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
-
 import com.nec.lib.utils.SQLiteUtil;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
@@ -153,7 +152,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     }
 
     private void loadData() {
-        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApplication.getInstance());
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
         SQLiteDatabase db = null;
         try {
             db = helper.getReadableDatabase();
@@ -177,7 +176,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
         }
@@ -223,7 +222,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     }
 
     private boolean barcodeCheck(String barcode) {
-        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApplication.getInstance());
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
         SQLiteDatabase db = null;
         boolean result = false;
         try {
@@ -239,7 +238,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApplication.getInstance(), "数据检索失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance(), "数据检索失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
         }
@@ -275,7 +274,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             result = -1;
-            //Toast.makeText(MyApplication.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApp.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
                 db.endTransaction();

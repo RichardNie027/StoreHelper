@@ -9,11 +9,14 @@ public class GoodsBarcodeEntity extends BaseResponseEntity {
 
     public List<ResultBean> result = new ArrayList<>();
 
+    public String lastModDate = "";
+
     public static class ResultBean {
         public String id;
-        public String goods_id;
-        public String size_id;
-        public String size_desc;
+        public String brand;
+        public String goodsNo;
+        public String goodsName;
+        public String sizeDesc;
         public String barcode;
     }
 }

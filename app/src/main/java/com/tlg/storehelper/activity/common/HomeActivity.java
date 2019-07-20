@@ -11,8 +11,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.base.BaseAppCompatActivity;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.inventory.InventoryListsActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -35,10 +35,8 @@ public class HomeActivity extends BaseAppCompatActivity {
         mSpinner = findViewById(R.id.spinner);
 
         ///获取用户可用门店集合
-        mStoreCodes = new String[]{"M04", "704", "204", "202", "M02", "M59"};
-
-        //Bundle extras = getIntent().getExtras();
-        //String username = extras.getString("username");
+        Bundle extras = getIntent().getExtras();
+        mStoreCodes = extras.getStringArray("storeCodes");
         tvUsername.setText("用户：" + GlobalVars.username);
 
         //填充店铺列表
@@ -55,7 +53,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
     @Override
     public void finish() {
-        new AlertDialog.Builder(MyApplication.getInstance())
+        new AlertDialog.Builder(MyApp.getInstance())
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("温馨提示")
                 .setMessage("是否退出本程序？")
@@ -69,7 +67,7 @@ public class HomeActivity extends BaseAppCompatActivity {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MyApplication.getInstance(), "欢迎继续使用", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApp.getInstance(), "欢迎继续使用", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .show();
@@ -99,7 +97,7 @@ public class HomeActivity extends BaseAppCompatActivity {
     }
 
     public void ivSearchClick(View v) {
-        Toast.makeText(MyApplication.getInstance(), "此功能正在路上", Toast.LENGTH_SHORT).show();
+        Toast.makeText(MyApp.getInstance(), "此功能正在路上", Toast.LENGTH_SHORT).show();
     }
 
     public void btnExitClick(View v) {

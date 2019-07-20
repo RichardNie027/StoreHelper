@@ -16,10 +16,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.utils.ResUtil;
 import com.nec.lib.base.BaseAppCompatActivity;
 import com.nec.lib.base.RecycleViewItemClickListener;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.inventory.InventoryActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
@@ -70,10 +70,10 @@ public class SettingsActivity extends BaseAppCompatActivity {
                         //TODO: download new app file in new thread.
                         break;
                     case 101:
-                        Toast.makeText(MyApplication.getInstance(), "缓存已经清理", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MyApp.getInstance(), "缓存已经清理", Toast.LENGTH_SHORT).show();
                         break;
                     case 102:
-                        new AlertDialog.Builder(MyApplication.getInstance())
+                        new AlertDialog.Builder(MyApp.getInstance())
                                 .setIcon(android.R.drawable.ic_dialog_info)
                                 .setTitle("删除提示")
                                 .setMessage("是否删除所有的盘点单？")
@@ -83,11 +83,11 @@ public class SettingsActivity extends BaseAppCompatActivity {
                                     public void onClick(DialogInterface dialog, int which) {
                                         int del_result = deleteAllInventoty();
                                         if (del_result < 0)
-                                            Toast.makeText(MyApplication.getInstance(), "盘点数据清除失败", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MyApp.getInstance(), "盘点数据清除失败", Toast.LENGTH_SHORT).show();
                                         else if (del_result == 0)
-                                            Toast.makeText(MyApplication.getInstance(), "没有盘点数据需要清除", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MyApp.getInstance(), "没有盘点数据需要清除", Toast.LENGTH_SHORT).show();
                                         else
-                                            Toast.makeText(MyApplication.getInstance(), "盘点数据已经全部清除", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(MyApp.getInstance(), "盘点数据已经全部清除", Toast.LENGTH_SHORT).show();
                                     }
                                 })
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -106,7 +106,7 @@ public class SettingsActivity extends BaseAppCompatActivity {
 
             @Override
             public boolean onItemLongClick(View view, int postion) {
-                //Toast.makeText(MyApplication.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyApp.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -146,7 +146,7 @@ public class SettingsActivity extends BaseAppCompatActivity {
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             result = -1;
-            //Toast.makeText(MyApplication.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApp.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
                 db.endTransaction();

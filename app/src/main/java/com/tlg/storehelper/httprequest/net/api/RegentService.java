@@ -4,7 +4,10 @@ import android.util.ArrayMap;
 
 import com.nec.lib.httprequest.use.RetrofitFactory;
 import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
-import com.tlg.storehelper.httprequest.net.entity.LoginEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -24,14 +27,18 @@ public class RegentService {
         private static final RegentService S_INSTANCE = new RegentService();
     }
 
-    public Observable<LoginEntity> loginValidation(String username, String password) {
+    public Observable<SimpleListEntity<String>> loginValidation(String username, String password) {
         ArrayMap<String, Object> map = new ArrayMap<>();
         map.put("username", username);
         map.put("password", password);
         return mRegentApi.loginValidation(map);
     }
 
-    public Observable<GoodsBarcodeEntity> getGoodsBarcodes() {
-        return mRegentApi.getGoodsBarcodes("");
+    public Observable<SimpleMapEntity> getToken() {
+        return mRegentApi.getToken();
+    }
+
+    public Observable<SimpleListEntity<String>> getGoodsBarcodes() {
+        return mRegentApi.getGoodsBarcodes();
     }
 }

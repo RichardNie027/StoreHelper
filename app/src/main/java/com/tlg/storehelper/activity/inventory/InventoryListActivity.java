@@ -15,9 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.base.BaseAppCompatActivity;
 import com.nec.lib.boost.DatetimePickerFragment;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.nec.lib.utils.DateUtil;
@@ -101,7 +101,7 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApplication.getInstance(), "记录序号生成错误", Toast.LENGTH_SHORT);
+            Toast.makeText(MyApp.getInstance(), "记录序号生成错误", Toast.LENGTH_SHORT);
             result = "01";
         } finally {
             db.close();
@@ -134,7 +134,7 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
             result = true;
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApplication.getInstance(), "保存盘点单失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance(), "保存盘点单失败", Toast.LENGTH_SHORT).show();
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -158,10 +158,10 @@ public class InventoryListActivity extends BaseAppCompatActivity implements Date
                 return true;
             case R.id.action_save:
                 if(!saveNewInventory()) {
-                    Toast.makeText(MyApplication.getInstance(), "盘点单保存失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyApp.getInstance(), "盘点单保存失败", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                //Toast.makeText(MyApplication.getInstance(), "新盘点单", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyApp.getInstance(), "新盘点单", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(this, InventoryActivity.class);
                 intent.putExtra("list_id", mNewId);
                 startActivityForResult(intent, 3);

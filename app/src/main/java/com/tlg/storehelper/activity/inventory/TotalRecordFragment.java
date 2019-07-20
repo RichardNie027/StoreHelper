@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.base.RecycleViewItemClickListener;
 import com.nec.lib.loadmoreview.LoadMoreFragment;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 
 public class TotalRecordFragment extends LoadMoreFragment {
@@ -67,7 +67,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
             public boolean onItemLongClick(final View view, int postion) {
                 Log.d(TotalRecordFragment.class.getName(), "long-click at " + postion);
                 final String bin_coding = view.getTag(R.id.tag_first).toString();
-                new AlertDialog.Builder(MyApplication.getInstance())
+                new AlertDialog.Builder(MyApp.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("复盘提示")
                         .setMessage("是否复盘货位：" + bin_coding + "？")

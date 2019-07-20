@@ -16,11 +16,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.boost.CustomDialog;
 import com.nec.lib.utils.ResUtil;
 import com.nec.lib.utils.UiUtil;
 import com.nec.lib.base.BaseFragment;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.vo.StatisticInfo;
 
@@ -283,7 +283,7 @@ public class ScannerFragment extends BaseFragment {
 
     public void onScanBarcodeAsNewRecord(String barcode, String binCoding, int num) {
         if(mEtBinCoding.getVisibility()==View.VISIBLE && mEtBinCoding.getText().toString().trim().length() == 0) {
-            Toast.makeText(MyApplication.getInstance(), "货位不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance(), "货位不能为空", Toast.LENGTH_SHORT).show();
             mEtBinCoding.requestFocus();
             return;
         }
@@ -312,7 +312,7 @@ public class ScannerFragment extends BaseFragment {
 
 
     private void inputBatchNumber() {
-        CustomDialog dialog = new CustomDialog(MyApplication.getInstance(), R.layout.dialog_fragment_scanner_quantity, R.style.Custom_Dialog, new int[] {R.id.btnDialogOk});
+        CustomDialog dialog = new CustomDialog(MyApp.getInstance(), R.layout.dialog_fragment_scanner_quantity, R.style.Custom_Dialog, new int[] {R.id.btnDialogOk});
         dialog.drawable = ResUtil.getDrawable(ResUtil.getColor("snow"), ResUtil.getColor("colorPrimaryLight"), UiUtil.dp2px(0.8f), UiUtil.dp2px(15f));
         //dialog.modal = true;
         dialog.setOnDialogItemClickListener(new CustomDialog.OnDialogItemClickListener() {

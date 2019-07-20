@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class SQLiteDbHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "store_db.db";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 1;
     public static final String TABLE_INVENTORY = "inventory";
     public static final String TABLE_INVENTORY_DETAIL = "inventory_detail";
     public static final String TABLE_GOODS_BARCODE = "goods_barcode";
@@ -37,10 +37,6 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             + ");";
 
     private static final String GOODS_BARCODE_CREATE_TABLE_SQL = "create table if not exists " + TABLE_GOODS_BARCODE + "("
-            + "id char(32) primary key,"                //ID
-            + "goods_id char(32) not null,"             //商品ID
-            + "size_id char(32) not null,"              //尺码ID
-            + "size_desc varchar(20) not null,"         //尺码显示
             + "barcode varchar(30) not null"            //商品条码
             + ");";
 

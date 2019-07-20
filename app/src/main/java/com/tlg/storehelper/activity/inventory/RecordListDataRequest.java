@@ -9,7 +9,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.loadmoreview.AsynDataRequest;
 import com.nec.lib.loadmoreview.PageContent;
@@ -60,7 +60,7 @@ public class RecordListDataRequest implements AsynDataRequest {
     }
 
     private void loadData() {
-        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApplication.getInstance());
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
         SQLiteDatabase db = null;
         try {
             db = helper.getReadableDatabase();
@@ -100,7 +100,7 @@ public class RecordListDataRequest implements AsynDataRequest {
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
         } finally {
             db.close();
         }

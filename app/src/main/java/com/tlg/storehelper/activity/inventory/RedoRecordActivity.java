@@ -12,8 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.base.BaseAppCompatActivity;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 
 public class RedoRecordActivity extends BaseAppCompatActivity {
@@ -51,7 +51,7 @@ public class RedoRecordActivity extends BaseAppCompatActivity {
         mToolbar.setTitle("复盘：" + mBinCoding);
         //处理异常
         if(mListId == -1L || mBinCoding.isEmpty()) {
-            new AlertDialog.Builder(MyApplication.getInstance())
+            new AlertDialog.Builder(MyApp.getInstance())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("内部错误")
                     .setMessage("盘点单关键信息丢失")
@@ -111,7 +111,7 @@ public class RedoRecordActivity extends BaseAppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
-                new AlertDialog.Builder(MyApplication.getInstance())
+                new AlertDialog.Builder(MyApp.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("更新提示")
                         .setMessage("用复盘数据更新盘点单？")
@@ -120,10 +120,10 @@ public class RedoRecordActivity extends BaseAppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(!mRedoRecordFragment.doUpdteInventory()) {
-                                    Toast.makeText(MyApplication.getInstance(), "更新货位盘点数据失败，请检查", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MyApp.getInstance(), "更新货位盘点数据失败，请检查", Toast.LENGTH_SHORT).show();
                                 } else {
                                     mInventoryUpdated = true;
-                                    Toast.makeText(MyApplication.getInstance(), "货位盘点数据已更新", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(MyApp.getInstance(), "货位盘点数据已更新", Toast.LENGTH_SHORT).show();
                                     mRedoRecordFragment.doRefreshOnRecyclerView();
                                 }
                             }

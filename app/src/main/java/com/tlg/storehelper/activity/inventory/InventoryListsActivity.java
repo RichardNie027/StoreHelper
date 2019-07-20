@@ -19,9 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.base.BaseAppCompatActivity;
 import com.nec.lib.base.RecycleViewItemClickListener;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
@@ -75,7 +75,7 @@ public class InventoryListsActivity extends BaseAppCompatActivity {
 
             @Override
             public boolean onItemLongClick(View view, int postion) {
-                //Toast.makeText(MyApplication.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MyApp.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
@@ -105,7 +105,7 @@ public class InventoryListsActivity extends BaseAppCompatActivity {
             cursor.close();
             result = true;
         } catch (Throwable t) {
-            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
             datas.clear();
         } finally {
             db.close();

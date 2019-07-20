@@ -7,9 +7,9 @@ public final class GlobalVars {
     /** 当前用户 */
     public static String username = "";
 
-    /** 访问网络权限 */
-    public static boolean permissionOfNetwork = false;
+    /** 网络访问令牌 */
+    public static String token = "";
 
-    /** 文件读写权限 */
-    public static boolean permissionOfStorage = false;
+    /** 访问网络和文件读写权限 */
+    public static boolean permissionOfNetworkAndStroage = false;
 }

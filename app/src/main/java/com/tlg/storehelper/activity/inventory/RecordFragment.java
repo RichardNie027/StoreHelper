@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nec.lib.application.MyApplication;
 import com.nec.lib.base.RecycleViewItemClickListener;
 import com.nec.lib.loadmoreview.LoadMoreFragment;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 
 public class RecordFragment extends LoadMoreFragment {
@@ -68,7 +68,7 @@ public class RecordFragment extends LoadMoreFragment {
                 Log.d(this.getClass().getName(), "long-click at " + postion);
                 final long id = Long.parseLong(view.getTag(R.id.tag_first).toString());
                 int idx = Integer.parseInt(view.getTag(R.id.tag_second).toString());
-                new AlertDialog.Builder(MyApplication.getInstance())
+                new AlertDialog.Builder(MyApp.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("删除提示")
                         .setMessage("是否删除序号为" + idx + "记录？")

@@ -22,9 +22,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.nec.lib.utils.ExcelUtil;
 import com.nec.lib.utils.StringUtil;
-import com.nec.lib.base.BaseAppCompatActivity;
 import com.nec.lib.utils.DateUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
@@ -41,7 +41,7 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-public class InventoryActivity extends BaseAppCompatActivity
+public class InventoryActivity extends BaseRxAppCompatActivity
         implements ScannerFragment.OnFragmentInteractionListener, RecordFragment.OnFragmentInteractionListener, TotalRecordFragment.OnFragmentInteractionListener {
 
     private Toolbar mToolbar;

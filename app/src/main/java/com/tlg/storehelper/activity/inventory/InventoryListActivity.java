@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseAppCompatActivity;
+import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.nec.lib.boost.DatetimePickerFragment;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
@@ -29,7 +29,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class InventoryListActivity extends BaseAppCompatActivity implements DatetimePickerFragment.DatetimePickerResultInterface {
+public class InventoryListActivity extends BaseRxAppCompatActivity implements DatetimePickerFragment.DatetimePickerResultInterface {
 
     private Toolbar mToolbar;
     private EditText mEtListNo;

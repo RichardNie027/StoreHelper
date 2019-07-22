@@ -16,8 +16,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.nec.lib.utils.ResUtil;
-import com.nec.lib.base.BaseAppCompatActivity;
 import com.nec.lib.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.inventory.InventoryActivity;
@@ -26,11 +26,12 @@ import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.stickheaderview.StickHeaderDecoration;
 import com.nec.lib.stickheaderview.StickHeaderRecyclerViewAdapter;
 import com.nec.lib.stickheaderview.StickHeaderViewGroupData;
+import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SettingsActivity extends BaseAppCompatActivity {
+public class SettingsActivity extends BaseRxAppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
@@ -70,9 +71,12 @@ public class SettingsActivity extends BaseAppCompatActivity {
                         //TODO: download new app file in new thread.
                         break;
                     case 101:
-                        Toast.makeText(MyApp.getInstance(), "缓存已经清理", Toast.LENGTH_SHORT).show();
+                        RequestUtil.requestGoodBarcodes(_this, null);
                         break;
                     case 102:
+                        Toast.makeText(MyApp.getInstance(), "缓存已经清理", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 103:
                         new AlertDialog.Builder(MyApp.getInstance())
                                 .setIcon(android.R.drawable.ic_dialog_info)
                                 .setTitle("删除提示")
@@ -116,8 +120,9 @@ public class SettingsActivity extends BaseAppCompatActivity {
         mDatas.add(new MyStickHeaderViewGroupData(0, false, "应用名称", "店铺助手", "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(1, false, "版本", "1.0", "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(2, true, "下载", "最新版本 1.1", "基本信息"));
-        mDatas.add(new MyStickHeaderViewGroupData(101, true, "缓存清理", "点击清理", "应用管理"));
-        mDatas.add(new MyStickHeaderViewGroupData(102, true, "数据清理", "点击清理", "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(101, true, "更新商品资料", "点击更新", "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(102, true, "缓存清理", "点击清理", "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(103, true, "数据清理", "点击清理", "应用管理"));
     }
 
     /**

@@ -12,11 +12,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseAppCompatActivity;
+import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 
-public class RedoRecordActivity extends BaseAppCompatActivity {
+public class RedoRecordActivity extends BaseRxAppCompatActivity {
 
     private Toolbar mToolbar;
 

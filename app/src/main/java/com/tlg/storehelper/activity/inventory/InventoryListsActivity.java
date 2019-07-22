@@ -19,7 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseAppCompatActivity;
+import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.nec.lib.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
@@ -30,7 +30,7 @@ import com.tlg.storehelper.vo.InventoryListVo;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryListsActivity extends BaseAppCompatActivity {
+public class InventoryListsActivity extends BaseRxAppCompatActivity {
 
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;

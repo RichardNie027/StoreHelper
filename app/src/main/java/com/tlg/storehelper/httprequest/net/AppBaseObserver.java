@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.nec.lib.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.httprequest.use.BaseObserver;
-import com.nec.lib.httprequest.utils.AppContextUtils;
+import com.nec.lib.httprequest.utils.AppContextUtil;
 import com.tlg.storehelper.MyApp;
 
 public abstract class AppBaseObserver<T extends BaseResponseEntity> extends BaseObserver<T> {
@@ -30,9 +30,9 @@ public abstract class AppBaseObserver<T extends BaseResponseEntity> extends Base
         int code = response.getCode();
         switch (code) {
             case 404:
-                Toast.makeText(AppContextUtils.getContext(), "服务器找不到请求目标", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), "服务器找不到请求目标", Toast.LENGTH_SHORT).show();
             case 500:
-                Toast.makeText(AppContextUtils.getContext(), "服务器遇到错误，无法完成请求", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), "服务器遇到错误，无法完成请求", Toast.LENGTH_SHORT).show();
             default:
                 super.onFailing(response);
         }

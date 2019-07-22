@@ -11,13 +11,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseAppCompatActivity;
+import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.inventory.InventoryListsActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
 
-public class HomeActivity extends BaseAppCompatActivity {
+public class HomeActivity extends BaseRxAppCompatActivity {
 
     private String[] mStoreCodes = null;
     private Spinner mSpinner = null;

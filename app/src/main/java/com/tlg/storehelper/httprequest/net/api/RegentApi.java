@@ -3,6 +3,7 @@ package com.tlg.storehelper.httprequest.net.api;
 import android.util.ArrayMap;
 
 import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 
@@ -35,8 +36,8 @@ public interface RegentApi {
     /**
      * 接口描述：GET getGoodsBarcodeList
      * 接口参数：
-     * 接口返回：SimpleListEntity<String>
+     * 接口返回：SimpleEntity<String>
      */
     @GET("getGoodsBarcodeList")
-    Observable<SimpleListEntity<String>> getGoodsBarcodes();
+    Observable<SimpleEntity<String>> getGoodsBarcodes(@Query("lastModDate")String lastModDate);
 }

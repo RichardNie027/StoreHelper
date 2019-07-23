@@ -21,19 +21,21 @@
         app:srcCompat="@drawable/bg" />
 
     <EditText
-        android:drawableLeft="@drawable/user"
         android:id="@+id/etUsername"
-        android:theme="@style/Custom.LightEditTextStyle"
-        android:drawablePadding="20dp"
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="40dp"
+        android:drawableLeft="@drawable/user"
+        android:drawablePadding="20dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="丽晶系统账号"
+        android:inputType="text"
         android:textSize="12sp"
+        android:theme="@style/Custom.LightEditTextStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivBg" />
 
     <EditText

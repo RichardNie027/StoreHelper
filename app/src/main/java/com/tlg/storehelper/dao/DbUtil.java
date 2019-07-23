@@ -1,5 +1,6 @@
 package com.tlg.storehelper.dao;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
@@ -12,6 +13,29 @@ import com.tlg.storehelper.MyApp;
 import java.util.List;
 
 public class DbUtil {
+
+    public static boolean checkGoodsBarcode(String goodsBarcode) {
+        boolean result = false;
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        SQLiteDatabase db = null;
+        try {
+            db = helper.getReadableDatabase();
+            String sql = new StringBuffer().append("select count(*) num").append(" from ").append(SQLiteDbHelper.TABLE_GOODS_BARCODE)
+                    .append(" where barcode=?")
+                    .toString();
+            Cursor cursor = db.rawQuery(sql, new String[] {goodsBarcode});
+            if(cursor.moveToFirst()) {
+                result = cursor.getInt(0) > 0;
+            }
+            cursor.close();
+        } catch (Throwable t) {
+            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            result = false;
+        } finally {
+            db.close();
+        }
+        return result;
+    }
 
     public static void saveGoodsBarcodes(List<String> goodsBarcodeList) {
 

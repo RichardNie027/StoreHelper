@@ -22,6 +22,7 @@ import com.nec.lib.utils.UiUtil;
 import com.nec.lib.base.BaseFragment;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.vo.StatisticInfo;
 
 public class ScannerFragment extends BaseFragment {
@@ -287,9 +288,11 @@ public class ScannerFragment extends BaseFragment {
             mEtBinCoding.requestFocus();
             return;
         }
-        if(barcode.length() > 1) {  //模拟正确
+        barcode = barcode.toUpperCase();
+        if(barcode.length() > 0 && DbUtil.checkGoodsBarcode(barcode)) {
             mEtBarcode.setText("");
-        } else {                    //模拟错误
+        } else {                    //错误
+            Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
             mEtBarcode.selectAll();
             return;
         }
@@ -297,6 +300,7 @@ public class ScannerFragment extends BaseFragment {
             StatisticInfo _statisticInfo = mListener.onInventoryNewRecord(binCoding, barcode, num);
             if(_statisticInfo == null) {
                 //扫码增加记录失败
+                Toast.makeText(MyApp.getInstance(), "扫码失败", Toast.LENGTH_SHORT).show();
                 return;
             }
             mStatisticInfo = _statisticInfo;

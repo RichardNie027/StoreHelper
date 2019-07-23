@@ -84,7 +84,7 @@ public class MainActivity extends BaseRxAppCompatActivity {
     }
 
     public void btnLoginClick(View v) {
-        String username = mEditTextName.getText().toString();
+        String username = mEditTextName.getText().toString().toUpperCase();
         String password = mEditTextPwd.getText().toString();
         if(username.equals("")) {
             Toast.makeText(MyApp.getInstance(), "用户名不能为空", Toast.LENGTH_SHORT).show();

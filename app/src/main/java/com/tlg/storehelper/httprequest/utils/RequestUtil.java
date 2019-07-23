@@ -1,14 +1,19 @@
 package com.tlg.storehelper.httprequest.utils;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.nec.lib.base.BaseRxAppCompatActivity;
 import com.nec.lib.httprequest.net.revert.BaseResponseEntity;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.httprequest.net.AppBaseObserver;
 import com.tlg.storehelper.httprequest.net.api.RegentService;
+import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 
@@ -36,17 +41,29 @@ public class RequestUtil {
     }
 
     public static void requestGoodBarcodes(@NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        String lastModDate = pref.getString("lastModDate", "2000-01-01 00:00:00");
+        SharedPreferences.Editor editor = pref.edit();
+
         RegentService.getInstance()
-                .getGoodsBarcodes()
+                .getGoodsBarcodes(lastModDate)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleListEntity<String>>(activity, true,"正在同步商品资料") {
+                .subscribe(new AppBaseObserver<SimpleEntity<String>>(activity, true,"正在同步商品资料") {
 
                     @Override
-                    public void onSuccess(SimpleListEntity<String> response) {
+                    public void onSuccess(SimpleEntity<String> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
-                        DbUtil.saveGoodsBarcodes(response.result);
+                        if(response.result_list.size() > 0) {
+                            DbUtil.saveGoodsBarcodes(response.result_list);
+
+                            String lastModDate = response.result_map.get("lastModDate").toString();
+                            editor.putString("lastModDate", lastModDate);
+                            editor.commit();
+                        } else {
+                            Toast.makeText(MyApp.getInstance(), response.msg, Toast.LENGTH_SHORT).show();
+                        }
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
                     }

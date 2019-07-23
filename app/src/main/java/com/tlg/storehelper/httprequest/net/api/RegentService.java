@@ -4,6 +4,7 @@ import android.util.ArrayMap;
 
 import com.nec.lib.httprequest.use.RetrofitFactory;
 import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 
@@ -38,7 +39,7 @@ public class RegentService {
         return mRegentApi.getToken();
     }
 
-    public Observable<SimpleListEntity<String>> getGoodsBarcodes() {
-        return mRegentApi.getGoodsBarcodes();
+    public Observable<SimpleEntity<String>> getGoodsBarcodes(String lastModDate) {
+        return mRegentApi.getGoodsBarcodes(lastModDate);
     }
 }

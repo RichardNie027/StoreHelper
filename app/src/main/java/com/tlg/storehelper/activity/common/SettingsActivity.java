@@ -1,10 +1,12 @@
 package com.tlg.storehelper.activity.common;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -71,6 +73,10 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
                         //TODO: download new app file in new thread.
                         break;
                     case 101:
+                        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+                        SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("lastModDate", "2000-01-01 00:00:00");
+                        editor.commit();
                         RequestUtil.requestGoodBarcodes(_this, null);
                         break;
                     case 102:

@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.nec.lib.utils.SQLiteUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.loadmoreview.LoadMoreFragment;
@@ -204,9 +205,11 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     }
 
     public void onScanBarcodeAsNewRecord(String barcode) {
-        if(barcode.length() > 1) {  //模拟正确
+        barcode = barcode.toUpperCase();
+        if(barcode.length() > 0 && DbUtil.checkGoodsBarcode(barcode)) {
             mEtBarcode.setText("");
-        } else {                    //模拟错误
+        } else {                    //错误
+            Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
             mEtBarcode.selectAll();
             return;
         }

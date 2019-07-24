@@ -18,16 +18,16 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseRxAppCompatActivity;
-import com.nec.lib.utils.ResUtil;
-import com.nec.lib.base.RecycleViewItemClickListener;
+import com.nec.lib.android.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.utils.ResUtil;
+import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.inventory.InventoryActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
-import com.nec.lib.stickheaderview.StickHeaderDecoration;
-import com.nec.lib.stickheaderview.StickHeaderRecyclerViewAdapter;
-import com.nec.lib.stickheaderview.StickHeaderViewGroupData;
+import com.nec.lib.android.stickheaderview.StickHeaderDecoration;
+import com.nec.lib.android.stickheaderview.StickHeaderRecyclerViewAdapter;
+import com.nec.lib.android.stickheaderview.StickHeaderViewGroupData;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 import java.util.ArrayList;

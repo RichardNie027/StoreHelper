@@ -10,15 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.nec.lib.grantor.PermissionListener;
-import com.nec.lib.grantor.PermissionsUtil;
-import com.nec.lib.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.grantor.PermissionListener;
+import com.nec.lib.android.grantor.PermissionsUtil;
+import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
-import com.nec.lib.utils.UiUtil;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+import com.nec.lib.android.utils.UiUtil;
+import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 public class MainActivity extends BaseRxAppCompatActivity {
@@ -74,13 +73,7 @@ public class MainActivity extends BaseRxAppCompatActivity {
 
     private void afterGrantPermission() {
         if(GlobalVars.permissionOfNetworkAndStroage)
-            RequestUtil.requestToken(this, new RequestUtil.OnSuccessListener<SimpleMapEntity>() {
-                @Override
-                public void onSuccess(SimpleMapEntity response) {
-                    mBtnLogin.setVisibility(View.VISIBLE);
-                    RequestUtil.requestGoodBarcodes(_this, null);
-                }
-            });
+            mBtnLogin.setVisibility(View.VISIBLE);
     }
 
     public void btnLoginClick(View v) {
@@ -90,11 +83,11 @@ public class MainActivity extends BaseRxAppCompatActivity {
             Toast.makeText(MyApp.getInstance(), "用户名不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        RequestUtil.requestLogin(username, password, this, new RequestUtil.OnSuccessListener<SimpleListEntity<String>>() {
+        RequestUtil.requestLogin(username, password, this, new RequestUtil.OnSuccessListener<SimpleEntity<String>>() {
             @Override
-            public void onSuccess(SimpleListEntity<String> response) {
+            public void onSuccess(SimpleEntity<String> response) {
                 Intent intent = new Intent(_this, HomeActivity.class);
-                String[] array = response.result.toArray(new String[response.result.size()]);
+                String[] array = response.result_list.toArray(new String[response.result_list.size()]);
                 intent.putExtra("storeCodes", array);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

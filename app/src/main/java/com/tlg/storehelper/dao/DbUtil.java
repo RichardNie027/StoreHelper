@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.nec.lib.httprequest.net.dialog.CustomProgressDialogUtils;
+import com.nec.lib.android.httprequest.net.dialog.CustomProgressDialogUtils;
 import com.tlg.storehelper.MyApp;
 
 import java.util.List;

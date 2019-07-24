@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.nec.lib.loadmoreview.LoadMoreFragment;
-import com.nec.lib.loadmoreview.RecyclerViewItemAdapter;
+import com.nec.lib.android.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.loadmoreview.RecyclerViewItemAdapter;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.vo.InventoryRedoVo;
 

@@ -12,7 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 

@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nec.lib.base.RecycleViewItemClickListener;
-import com.nec.lib.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.base.RecycleViewItemClickListener;
+import com.nec.lib.android.loadmoreview.LoadMoreFragment;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 

@@ -2,13 +2,9 @@ package com.tlg.storehelper.httprequest.net.api;
 
 import android.util.ArrayMap;
 
-import com.nec.lib.httprequest.use.RetrofitFactory;
-import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
+import com.nec.lib.android.httprequest.use.RetrofitFactory;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
-
-import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -28,7 +24,7 @@ public class RegentService {
         private static final RegentService S_INSTANCE = new RegentService();
     }
 
-    public Observable<SimpleListEntity<String>> loginValidation(String username, String password) {
+    public Observable<SimpleEntity<String>> loginValidation(String username, String password) {
         ArrayMap<String, Object> map = new ArrayMap<>();
         map.put("username", username);
         map.put("password", password);

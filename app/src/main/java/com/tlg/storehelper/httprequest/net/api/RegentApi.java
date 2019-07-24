@@ -23,7 +23,7 @@ public interface RegentApi {
      * 接口返回：
      */
     @POST("login")
-    Observable<SimpleListEntity<String>> loginValidation(@Body ArrayMap<String, Object> map);
+    Observable<SimpleEntity<String>> loginValidation(@Body ArrayMap<String, Object> map);
 
     /**
      * 接口描述：GET getToken

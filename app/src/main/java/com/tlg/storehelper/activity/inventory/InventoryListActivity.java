@@ -15,13 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseRxAppCompatActivity;
-import com.nec.lib.boost.DatetimePickerFragment;
+import com.nec.lib.android.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.boost.DatetimePickerFragment;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
-import com.nec.lib.utils.DateUtil;
-import com.nec.lib.utils.SQLiteUtil;
+import com.nec.lib.android.utils.DateUtil;
+import com.nec.lib.android.utils.SQLiteUtil;
 import com.tlg.storehelper.dao.Inventory;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 

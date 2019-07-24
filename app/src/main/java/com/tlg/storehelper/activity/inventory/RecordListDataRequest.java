@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
-import com.nec.lib.loadmoreview.AsynDataRequest;
-import com.nec.lib.loadmoreview.PageContent;
+import com.nec.lib.android.loadmoreview.AsynDataRequest;
+import com.nec.lib.android.loadmoreview.PageContent;
 import com.tlg.storehelper.vo.InventoryDetailVo;
 
 import java.util.ArrayList;

@@ -11,11 +11,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.inventory.InventoryListsActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
+import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 public class HomeActivity extends BaseRxAppCompatActivity {
 
@@ -49,6 +50,8 @@ public class HomeActivity extends BaseRxAppCompatActivity {
 
         spinner.setOnItemSelectedListener(new StoreCodeOnItemSelectedListener());
 
+        //更新货品资料
+        RequestUtil.requestGoodBarcodes(_this, null);
     }
 
     @Override

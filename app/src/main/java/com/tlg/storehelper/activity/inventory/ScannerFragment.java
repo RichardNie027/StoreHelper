@@ -16,10 +16,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.boost.CustomDialog;
-import com.nec.lib.utils.ResUtil;
-import com.nec.lib.utils.UiUtil;
-import com.nec.lib.base.BaseFragment;
+import com.nec.lib.android.boost.CustomDialog;
+import com.nec.lib.android.utils.ResUtil;
+import com.nec.lib.android.utils.UiUtil;
+import com.nec.lib.android.base.BaseFragment;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.DbUtil;

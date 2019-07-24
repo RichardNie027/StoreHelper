@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import com.nec.lib.loadmoreview.AsynDataRequest;
-import com.nec.lib.loadmoreview.PageContent;
+import com.nec.lib.android.loadmoreview.AsynDataRequest;
+import com.nec.lib.android.loadmoreview.PageContent;
 import com.tlg.storehelper.vo.InventoryRedoVo;
 
 import java.util.List;

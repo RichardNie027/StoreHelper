@@ -17,13 +17,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.nec.lib.utils.SQLiteUtil;
+import com.nec.lib.android.utils.SQLiteUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
-import com.nec.lib.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.loadmoreview.LoadMoreFragment;
 import com.tlg.storehelper.vo.InventoryRedoVo;
 
 

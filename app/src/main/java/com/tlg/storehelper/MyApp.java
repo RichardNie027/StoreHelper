@@ -4,6 +4,9 @@ import android.util.ArrayMap;
 
 import com.nec.lib.android.application.MyApplication;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
+import com.nec.lib.android.utils.DateUtil;
+
+import java.util.Date;
 
 public class MyApp extends MyApplication {
 
@@ -11,11 +14,8 @@ public class MyApp extends MyApplication {
     public void onCreate() {
         super.onCreate();
 
-        String baseUrl = "http://192.168.1.176:8080/api/";
+        String baseUrl = "http://192.168.1.176:8080/";
         ArrayMap<String, String> headerMap = new ArrayMap<String, String>();
-        headerMap.put("key1", "value1");
-        headerMap.put("key2", "value2");
-        headerMap.put("key3", "value3");
 
         /*
         SslSocketConfigure sslSocketConfigure = new SslSocketConfigure.Builder()
@@ -35,7 +35,7 @@ public class MyApp extends MyApplication {
                 .setInvalidToken(999)//Token失效码
                 .setSucceedCode(200)//成功返回码
                 .setFilter("com.tlg.storehelper.activity.broadcastFilter")//失效广播Filter设置
-                .setDefaultTimeout(20000)//响应时间，可以不设置，默认为2000毫秒
+                .setDefaultTimeout(20000)//响应时间，默认为2000毫秒
                 .setHeaders(headerMap)//动态添加的header，也可以在其他地方通过ApiConfig.setHeaders()设置
                 .setOpenHttps(false)//开启HTTPS验证
                 //.setSslSocketConfigure(sslSocketConfigure)//HTTPS认证配置

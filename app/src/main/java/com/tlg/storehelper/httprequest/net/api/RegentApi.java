@@ -22,22 +22,14 @@ public interface RegentApi {
      * 接口参数：username String, password String
      * 接口返回：
      */
-    @POST("login")
+    @POST("pre_api/login")
     Observable<SimpleEntity<String>> loginValidation(@Body ArrayMap<String, Object> map);
-
-    /**
-     * 接口描述：GET getToken
-     * 接口参数：
-     * 接口返回：SimpleMapEntity - - map result - - token
-     */
-    @GET("getToken")
-    Observable<SimpleMapEntity> getToken();
 
     /**
      * 接口描述：GET getGoodsBarcodeList
      * 接口参数：
      * 接口返回：SimpleEntity<String>
      */
-    @GET("getGoodsBarcodeList")
+    @GET("api/getGoodsBarcodeList")
     Observable<SimpleEntity<String>> getGoodsBarcodes(@Query("lastModDate")String lastModDate);
 }

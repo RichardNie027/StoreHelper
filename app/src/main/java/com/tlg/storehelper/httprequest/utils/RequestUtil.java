@@ -3,11 +3,15 @@ package com.tlg.storehelper.httprequest.utils;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.ArrayMap;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.utils.ApiConfig;
+import com.nec.lib.android.utils.DateUtil;
+import com.nec.lib.android.utils.XxteaUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
@@ -15,12 +19,57 @@ import com.tlg.storehelper.httprequest.net.AppBaseObserver;
 import com.tlg.storehelper.httprequest.net.api.RegentService;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class RequestUtil {
 
+    public static void signRequest(Map params) {
+        ArrayMap<String, String> headerMap = new ArrayMap<String, String>();
+        headerMap.put("appversion", MyApp.getVersionName(MyApp.getInstance()));
+        headerMap.put("apiversion", "1.0");
+        headerMap.put("timestamp", DateUtil.toStr(new Date(), "yyyyMMddHHmmss"));
+        headerMap.put("uid", GlobalVars.username);
+        headerMap.put("session", GlobalVars.token);
+        //生成签名
+        Map<String, String> sortedMap = new TreeMap<>();
+        sortedMap.putAll(headerMap);
+        sortedMap.putAll(params);
+        StringBuffer signatureBuffer = new StringBuffer();
+        for(String key: sortedMap.keySet()) {
+            signatureBuffer.append(key).append(sortedMap.get(key));
+        }
+        String signature = "";
+        String token = GlobalVars.token.isEmpty() ? "store_helper" : GlobalVars.token;
+        try {
+            signature = XxteaUtil.encryptBase64String(signatureBuffer.toString(), "UTF-8", token);
+        } catch (Exception e) {}
+
+        headerMap.put("signature", signature);
+        ApiConfig.setHeaders(headerMap);
+    }
+
+    static class RequestMap {
+        public Map map = new HashMap();
+        public RequestMap put(String param, String value) {
+            map.put(param, value);
+            return this;
+        }
+    }
+
     public static void requestLogin(String username, String password, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        Map requestMap = new RequestMap()
+                .put("username", username)
+                .put("password", password)
+                .map;
+        signRequest(requestMap);
+
         RegentService.getInstance()
                 .loginValidation(username, password)
                 .subscribeOn(Schedulers.io())
@@ -33,6 +82,7 @@ public class RequestUtil {
                         Log.d(activity.getClass().getName(), "请求成功");
                         GlobalVars.username = username;
                         GlobalVars.token = response.result_map.get("token").toString();
+                        ApiConfig.setToken(GlobalVars.token);
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
                     }
@@ -43,6 +93,11 @@ public class RequestUtil {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
         String lastModDate = pref.getString("lastModDate", "2000-01-01 00:00:00");
         SharedPreferences.Editor editor = pref.edit();
+
+        Map requestMap = new RequestMap()
+                .put("lastModDate", lastModDate)
+                .map;
+        signRequest(requestMap);
 
         RegentService.getInstance()
                 .getGoodsBarcodes(lastModDate)

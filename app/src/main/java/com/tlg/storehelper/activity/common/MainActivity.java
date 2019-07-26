@@ -335,22 +335,6 @@ public class MainActivity extends BaseRxAppCompatActivity {
         }
     }
 
-    //----------------------------------权限回调处理----------------------------------//
-
-//    private static final int REQUEST_CODE_SETTING = 300;
-//
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_SETTING: {
-//                Toast.makeText(this, "已由设置返回", Toast.LENGTH_LONG).show();
-//                //设置成功，再次请求更新
-//                getVersion(localVersion());
-//                break;
-//            }
-//        }
-//    }
-
     private void update() {
         //安装应用
         Intent intent = new Intent(Intent.ACTION_VIEW);

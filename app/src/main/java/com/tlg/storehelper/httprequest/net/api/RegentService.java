@@ -4,6 +4,7 @@ import android.util.ArrayMap;
 
 import com.nec.lib.android.httprequest.use.RetrofitFactory;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 
 import io.reactivex.Observable;
 
@@ -21,6 +22,10 @@ public class RegentService {
 
     private static class RegentServiceHolder {
         private static final RegentService S_INSTANCE = new RegentService();
+    }
+
+    public Observable<SimpleMapEntity> appAppVersion() {
+        return mRegentApi.appAppVersion();
     }
 
     public Observable<SimpleEntity<String>> loginValidation(String username, String password) {

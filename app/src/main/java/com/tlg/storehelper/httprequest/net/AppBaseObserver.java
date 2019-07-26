@@ -28,14 +28,18 @@ public abstract class AppBaseObserver<T extends BaseResponseEntity> extends Base
     @Override
     public void onFailing(T response) {
         int code = response.getCode();
-        switch (code) {
-            case 404:
-                Toast.makeText(AppContextUtil.getContext(), "服务器找不到请求目标", Toast.LENGTH_SHORT).show();
-            case 500:
-                Toast.makeText(AppContextUtil.getContext(), "服务器遇到错误，无法完成请求", Toast.LENGTH_SHORT).show();
-            default:
-                super.onFailing(response);
-        }
+        if (code == 404)
+            Toast.makeText(AppContextUtil.getContext(), "服务器找不到请求目标", Toast.LENGTH_SHORT).show();
+        else if (code == 500)
+            Toast.makeText(AppContextUtil.getContext(), "服务器遇到错误，无法完成请求", Toast.LENGTH_SHORT).show();
+        else if (code >= 900 && code < 999)
+            new android.app.AlertDialog.Builder(MyApp.getInstance())
+                    .setTitle("网络请求失败")
+                    .setMessage(response.msg)
+                    .setPositiveButton("确定", null)
+                    .show();
+        else
+            super.onFailing(response);
     }
 
     @Override

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">StoreHelper</string>
+    <string name="app_name">店铺助手</string>
 
 
     <item name="tag_first" type="id" />

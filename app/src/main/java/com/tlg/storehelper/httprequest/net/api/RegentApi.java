@@ -18,9 +18,17 @@ import retrofit2.http.Query;
 public interface RegentApi {
 
     /**
-     * 接口描述：POST login
+     * 接口描述：GET appAppVersion
+     * 接口参数：
+     * 接口返回：SimpleMapEntity
+     */
+    @GET("pre_api/appVersion")
+    Observable<SimpleMapEntity> appAppVersion();
+
+    /**
+     * 接口描述：POST loginValidation
      * 接口参数：username String, password String
-     * 接口返回：
+     * 接口返回：SimpleEntity<String>
      */
     @POST("pre_api/login")
     Observable<SimpleEntity<String>> loginValidation(@Body ArrayMap<String, Object> map);

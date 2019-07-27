@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +31,8 @@ import com.nec.lib.android.stickheaderview.StickHeaderRecyclerViewAdapter;
 import com.nec.lib.android.stickheaderview.StickHeaderViewGroupData;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,9 +72,6 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
             @Override
             public void onItemClick(View view, int postion) {
                 switch (Integer.parseInt(view.getTag().toString())) {
-                    case 2:
-                        //TODO: download new app file in new thread.
-                        break;
                     case 101:
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
                         SharedPreferences.Editor editor = pref.edit();
@@ -80,7 +80,40 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
                         RequestUtil.requestGoodBarcodes(_this, null);
                         break;
                     case 102:
-                        Toast.makeText(MyApp.getInstance(), "缓存已经清理", Toast.LENGTH_SHORT).show();
+                        long filesSize = 0;
+                        //更新包
+                        File file = new File(Environment.getExternalStorageDirectory(), "Download/StoreHelper.apk");
+                        if(file.exists()) {
+                            filesSize += file.length();
+                            file.delete();
+                        }
+                        //Excel导出
+                        file = new File(Environment.getExternalStorageDirectory(), "StoreHelperExport");
+                        if(file.exists() && file.isDirectory()) {
+                            for (File _file : file.listFiles()) {
+                                filesSize += _file.length();
+                                _file.delete();
+                            }
+                        }
+                        //HTTP缓存
+                        file = new File(Environment.getDataDirectory(), "data/com.tlg.storehelper/cache/HttpCache");
+                        if(file.exists() && file.isDirectory()) {
+                            for (File _file : file.listFiles()) {
+                                filesSize += _file.length();
+                                _file.delete();
+                            }
+                        }
+                        //图片
+
+                        //输出清理结果
+                        DecimalFormat formatter = new DecimalFormat("#.#");
+                        double _G = 1024*1024*1024.0;
+                        double _M = 1024*1024.0;
+                        double _K = 1024.0;
+                        double _filesSize = filesSize;
+                        String filesSizeDesc = _filesSize >= _G ? formatter.format(_filesSize/_G)+"G" :
+                                _filesSize >= _M ? formatter.format(_filesSize/_M)+"M" : formatter.format(_filesSize/_K)+"K";
+                        Toast.makeText(MyApp.getInstance(), filesSizeDesc + "缓存已经清理", Toast.LENGTH_SHORT).show();
                         break;
                     case 103:
                         new AlertDialog.Builder(MyApp.getInstance())
@@ -125,7 +158,6 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
     private void loadData() {
         mDatas.add(new MyStickHeaderViewGroupData(0, false, "应用名称", "店铺助手", "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(1, false, "版本", "1.0", "基本信息"));
-        mDatas.add(new MyStickHeaderViewGroupData(2, true, "下载", "最新版本 1.1", "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(101, true, "更新商品资料", "点击更新", "应用管理"));
         mDatas.add(new MyStickHeaderViewGroupData(102, true, "缓存清理", "点击清理", "应用管理"));
         mDatas.add(new MyStickHeaderViewGroupData(103, true, "数据清理", "点击清理", "应用管理"));

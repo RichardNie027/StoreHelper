@@ -6,8 +6,8 @@ import java.io.Serializable;
  * 用于显示盘点单明细记录
  */
 public class InventoryDetailVo implements Serializable {
-    /**ID，自增*/
-    public long id;
+    /**ID，UUID*/
+    public String id;
     /**序号*/
     public int idx;
     /**货架编码*/
@@ -17,7 +17,7 @@ public class InventoryDetailVo implements Serializable {
     /**数量*/
     public int quantity;
 
-    public InventoryDetailVo(long id, int idx, String bin_coding, String barcode, int quantity) {
+    public InventoryDetailVo(String id, int idx, String bin_coding, String barcode, int quantity) {
         this.id = id;
         this.idx = idx;
         this.bin_coding = bin_coding;

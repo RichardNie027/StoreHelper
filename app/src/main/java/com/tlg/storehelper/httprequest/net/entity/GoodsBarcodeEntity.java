@@ -5,6 +5,7 @@ import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class GoodsBarcodeEntity extends BaseResponseEntity {
 
     public List<ResultBean> result = new ArrayList<>();

@@ -35,7 +35,7 @@ import java.util.Map;
 public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordListDataRequest.RequireRedoDataListener {
 
     private OnFragmentInteractionListener mListener;
-    private long mInventoryListId;
+    private String mInventoryListId;
     private String mInventoryBinCoding;
 
     private TextView tvTip4, tvTip3, tvTip2, tvTip1;
@@ -64,10 +64,10 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     @Override
     protected void doParamBundle(Bundle bundle) {
         //1、组装mDataBundle
-        mDataBundle.putLong(sInventoryListIdLabel, bundle.getLong(sInventoryListIdLabel, -1));
+        mDataBundle.putString(sInventoryListIdLabel, bundle.getString(sInventoryListIdLabel));
         mDataBundle.putString(sInventoryBinCodingLabel, bundle.getString(sInventoryBinCodingLabel, ""));
         //2、为页面传参
-        mInventoryListId = bundle.getLong(sInventoryListIdLabel, -1);
+        mInventoryListId = bundle.getString(sInventoryListIdLabel, "");
         mInventoryBinCoding = bundle.getString(sInventoryBinCodingLabel, "");
 
     }
@@ -167,7 +167,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
                     .append(" group by barcode")
                     .append(" order by barcode asc")
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), mInventoryBinCoding});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId, mInventoryBinCoding});
             while (cursor.moveToNext()) {
                 String barcode = cursor.getString(cursor.getColumnIndex("barcode"));
                 int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
@@ -234,7 +234,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             Cursor cursor = null;
             sql = new StringBuffer().append("select count(*) as num").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=? and bin_coding=? and barcode=?").toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), mInventoryBinCoding, barcode});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId, mInventoryBinCoding, barcode});
             if (cursor.moveToFirst()) {
                 result = cursor.getInt(0) > 0;
             }
@@ -255,20 +255,21 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         try {
             db = helper.getWritableDatabase();
             db.beginTransaction();
-            db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=? and bin_coding=?", new String[]{Long.toString(mInventoryListId), mInventoryBinCoding});
+            db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=? and bin_coding=?", new String[]{mInventoryListId, mInventoryBinCoding});
+            int mMaxDetailIdx = 0;
             for(String key: mRedoDataMap.keySet()) {
-                InventoryDetail inventoryDetail = new InventoryDetail(-1L, mInventoryListId, mInventoryBinCoding, key, mRedoDataMap.get(key));
-                ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail, "id");
-                result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id", contentValues);
+                InventoryDetail inventoryDetail = new InventoryDetail(null, mInventoryListId, ++mMaxDetailIdx, mInventoryBinCoding, key, mRedoDataMap.get(key));
+                ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail);
+                result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, null, contentValues);
                 if (result == -1L)
                     throw new Exception("新增记录出错");
             }
             for(String key: mRedoNewDataMap.keySet()) {
-                InventoryDetail inventoryDetail = new InventoryDetail(-1L, mInventoryListId, mInventoryBinCoding, key, mRedoNewDataMap.get(key));
-                ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail, "id");
-                result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id", contentValues);
+                InventoryDetail inventoryDetail = new InventoryDetail(null, mInventoryListId, ++mMaxDetailIdx, mInventoryBinCoding, key, mRedoNewDataMap.get(key));
+                ContentValues contentValues = SQLiteUtil.toContentValues(inventoryDetail);
+                result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, null, contentValues);
                 if (result == -1L)
-                    throw new Exception("新增记录出错");
+                    throw new Exception("新增记录明细出错");
             }
             mRedoDataMap.clear();
             mRedoNewDataMap.clear();

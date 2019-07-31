@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class RecordListDataRequest implements AsynDataRequest {
 
-    private long mInventoryListId;
+    private String mInventoryListId;
 
     //分页属性
     private int mRecordPerPage;
@@ -40,7 +40,7 @@ public class RecordListDataRequest implements AsynDataRequest {
         this.mPage = page;
         PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mRecordPerPage);
 
-        mInventoryListId = dataBundle.getLong(RecordFragment.sInventoryListIdLabel);
+        mInventoryListId = dataBundle.getString(RecordFragment.sInventoryListIdLabel);
         loadData();
 
         pageContent.hasMore = page < mPageCount-1;
@@ -71,7 +71,7 @@ public class RecordListDataRequest implements AsynDataRequest {
             sql = new StringBuffer().append("select count(*)").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=?")
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId)});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId});
             if (cursor.moveToFirst()) {
                 mRecordCount = cursor.getInt(0);
             } else {
@@ -84,12 +84,12 @@ public class RecordListDataRequest implements AsynDataRequest {
             mInventoryDetailList.clear();
             sql = new StringBuffer().append("select *").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=?")
-                    .append(" order by id desc")
+                    .append(" order by idx desc")
                     .append(" limit ?,").append(mRecordPerPage)
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), Integer.toString(mPage*mRecordPerPage)});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage*mRecordPerPage)});
             while (cursor.moveToNext()) {
-                long id = cursor.getLong(cursor.getColumnIndex("id"));
+                String id = cursor.getString(cursor.getColumnIndex("id"));
                 int idx = mRecordCount;
                 String bin_coding = cursor.getString(cursor.getColumnIndex("bin_coding"));
                 String barcode = cursor.getString(cursor.getColumnIndex("barcode"));

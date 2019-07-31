@@ -21,7 +21,7 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
     private Toolbar mToolbar;
 
     /**调用者传递过来的“盘点ID”，-1L为错误*/
-    private long mListId;
+    private String mListId;
     /**调用者传递过来的“盘点货位”，空白为错误*/
     private String mBinCoding;
 
@@ -37,7 +37,7 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
         setContentView(R.layout.activity_redo_record);
         //接收参数
         Intent intent =getIntent();
-        mListId = intent.getLongExtra(RedoRecordFragment.sInventoryListIdLabel, -1L);
+        mListId = intent.getStringExtra(RedoRecordFragment.sInventoryListIdLabel);
         mBinCoding = intent.getStringExtra(RedoRecordFragment.sInventoryBinCodingLabel);
         initView();
     }
@@ -50,7 +50,7 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
         // initialize controls
         mToolbar.setTitle("复盘：" + mBinCoding);
         //处理异常
-        if(mListId == -1L || mBinCoding.isEmpty()) {
+        if(mListId.isEmpty() || mBinCoding.isEmpty()) {
             new AlertDialog.Builder(MyApp.getInstance())
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("内部错误")
@@ -71,7 +71,7 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle dataBundle = new Bundle();
-        dataBundle.putLong(RedoRecordFragment.sInventoryListIdLabel, mListId);
+        dataBundle.putString(RedoRecordFragment.sInventoryListIdLabel, mListId);
         dataBundle.putString(RedoRecordFragment.sInventoryBinCodingLabel, mBinCoding);
         RedoRecordListDataRequest redoRecordListDataRequest = new RedoRecordListDataRequest();
         mRedoRecordFragment = RedoRecordFragment.newInstance(RedoRecordFragment.class, RedoRecordRecyclerViewItemAdapter.class, redoRecordListDataRequest, dataBundle);

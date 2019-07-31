@@ -24,7 +24,7 @@ import java.util.List;
  */
 public class TotalRecordListDataRequest implements AsynDataRequest {
 
-    private long mInventoryListId;
+    private String mInventoryListId;
 
     //分页属性
     private int mRecordPerPage;
@@ -40,7 +40,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
         this.mPage = page;
         PageContent<InventoryTotalVo> pageContent = new PageContent<InventoryTotalVo>(page, mRecordPerPage);
 
-        mInventoryListId = dataBundle.getLong(TotalRecordFragment.sInventoryListIdLabel);
+        mInventoryListId = dataBundle.getString(TotalRecordFragment.sInventoryListIdLabel);
         loadData();
 
         pageContent.hasMore = page < mPageCount-1;
@@ -67,7 +67,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
             sql = new StringBuffer().append("select count(distinct bin_coding)").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=?")
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId)});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId});
             if (cursor.moveToFirst()) {
                 mRecordCount = cursor.getInt(0);
             } else {
@@ -84,7 +84,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
                     .append(" order by bin_coding asc")
                     .append(" limit ?,").append(mRecordPerPage)
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{Long.toString(mInventoryListId), Integer.toString(mPage*mRecordPerPage)});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage*mRecordPerPage)});
             while (cursor.moveToNext()) {
                 String bin_coding = cursor.getString(cursor.getColumnIndex("bin_coding"));
                 int barcodes = cursor.getInt(cursor.getColumnIndex("barcodes"));

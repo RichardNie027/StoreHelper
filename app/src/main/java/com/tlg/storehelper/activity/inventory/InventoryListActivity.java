@@ -40,7 +40,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
     private TextView mTvUsername;
     private Calendar mCalendar;
 
-    private long mNewId = 0L;    // 新盘点单记录的ID
+    private String mNewId = null;    // 新盘点单记录的ID
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +124,12 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
             String listNo = mTvListNo.getText().toString() + mEtListNo.getText().toString();
             Date create_date = new Date();
             ///生成对象并插入
-            Inventory inventory = new Inventory(-1L, store_code, list_date, idx, username, listNo, create_date, create_date);
-            ContentValues contentValues = SQLiteUtil.toContentValues(inventory, "id");
-            long ret = db.insert(SQLiteDbHelper.TABLE_INVENTORY, "id", contentValues);
+            Inventory inventory = new Inventory(null, store_code, list_date, idx, username, listNo, create_date, create_date);
+            ContentValues contentValues = SQLiteUtil.toContentValues(inventory);
+            long ret = db.insert(SQLiteDbHelper.TABLE_INVENTORY, null, contentValues);
             if(ret == -1)
                 throw new Exception("保存盘点单失败");
-            mNewId = ret;
+            mNewId = inventory.id;
             db.setTransactionSuccessful();
             result = true;
         } catch (Throwable t) {

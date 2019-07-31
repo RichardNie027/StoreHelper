@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
+import com.nec.lib.android.utils.BeanUtil;
 import com.nec.lib.android.utils.DateUtil;
 import com.nec.lib.android.utils.XxteaUtil;
 import com.tlg.storehelper.MyApp;
@@ -17,6 +18,7 @@ import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.httprequest.net.AppBaseObserver;
 import com.tlg.storehelper.httprequest.net.api.RegentService;
+import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 
@@ -39,12 +41,12 @@ public class RequestUtil {
         headerMap.put("Uid", GlobalVars.username);
         headerMap.put("Authorization", GlobalVars.token);   //Authorization在HttpHeaderInterceptor中添加
         //生成签名
-        Map<String, String> sortedMap = new TreeMap<>();
+        Map<String, Object> sortedMap = new TreeMap<>();
         sortedMap.putAll(headerMap);
         sortedMap.putAll(params);
         StringBuffer signatureBuffer = new StringBuffer();
         for(String key: sortedMap.keySet()) {
-            signatureBuffer.append(key).append(sortedMap.get(key));
+            signatureBuffer.append(key).append(sortedMap.get(key).toString());
         }
         String signature = "";
         String token = GlobalVars.token.isEmpty() ? "store_helper" : GlobalVars.token;
@@ -60,6 +62,10 @@ public class RequestUtil {
         public Map map = new HashMap();
         public RequestMap put(String param, String value) {
             map.put(param, value);
+            return this;
+        }
+        public RequestMap putAll(Map _map) {
+            map.putAll(_map);
             return this;
         }
     }
@@ -150,6 +156,30 @@ public class RequestUtil {
                         } else {
                             Toast.makeText(MyApp.getInstance(), response.msg, Toast.LENGTH_SHORT).show();
                         }
+                        if(onSuccessListener != null)
+                            onSuccessListener.onSuccess(response);
+                    }
+                });
+    }
+
+    public static void requestUploadInventory(InventoryEntity inventoryEntity, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        Map beanMap = BeanUtil.objectToMap(inventoryEntity);
+        Map requestMap = new RequestMap()
+                .putAll(beanMap)
+                .map;
+        signRequest(requestMap);
+
+        RegentService.getInstance()
+                .uploadInventory(inventoryEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.bindToLifecycle())
+                .subscribe(new AppBaseObserver<BaseResponseEntity>(activity, true, "上传盘点单") {
+
+                    @Override
+                    public void onSuccess(BaseResponseEntity response) {
+                        Log.d(activity.getClass().getName(), "请求成功");
+                        Toast.makeText(MyApp.getInstance(), response.msg, Toast.LENGTH_SHORT).show();
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
                     }

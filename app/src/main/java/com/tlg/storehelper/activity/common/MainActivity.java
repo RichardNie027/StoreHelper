@@ -105,7 +105,6 @@ public class MainActivity extends BaseRxAppCompatActivity {
 
     private void afterGrantPermission() {
         if(GlobalVars.permissionOfNetworkAndStroage) {
-            mBtnLogin.setVisibility(View.VISIBLE);
             getVersion(localVersion());
         }
     }
@@ -160,11 +159,13 @@ public class MainActivity extends BaseRxAppCompatActivity {
                 String newVersion = response.result.get("versionCode").toString();      //网络版本号
                 int newVersionCode = new Double(StringUtil.parseDouble(newVersion, 0)).intValue();
                 String content = response.msg;
-                if (newVersionCode != vision)
+                if (newVersionCode != vision) {
                     if (vision < newVersionCode) {
                         // 版本号不同
                         ShowDialog(vision, newVersion, content, DOWNLOAD_URL);
                     }
+                }
+                mBtnLogin.setVisibility(View.VISIBLE);
             }
         });
     }

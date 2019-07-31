@@ -69,7 +69,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
             public void onItemClick(View view, int postion) {
                 Intent intent = new Intent(InventoryListsActivity.this, InventoryActivity.class);
                 //intent.putExtra("list_id", mDatas.get(postion).id);
-                intent.putExtra("list_id", ((Long)view.getTag()).longValue());
+                intent.putExtra("list_id", view.getTag().toString());
                 startActivity(intent);
             }
 
@@ -91,12 +91,12 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
             String sql = new StringBuffer().append("select a.id, a.list_no, sum(b.quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
                     .append(" a left join ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL).append(" b on a.id=b.pid")
                     .append(" where a.store_code=?")
-                    .append(" group by a.id,a.list_no order by a.id desc")
+                    .append(" group by a.id,a.list_no order by a.list_date desc, a.idx desc")
                     .append(" limit 0,50")
                     .toString();
             Cursor cursor = db.rawQuery(sql, new String[] {GlobalVars.storeCode});
             while(cursor.moveToNext()){
-                long id = cursor.getLong(cursor.getColumnIndex("id"));
+                String id = cursor.getString(cursor.getColumnIndex("id"));
                 String list_no = cursor.getString(cursor.getColumnIndex("list_no"));
                 int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
                 InventoryListVo inventoryListVo = new InventoryListVo(id, list_no, quantity);

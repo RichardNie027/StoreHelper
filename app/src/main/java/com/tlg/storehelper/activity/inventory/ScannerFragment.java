@@ -71,7 +71,7 @@ public class ScannerFragment extends BaseFragment {
     public static ScannerFragment newInstance(StatisticInfo statisticInfo) {
         ScannerFragment fragment = new ScannerFragment();
         Bundle args = new Bundle();
-        args.putLong(ARG1_NAME, statisticInfo.id);
+        args.putString(ARG1_NAME, statisticInfo.id);
         args.putString(ARG2_NAME, statisticInfo.listNo);
         args.putInt(ARG3_NAME, statisticInfo.quantity);
         args.putInt(ARG4_NAME, statisticInfo.totalQuantity);
@@ -85,7 +85,7 @@ public class ScannerFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mStatisticInfo.id = getArguments().getLong(ARG1_NAME);
+            mStatisticInfo.id = getArguments().getString(ARG1_NAME);
             mStatisticInfo.listNo = getArguments().getString(ARG2_NAME);
             mStatisticInfo.quantity = getArguments().getInt(ARG3_NAME);
             mStatisticInfo.totalQuantity = getArguments().getInt(ARG4_NAME);

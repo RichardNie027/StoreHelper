@@ -18,7 +18,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
     //创建 inventory 表的 sql 语句
     private static final String INVENTORY_CREATE_TABLE_SQL = "create table if not exists " + TABLE_INVENTORY + "("
-            + "id integer primary key autoincrement,"   //ID
+            + "id char(32) primary key,"                //ID
             + "store_code varchar(20) not null,"        //店编
             + "list_date varchar(19) not null,"         //盘点日期
             + "idx integer not null,"                   //序号
@@ -29,8 +29,9 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             + ");";
 
     private static final String INVENTORY_DETAIL_CREATE_TABLE_SQL = "create table if not exists " + TABLE_INVENTORY_DETAIL + "("
-            + "id integer primary key autoincrement,"   //ID
-            + "pid integer not null,"                   //主表ID
+            + "id char(32) primary key,"                //ID
+            + "pid char(32) not null,"                  //主表ID
+            + "idx integer not null,"                   //序号
             + "bin_coding varchar(20) not null,"        //货架编码
             + "barcode varchar(30) not null,"           //商品条码
             + "quantity integer not null"               //数量

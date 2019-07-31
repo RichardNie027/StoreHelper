@@ -2,7 +2,9 @@ package com.tlg.storehelper.httprequest.net.api;
 
 import android.util.ArrayMap;
 
+import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
+import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
@@ -40,4 +42,12 @@ public interface RegentApi {
      */
     @GET("api/getGoodsBarcodeList")
     Observable<SimpleEntity<String>> getGoodsBarcodes(@Query("lastModDate")String lastModDate);
+
+    /**
+     * 接口描述：POST uploadInventory
+     * 接口参数：
+     * 接口返回：InventoryEntity
+     */
+    @POST("api/uploadInventory")
+    Observable<BaseResponseEntity> uploadInventory(@Body InventoryEntity inventoryEntity);
 }

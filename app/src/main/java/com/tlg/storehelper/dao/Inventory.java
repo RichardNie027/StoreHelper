@@ -1,11 +1,13 @@
 package com.tlg.storehelper.dao;
 
+import com.nec.lib.android.utils.StringUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Inventory implements Serializable {
-    /**ID，自增*/
-    public long id;
+    /**ID，UUID*/
+    public String id;
     /**店编*/
     public String store_code;
     /**盘点日期*/
@@ -22,10 +24,13 @@ public class Inventory implements Serializable {
     public Date last_time;
 
     public Inventory() {
-        id = -1;
+        id = StringUtil.getUUID();
     }
-    public Inventory(long id, String store_code, Date list_date, int idx, String username, String list_no, Date create_time, Date last_time) {
-        this.id = id;
+    public Inventory(String id, String store_code, Date list_date, int idx, String username, String list_no, Date create_time, Date last_time) {
+        if(id==null)
+            this.id = StringUtil.getUUID();
+        else
+            this.id = id;
         this.store_code = store_code;
         this.list_date = list_date;
         this.idx = idx;

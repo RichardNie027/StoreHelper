@@ -36,7 +36,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
     @Override
     protected void doParamBundle(Bundle bundle) {
         //1、组装mDataBundle
-        mDataBundle.putLong(sInventoryListIdLabel, bundle.getLong(sInventoryListIdLabel, -1));
+        mDataBundle.putString(sInventoryListIdLabel, bundle.getString(sInventoryListIdLabel));
         //2、为页面传参
         mInventoryListNo = bundle.getString(sInventoryListNoLabel, "");
 

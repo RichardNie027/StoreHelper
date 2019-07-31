@@ -2,7 +2,9 @@ package com.tlg.storehelper.httprequest.net.api;
 
 import android.util.ArrayMap;
 
+import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.android.httprequest.use.RetrofitFactory;
+import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 
@@ -37,5 +39,9 @@ public class RegentService {
 
     public Observable<SimpleEntity<String>> getGoodsBarcodes(String lastModDate) {
         return mRegentApi.getGoodsBarcodes(lastModDate);
+    }
+
+    public Observable<BaseResponseEntity> uploadInventory(InventoryEntity inventoryEntity) {
+        return mRegentApi.uploadInventory(inventoryEntity);
     }
 }

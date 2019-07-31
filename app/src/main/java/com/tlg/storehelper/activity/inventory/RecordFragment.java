@@ -36,7 +36,7 @@ public class RecordFragment extends LoadMoreFragment {
     @Override
     protected void doParamBundle(Bundle bundle) {
         //1、组装mDataBundle
-        mDataBundle.putLong(sInventoryListIdLabel, bundle.getLong(sInventoryListIdLabel, -1));
+        mDataBundle.putString(sInventoryListIdLabel, bundle.getString(sInventoryListIdLabel));
         //2、为页面传参
         mInventoryListNo = bundle.getString(sInventoryListNoLabel, "");
 
@@ -66,7 +66,7 @@ public class RecordFragment extends LoadMoreFragment {
             @Override
             public boolean onItemLongClick(final View view, int postion) {
                 Log.d(this.getClass().getName(), "long-click at " + postion);
-                final long id = Long.parseLong(view.getTag(R.id.tag_first).toString());
+                final String id = view.getTag(R.id.tag_first).toString();
                 int idx = Integer.parseInt(view.getTag(R.id.tag_second).toString());
                 new AlertDialog.Builder(MyApp.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
@@ -121,6 +121,6 @@ public class RecordFragment extends LoadMoreFragment {
          * 删除扫码记录触发
          * @param id
          */
-        void onInventoryDeleteRecord(long id);
+        void onInventoryDeleteRecord(String id);
     }
 }

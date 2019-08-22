@@ -75,6 +75,9 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // load data
+        loadData();
+
         View view = super.onCreateView(inflater, container, savedInstanceState);
         mSwipeRefreshLayout.setEnabled(false);
         initView(view);
@@ -88,9 +91,6 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         tvTip2 = rootView.findViewById(R.id.tvTip2);
         tvTip1 = rootView.findViewById(R.id.tvTip1);
         mEtBarcode = rootView.findViewById(R.id.etBarcode);
-
-        // load data
-        loadData();
 
         // initialize controls
         displayStatistic();

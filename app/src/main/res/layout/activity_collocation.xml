@@ -61,22 +61,21 @@
         android:id="@+id/tvGoodsNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="[商品货号]"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvGoodsName"
+        app:layout_constraintStart_toStartOf="@+id/tvGoodsName"
         app:layout_constraintTop_toBottomOf="@+id/tvGoodsName" />
 
     <TextView
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:text="[吊牌价]"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tvGoodsNo"
         app:layout_constraintTop_toBottomOf="@+id/tvGoodsNo" />
 
     <ImageView

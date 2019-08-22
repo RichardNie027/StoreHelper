@@ -30,7 +30,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
         //资源名称
         mLayoutOfFragmentItemList = "fragment_total_record";
         mIdOfSwipeRefreshLayout = "refresh_layout"; //内部资源名称
-        mIdOfRecyclerView = "recycle_list";          //内部资源名称
+        mIdOfRecyclerView = "recycler_list";          //内部资源名称
     }
 
     @Override

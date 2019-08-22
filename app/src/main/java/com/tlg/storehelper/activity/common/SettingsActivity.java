@@ -52,7 +52,7 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
     private void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycleView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         //toolbar
         setSupportActionBar(mToolbar);

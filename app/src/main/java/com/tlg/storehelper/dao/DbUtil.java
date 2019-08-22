@@ -14,16 +14,17 @@ import java.util.List;
 
 public class DbUtil {
 
-    public static boolean checkGoodsBarcode(String goodsBarcode) {
+    public static boolean checkGoodsBarcode(String goodsBarcode, boolean whole) {
         boolean result = false;
         SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
         SQLiteDatabase db = null;
         try {
             db = helper.getReadableDatabase();
+            String whereSub = whole ? " where barcode='" + goodsBarcode + "'" : " where barcode like '" + goodsBarcode + "%'";
             String sql = new StringBuffer().append("select count(*) num").append(" from ").append(SQLiteDbHelper.TABLE_GOODS_BARCODE)
-                    .append(" where barcode=?")
+                    .append(whereSub)
                     .toString();
-            Cursor cursor = db.rawQuery(sql, new String[] {goodsBarcode});
+            Cursor cursor = db.rawQuery(sql, new String[] {});
             if(cursor.moveToFirst()) {
                 result = cursor.getInt(0) > 0;
             }

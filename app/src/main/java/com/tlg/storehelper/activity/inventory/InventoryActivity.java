@@ -95,6 +95,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         mTabRadioGroup = findViewById(R.id.rgTabs);
         //toolbar
         setSupportActionBar(mToolbar);
+        // initialize controls
+        hideKeyboard(true);
         //处理异常
         if(mListId.isEmpty()) {
             new AlertDialog.Builder(MyApp.getInstance())
@@ -529,12 +531,12 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             return;
         }
         //输出Excel
-        String filePath = Environment.getExternalStorageDirectory() + "/StoreHelperExport";
+        String filePath = Environment.getExternalStorageDirectory() + "/StoreHelper/export";
         File file = new File(filePath);
         if (!file.exists()) {
             file.mkdirs();
         }
-        String excelFileName = "/Inventory" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + ".xls";
+        String excelFileName = "/INV" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + ".xls";
         String[] title = {"标识", "货架编码", "商品条码", "数量"};
         String sheetName = mInventory.list_no;
         filePath = filePath + excelFileName;

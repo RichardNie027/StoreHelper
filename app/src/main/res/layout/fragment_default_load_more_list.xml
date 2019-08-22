@@ -27,7 +27,7 @@
         android:layout_height="match_parent">
 
         <com.nec.lib.android.loadmoreview.LoadMoreRecyclerView
-            android:id="@+id/recycle_list"
+            android:id="@+id/recycler_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"

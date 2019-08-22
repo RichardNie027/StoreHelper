@@ -58,7 +58,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         //资源名称
         mLayoutOfFragmentItemList = "fragment_redo_record";
         mIdOfSwipeRefreshLayout = "refresh_layout"; //内部资源名称
-        mIdOfRecyclerView = "recycle_list";          //内部资源名称
+        mIdOfRecyclerView = "recycler_list";          //内部资源名称
     }
 
     @Override
@@ -79,19 +79,6 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         mSwipeRefreshLayout.setEnabled(false);
         initView(view);
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        doRefreshOnRecyclerView();
-        displayStatistic();
-        mRecyclerView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                hideKeyboard(mEtBarcode);
-            }
-        }, 1000);
     }
 
     private void initView(View rootView) {
@@ -116,7 +103,6 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     onScanBarcodeAsNewRecord(mEtBarcode.getText().toString());
                     mEtBarcode.requestFocus();
-                    _this.hideKeyboard(view);
                     return true;
                 }
                 return false;
@@ -129,7 +115,6 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
                 if(hasFocus) {
                     mEtBarcode.selectAll();
                 }
-                _this.hideKeyboard(view);
             }
         });
         //Touch清空条形码
@@ -137,7 +122,6 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 mEtBarcode.setText("");
-                _this.hideKeyboard(view);
                 return false;
             }
         });
@@ -206,13 +190,16 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
 
     public void onScanBarcodeAsNewRecord(String barcode) {
         barcode = barcode.toUpperCase();
-        if(barcode.length() > 0 && DbUtil.checkGoodsBarcode(barcode)) {
-            mEtBarcode.setText("");
-        } else {                    //错误
-            Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
-            mEtBarcode.selectAll();
+        if(barcode.length() > 0) {
+            if (DbUtil.checkGoodsBarcode(barcode, true)) {
+                mEtBarcode.setText("");
+            } else {                    //错误
+                Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
+                mEtBarcode.selectAll();
+                return;
+            }
+        } else
             return;
-        }
         if(barcodeCheck(barcode)) {
             int value = mRedoDataMap.containsKey(barcode) ? mRedoDataMap.get(barcode) + 1 : 1;
             mRedoDataMap.put(barcode, value);

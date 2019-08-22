@@ -87,8 +87,7 @@ public class MainActivity extends BaseRxAppCompatActivity {
         mBtnLogin = findViewById(R.id.btnLogin);
 
         // initialize controls
-        setOnFocusChangeListener(mEditTextName, mEditTextPwd);
-        //setHideInputViews(mEditTextName, mEditTextPwd);
+        hideKeyboard(true);
 
         // 初始化系统的屏幕尺寸信息
         UiUtil.getAndroiodScreenProperty(this);

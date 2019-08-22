@@ -63,7 +63,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
         setSupportActionBar(mToolbar);
 
         // initialize controls
-        setOnFocusChangeListener(mEtListNo);
+        hideKeyboard(true);
         mCalendar = Calendar.getInstance(Locale.CHINA);
         processDatetimePickerResult(mCalendar);
         updateUi();

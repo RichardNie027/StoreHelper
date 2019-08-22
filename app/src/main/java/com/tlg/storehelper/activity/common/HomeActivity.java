@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.tlg.storehelper.MyApp;
+import com.tlg.storehelper.activity.collocation.CollocationActivity;
 import com.tlg.storehelper.activity.inventory.InventoryListsActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -91,6 +92,11 @@ public class HomeActivity extends BaseRxAppCompatActivity {
 
     public void ivInventoryClick(View v) {
         Intent intent = new Intent(this, InventoryListsActivity.class);
+        startActivity(intent);
+    }
+
+    public void ivCollocationClick(View v) {
+        Intent intent = new Intent(this, CollocationActivity.class);
         startActivity(intent);
     }
 

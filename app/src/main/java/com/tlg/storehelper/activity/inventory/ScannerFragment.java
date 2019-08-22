@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nec.lib.android.boost.CustomDialog;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ResUtil;
 import com.nec.lib.android.utils.UiUtil;
 import com.nec.lib.android.base.BaseFragment;
@@ -150,13 +151,12 @@ public class ScannerFragment extends BaseFragment {
             public boolean onKey(View view, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     mEtBarcode.requestFocus();
-                    _this.hideKeyboard(view);
                     return true;
                 }
                 return false;
             }
         });
-        //获得焦点全选条形码
+        //获得焦点全选
         mEtBinCoding.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
@@ -166,7 +166,6 @@ public class ScannerFragment extends BaseFragment {
                     String _mFullBinCoding = mEtBinCoding.getText().toString();
                     validateBinCodingChanged(_mFullBinCoding);
                 }
-                _this.hideKeyboard(view);
             }
         });
 
@@ -178,20 +177,18 @@ public class ScannerFragment extends BaseFragment {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
                     onScanBarcodeAsNewRecord(mEtBarcode.getText().toString(), mFullBinCoding, mBatchScanQuantity);
                     mEtBarcode.requestFocus();
-                    _this.hideKeyboard(view);
                     return true;
                 }
                 return false;
             }
         });
-        //获得焦点全选货位
+        //获得焦点全选
         mEtBarcode.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(hasFocus) {
                     mEtBarcode.selectAll();
                 }
-                _this.hideKeyboard(view);
             }
         });
         //Touch清空条形码
@@ -199,7 +196,6 @@ public class ScannerFragment extends BaseFragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 mEtBarcode.setText("");
-                _this.hideKeyboard(view);
                 return false;
             }
         });
@@ -289,13 +285,16 @@ public class ScannerFragment extends BaseFragment {
             return;
         }
         barcode = barcode.toUpperCase();
-        if(barcode.length() > 0 && DbUtil.checkGoodsBarcode(barcode)) {
-            mEtBarcode.setText("");
-        } else {                    //错误
-            Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
-            mEtBarcode.selectAll();
+        if(barcode.length() > 0) {
+            if (DbUtil.checkGoodsBarcode(barcode, true)) {
+                mEtBarcode.setText("");
+            } else {                    //错误
+                Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
+                mEtBarcode.selectAll();
+                return;
+            }
+        } else
             return;
-        }
         if (mListener != null) {
             StatisticInfo _statisticInfo = mListener.onInventoryNewRecord(binCoding, barcode, num);
             if(_statisticInfo == null) {
@@ -325,7 +324,10 @@ public class ScannerFragment extends BaseFragment {
                 switch (view.getId()){
                     case R.id.btnDialogOk:
                         EditText etQuantity = view.getRootView().findViewById(R.id.etQuantity);
-                        int quantity = etQuantity==null ? 1 : Integer.parseInt(etQuantity.getText().toString());
+                        int quantity = 1;
+                        try {
+                            quantity = etQuantity == null ? 1 : Integer.parseInt(etQuantity.getText().toString());
+                        } catch (Exception e) {}
                         mBatchScanQuantity = quantity;
                         mTvBatchScanQuantity.setText(String.valueOf(mBatchScanQuantity));
                         break;
@@ -335,6 +337,10 @@ public class ScannerFragment extends BaseFragment {
             }
         });
         dialog.show();
+        //设置控件
+        EditText etQuantity = dialog.getWindow().findViewById(R.id.etQuantity);
+        etQuantity.selectAll();
+        AndroidUtil.hideKeyboard(this.getActivity(), dialog.getWindow(), true);
     }
 
     @Override

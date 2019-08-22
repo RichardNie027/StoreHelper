@@ -3,6 +3,7 @@ package com.tlg.storehelper.httprequest.net.api;
 import android.util.ArrayMap;
 
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
@@ -17,7 +18,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
-public interface RegentApi {
+public interface MainApi {
 
     /**
      * 接口描述：GET appAppVersion
@@ -50,4 +51,12 @@ public interface RegentApi {
      */
     @POST("api/uploadInventory")
     Observable<BaseResponseEntity> uploadInventory(@Body InventoryEntity inventoryEntity);
+
+    /**
+     * 接口描述：GET getCollocation
+     * 接口参数：
+     * 接口返回：InventoryEntity
+     */
+    @GET("api/getCollocation")
+    Observable<CollocationEntity> getCollocation(@Query("goodsNo")String goodsNo);
 }

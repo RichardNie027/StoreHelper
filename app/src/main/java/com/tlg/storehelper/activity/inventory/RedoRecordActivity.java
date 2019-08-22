@@ -48,6 +48,7 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
         //toolbar
         setSupportActionBar(mToolbar);
         // initialize controls
+        hideKeyboard(true);
         mToolbar.setTitle("复盘：" + mBinCoding);
         //处理异常
         if(mListId.isEmpty() || mBinCoding.isEmpty()) {

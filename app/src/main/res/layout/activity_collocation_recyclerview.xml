@@ -26,6 +26,7 @@
         android:layout_marginEnd="8dp"
         android:text=" "
         android:textColor="@color/colorPrimary"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="@+id/ivPic"
         app:layout_constraintTop_toBottomOf="@+id/ivPic" />
@@ -39,6 +40,7 @@
         android:text=" "
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimary"
+        android:textSize="10sp"
         app:layout_constraintEnd_toEndOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="@+id/ivPic"
         app:layout_constraintTop_toBottomOf="@+id/tvGoodsNo" />

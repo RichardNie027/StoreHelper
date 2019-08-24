@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">店铺助手</string>
-
-
     <item name="tag_first" type="id" />
+
+
     <item name="tag_second" type="id" />
+    <string name="app_name">店铺助手</string>
 
 </resources>

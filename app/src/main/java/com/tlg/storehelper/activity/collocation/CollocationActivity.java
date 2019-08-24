@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -30,6 +31,8 @@ import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
+import java.io.File;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +46,8 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private List<CollocationEntity.DetailBean> mDatas = new ArrayList<>();
+
+    private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,16 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
 
         // initialize controls
         hideKeyboard(true);
+        ivPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(view.getTag() == null)
+                    return;
+                Intent intent = new Intent(CollocationActivity.this, PhotoViewActivity.class);
+                intent.putExtra("file_path", view.getTag().toString());
+                startActivity(intent);
+            }
+        });
 
         //设置RecycleView的布局方式，线性布局默认垂直1
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, 0, false));
@@ -158,20 +173,46 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             public void onSuccess(CollocationEntity response) {
                 tvGoodsName.setText(response.goodsName);
                 tvGoodsNo.setText(response.goodsNo);
-                tvPrice.setText(String.valueOf(response.price));
-                RequestUtil.downloadPic(MyApp.baseUrl + "pre_api/pic/" + response.pic, _this, new RequestUtil.OnFileDownloadedListener() {
-
+                tvPrice.setText(new DecimalFormat("￥,###").format(response.price));
+                loadFile(ivPic, localPicPath, response.pic, 2);
+                ivPic.setTag(localPicPath + response.pic);
+                RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(CollocationActivity.this, response.detail);
+                mRecyclerView.setAdapter(recyclerViewAdapter);
+                recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
                     @Override
-                    public void onSuccess(String pathFile) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(pathFile, ImageUtil.getBitmapOption(2));
-                        ivPic.setImageBitmap(bitmap);
+                    public void onItemClick(View view, int postion) {
+                        onScanBarcode(view.getTag().toString());
                     }
 
                     @Override
-                    public void onFail() {
-
+                    public boolean onItemLongClick(View view, int postion) {
+                        return false;
                     }
                 });
+            }
+        });
+    }
+
+    /**加载图片控件，优先用本地文件*/
+    private void loadFile(ImageView ivPicture, String filePath, String filename, int sampleSize) {
+        String filename2find = filePath + filename;
+        File file2find = new File(filename2find);
+        if(file2find.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(filename2find, ImageUtil.getBitmapOption(sampleSize));
+            ivPicture.setImageBitmap(bitmap);
+            return;
+        }
+        RequestUtil.downloadPic(MyApp.baseUrl + "pre_api/pic/" + filename, _this, new RequestUtil.OnFileDownloadedListener() {
+
+            @Override
+            public void onSuccess(String pathFile) {
+                Bitmap bitmap = BitmapFactory.decodeFile(pathFile, ImageUtil.getBitmapOption(2));
+                ivPicture.setImageBitmap(bitmap);
+            }
+
+            @Override
+            public void onFail() {
+                ivPicture.setImageBitmap(ImageUtil.getBitmap(getApplicationContext(), R.drawable.nopic));
             }
         });
     }
@@ -199,8 +240,8 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder recyclerViewHolder = (CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder) holder;
             recyclerViewHolder.itemView.setTag(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvGoodsNo.setText(mDatas.get(position).goodsNo);
-            recyclerViewHolder.tvFrequency.setText(String.valueOf(mDatas.get(position).frequency));
-            recyclerViewHolder.ivPic.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_view));
+            recyclerViewHolder.tvFrequency.setText(new DecimalFormat("#次").format(mDatas.get(position).frequency));
+            loadFile(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).pic, 4);
         }
 
         @Override
@@ -229,17 +270,21 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 //实例化自定义对象
                 tvGoodsNo = view.findViewById(R.id.tvGoodsNo);
                 tvFrequency = view.findViewById(R.id.tvFrequency);
-                ivPic = view.findViewById(R.id.ivIcon);
+                ivPic = view.findViewById(R.id.ivPic);
             }
 
             @Override
             public void onClick(View view) {
-                mListener.onItemClick(view, getPosition());
+                if(mListener != null)
+                    mListener.onItemClick(view, getPosition());
             }
 
             @Override
             public boolean onLongClick(View view) {
-                return mListener.onItemLongClick(view, getPosition());
+                if(mListener != null)
+                    return mListener.onItemLongClick(view, getPosition());
+                else
+                    return false;
             }
         }
     }

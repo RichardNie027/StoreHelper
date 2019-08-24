@@ -2,6 +2,8 @@ package com.tlg.storehelper.activity.common;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -80,39 +82,9 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
                         RequestUtil.requestGoodBarcodes(_this, null);
                         break;
                     case 102:
-                        long filesSize = 0;
-                        //更新包
-                        File file = new File(Environment.getExternalStorageDirectory(), "Download/StoreHelper.apk");
-                        if(file.exists()) {
-                            filesSize += file.length();
-                            file.delete();
-                        }
-                        //Excel导出
-                        file = new File(Environment.getExternalStorageDirectory(), "StoreHelperExport");
-                        if(file.exists() && file.isDirectory()) {
-                            for (File _file : file.listFiles()) {
-                                filesSize += _file.length();
-                                _file.delete();
-                            }
-                        }
-                        //HTTP缓存
-                        file = new File(Environment.getDataDirectory(), "data/com.tlg.storehelper/cache/HttpCache");
-                        if(file.exists() && file.isDirectory()) {
-                            for (File _file : file.listFiles()) {
-                                filesSize += _file.length();
-                                _file.delete();
-                            }
-                        }
-                        //图片
-
-                        //输出清理结果
-                        DecimalFormat formatter = new DecimalFormat("#.#");
-                        double _G = 1024*1024*1024.0;
-                        double _M = 1024*1024.0;
-                        double _K = 1024.0;
-                        double _filesSize = filesSize;
-                        String filesSizeDesc = _filesSize >= _G ? formatter.format(_filesSize/_G)+"G" :
-                                _filesSize >= _M ? formatter.format(_filesSize/_M)+"M" : formatter.format(_filesSize/_K)+"K";
+                        String filesSizeDesc = calculateCacheSize(true);
+                        loadData();
+                        mRecyclerView.getAdapter().notifyDataSetChanged();
                         Toast.makeText(MyApp.getInstance(), filesSizeDesc + "缓存已经清理", Toast.LENGTH_SHORT).show();
                         break;
                     case 103:
@@ -155,12 +127,69 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
         });
     }
 
+    private String calculateCacheSize(boolean deletion) {
+        long filesSize = 0;
+        //更新包
+        File file = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), "Download/StoreHelper.apk");
+        if(file.exists()) {
+            filesSize += file.length();
+            if(deletion)
+                file.delete();
+        }
+        //Excel导出
+        file = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), "StoreHelper/export");
+        if(file.exists() && file.isDirectory()) {
+            for (File _file : file.listFiles()) {
+                filesSize += _file.length();
+                if(deletion)
+                    _file.delete();
+            }
+        }
+        //HTTP缓存
+        file = new File(Environment.getDataDirectory().getAbsoluteFile(), "data/com.tlg.storehelper/cache/HttpCache");
+        if(file.exists() && file.isDirectory()) {
+            for (File _file : file.listFiles()) {
+                filesSize += _file.length();
+                if(deletion)
+                    _file.delete();
+            }
+        }
+        //图片
+        file = new File(Environment.getExternalStorageDirectory().getAbsoluteFile(), "StoreHelper/pic");
+        if(file.exists() && file.isDirectory()) {
+            for (File _file : file.listFiles()) {
+                filesSize += _file.length();
+                if(deletion)
+                    _file.delete();
+            }
+        }
+        //输出清理结果
+        DecimalFormat formatter = new DecimalFormat("#.#");
+        double _G = 1024*1024*1024.0;
+        double _M = 1024*1024.0;
+        double _K = 1024.0;
+        double _filesSize = filesSize;
+        String filesSizeDesc = _filesSize >= _G ? formatter.format(_filesSize/_G)+"G" :
+                _filesSize >= _M ? formatter.format(_filesSize/_M)+"M" : formatter.format(_filesSize/_K)+"K";
+        return filesSizeDesc;
+    }
+
     private void loadData() {
+        mDatas.clear();
         mDatas.add(new MyStickHeaderViewGroupData(0, false, "应用名称", "店铺助手", "基本信息"));
-        mDatas.add(new MyStickHeaderViewGroupData(1, false, "版本", "1.0", "基本信息"));
+        PackageManager manager = MyApp.getInstance().getPackageManager();
+        String version = "";
+        try {
+            PackageInfo info = manager.getPackageInfo(MyApp.getInstance().getPackageName(),0);
+            version = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        mDatas.add(new MyStickHeaderViewGroupData(1, false, "版本", version, "基本信息"));
         mDatas.add(new MyStickHeaderViewGroupData(101, true, "更新商品资料", "点击更新", "应用管理"));
-        mDatas.add(new MyStickHeaderViewGroupData(102, true, "缓存清理", "点击清理", "应用管理"));
-        mDatas.add(new MyStickHeaderViewGroupData(103, true, "数据清理", "点击清理", "应用管理"));
+        String filesSizeDesc = calculateCacheSize(false);
+        filesSizeDesc = filesSizeDesc.startsWith("0K") ? "缓存已清空" : filesSizeDesc + "缓存，点击清理";
+        mDatas.add(new MyStickHeaderViewGroupData(102, true, "缓存清理", filesSizeDesc, "应用管理"));
+        mDatas.add(new MyStickHeaderViewGroupData(103, true, "数据清空", "点击清空", "应用管理"));
     }
 
     /**

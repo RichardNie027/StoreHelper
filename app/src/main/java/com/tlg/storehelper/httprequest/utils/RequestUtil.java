@@ -232,7 +232,7 @@ public class RequestUtil {
 
             @Override
             public void update(long totalBytes, boolean done) {
-                if (done) {
+                if (done && totalBytes > 0) {
                     //下载文件的路径
                     String pathFile = null;
                     try {

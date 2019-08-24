@@ -61,10 +61,10 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
         //设置RecycleView的布局方式，线性布局默认垂直
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadData();
-        RecyclerViewAdapter recycleViewAdapter = new RecyclerViewAdapter(InventoryListsActivity.this, mDatas);
-        mRecyclerView.setAdapter(recycleViewAdapter);
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(InventoryListsActivity.this, mDatas);
+        mRecyclerView.setAdapter(recyclerViewAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recycleViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
+        recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
                 Intent intent = new Intent(InventoryListsActivity.this, InventoryActivity.class);
@@ -175,12 +175,16 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                mListener.onItemClick(view, getPosition());
+                if(mListener != null)
+                    mListener.onItemClick(view, getPosition());
             }
 
             @Override
             public boolean onLongClick(View view) {
-                return mListener.onItemLongClick(view, getPosition());
+                if(mListener != null)
+                    return mListener.onItemLongClick(view, getPosition());
+                else
+                    return false;
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.tlg.storehelper.activity.common;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,11 +13,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import android.widget.Button;
@@ -31,7 +30,6 @@ import com.nec.lib.android.boost.CommonProgressDialog;
 import com.nec.lib.android.grantor.PermissionListener;
 import com.nec.lib.android.grantor.PermissionsUtil;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
-import com.nec.lib.android.utils.ResUtil;
 import com.nec.lib.android.utils.StringUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;

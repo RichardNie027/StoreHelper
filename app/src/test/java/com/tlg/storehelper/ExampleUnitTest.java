@@ -2,7 +2,7 @@ package com.tlg.storehelper;
 
 import android.content.ContentValues;
 
-import com.nec.utils.SQLiteUtil;
+import com.nec.lib.android.utils.SQLiteUtil;
 import com.tlg.storehelper.dao.Inventory;
 
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        Inventory inventory = new Inventory(0L, "704", new Date(), 1, "940301", "A123456-789", new Date(), new Date());
+        Inventory inventory = new Inventory(null, "704", new Date(), 1, "940301", "A123456-789", new Date(), new Date());
         ContentValues cv = SQLiteUtil.toContentValues(inventory);
         assertEquals("940301", cv.getAsString("username"));
     }

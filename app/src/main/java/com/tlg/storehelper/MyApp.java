@@ -4,9 +4,6 @@ import android.util.ArrayMap;
 
 import com.nec.lib.android.application.MyApplication;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
-import com.nec.lib.android.utils.DateUtil;
-
-import java.util.Date;
 
 public class MyApp extends MyApplication {
 

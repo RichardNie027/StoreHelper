@@ -2,7 +2,7 @@ package com.tlg.storehelper.httprequest.utils;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.widget.Toast;

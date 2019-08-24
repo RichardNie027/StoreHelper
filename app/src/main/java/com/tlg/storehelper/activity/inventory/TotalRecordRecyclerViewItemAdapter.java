@@ -1,8 +1,9 @@
 package com.tlg.storehelper.activity.inventory;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.nec.lib.android.loadmoreview.LoadMoreFragment;
 import com.nec.lib.android.loadmoreview.RecyclerViewItemAdapter;

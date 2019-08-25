@@ -280,7 +280,7 @@ public class ScannerFragment extends BaseFragment {
 
     public void onScanBarcodeAsNewRecord(String barcode, String binCoding, int num) {
         if(mEtBinCoding.getVisibility()==View.VISIBLE && mEtBinCoding.getText().toString().trim().length() == 0) {
-            Toast.makeText(MyApp.getInstance(), "货位不能为空", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("货位不能为空");
             mEtBinCoding.requestFocus();
             return;
         }
@@ -289,7 +289,7 @@ public class ScannerFragment extends BaseFragment {
             if (DbUtil.checkGoodsBarcode(barcode, true)) {
                 mEtBarcode.setText("");
             } else {                    //错误
-                Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
+                AndroidUtil.showToast("条码不存在");
                 mEtBarcode.selectAll();
                 return;
             }
@@ -299,7 +299,7 @@ public class ScannerFragment extends BaseFragment {
             StatisticInfo _statisticInfo = mListener.onInventoryNewRecord(binCoding, barcode, num);
             if(_statisticInfo == null) {
                 //扫码增加记录失败
-                Toast.makeText(MyApp.getInstance(), "扫码失败", Toast.LENGTH_SHORT).show();
+                AndroidUtil.showToast("扫码失败");
                 return;
             }
             mStatisticInfo = _statisticInfo;

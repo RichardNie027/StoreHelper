@@ -12,6 +12,7 @@ import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.android.httprequest.use.DownloaderManager;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
 import com.nec.lib.android.httprequest.utils.DownloadFileUtil;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.BeanUtil;
 import com.nec.lib.android.utils.DateUtil;
 import com.nec.lib.android.utils.XxteaUtil;
@@ -157,7 +158,7 @@ public class RequestUtil {
                             editor.putString("lastModDate", lastModDate);
                             editor.commit();
                         } else {
-                            Toast.makeText(MyApp.getInstance(), response.msg, Toast.LENGTH_SHORT).show();
+                            AndroidUtil.showToast(response.msg);
                         }
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -182,7 +183,7 @@ public class RequestUtil {
                     @Override
                     public void onSuccess(BaseResponseEntity response) {
                         Log.d(activity.getClass().getName(), "请求成功");
-                        Toast.makeText(MyApp.getInstance(), response.msg, Toast.LENGTH_SHORT).show();
+                        AndroidUtil.showToast(response.msg);
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
                     }

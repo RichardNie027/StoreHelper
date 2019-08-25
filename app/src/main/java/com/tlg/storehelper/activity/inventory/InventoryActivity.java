@@ -23,6 +23,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ExcelUtil;
 import com.nec.lib.android.utils.StringUtil;
 import com.nec.lib.android.utils.DateUtil;
@@ -80,6 +81,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory);
         //接收参数
@@ -217,9 +219,9 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                 break;
             case R.id.action_locator_redo:
                 if(mInventoryDetailList.size() == 0)
-                    Toast.makeText(MyApp.getInstance(), "没有盘点内容", Toast.LENGTH_SHORT).show();
+                    AndroidUtil.showToast("没有盘点内容");
                 else
-                    Toast.makeText(MyApp.getInstance(), "长按需要复盘的货位", Toast.LENGTH_SHORT).show();
+                    AndroidUtil.showToast("长按需要复盘的货位");
                 break;
             case R.id.action_del_inventory_list:
                 new AlertDialog.Builder(MyApp.getInstance())
@@ -369,7 +371,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             }
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("加载数据失败");
         } finally {
             db.close();
         }
@@ -424,7 +426,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             mRecordListNeedRefresh = true;
             mRecordTotalNeedRefresh = true;
         } else {
-            Toast.makeText(MyApp.getInstance(), "新增数据失败，请检查", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("新增数据失败，请检查");
         }
         return inventoryDetail.id;
     }
@@ -455,9 +457,9 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             mScannerNeedRefresh = true;
             mRecordListNeedRefresh = false;
             mRecordTotalNeedRefresh = true;
-            Toast.makeText(MyApp.getInstance(), "记录已经删除", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("记录已经删除");
         } else {
-            Toast.makeText(MyApp.getInstance(), "删除记录出错，请检查", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("删除记录出错，请检查");
         }
         return deleteSuccess;
     }
@@ -473,7 +475,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     //删除盘存表
     private void delInventoryList() {
         if(!deleteInventory(mListId)) {
-            Toast.makeText(MyApp.getInstance(), "盘点单未被删除，请检查", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("盘点单未被删除，请检查");
         } else {
             new AlertDialog.Builder(MyApp.getInstance())
                     .setIcon(android.R.drawable.ic_dialog_info)
@@ -495,7 +497,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     //上传盘存表
     private void uploadInventoryList() {
         if(mInventoryDetailList.size() == 0) {
-            Toast.makeText(MyApp.getInstance(), "没有内容需要上传", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("没有内容需要上传");
             return;
         }
         InventoryEntity inventoryEntity = new InventoryEntity();
@@ -523,11 +525,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     //导出盘存表
     private void exportInventoryList() {
         if(mInventoryDetailList.size() == 0) {
-            Toast.makeText(MyApp.getInstance(), "没有内容需要导出", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(!GlobalVars.permissionOfNetworkAndStroage) {
-            Toast.makeText(MyApp.getInstance(), "缺失文件读写权限，请在设置中修改", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("没有内容需要导出");
             return;
         }
         //输出Excel
@@ -569,7 +567,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             db.setTransactionSuccessful();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            //Toast.makeText(MyApp.getInstance(), "新增记录出错", Toast.LENGTH_SHORT).show();
+            //AndroidUtil.showToast("新增记录出错");
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -603,7 +601,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             result = false;
-            //Toast.makeText(MyApp.getInstance(), "删除记录出错", Toast.LENGTH_SHORT).show();
+            //AndroidUtil.showToast("删除记录出错");
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -634,7 +632,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             result = false;
-            //Toast.makeText(MyApp.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
+            //AndroidUtil.showToast("删盘点单出错");
         } finally {
             if (db != null) {
                 db.endTransaction();

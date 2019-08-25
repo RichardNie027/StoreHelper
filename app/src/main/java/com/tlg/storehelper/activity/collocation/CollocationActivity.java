@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ImageUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
@@ -50,6 +51,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collocation);
         initView();
@@ -111,7 +113,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
 
             @Override
             public boolean onItemLongClick(View view, int postion) {
-                //Toast.makeText(MyApp.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
+                //AndroidUtil.showToast("long click " + postion);
                 return true;
             }
         });
@@ -160,7 +162,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             if (DbUtil.checkGoodsBarcode(barcode, false)) {
                 mEtBarcode.setText("");
             } else {                    //错误
-                Toast.makeText(MyApp.getInstance(), "货号 / 条码不存在", Toast.LENGTH_SHORT).show();
+                AndroidUtil.showToast("货号 / 条码不存在");
                 mEtBarcode.selectAll();
                 return;
             }

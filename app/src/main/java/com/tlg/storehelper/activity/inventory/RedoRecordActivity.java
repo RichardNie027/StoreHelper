@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 
@@ -34,6 +35,7 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_redo_record);
         //接收参数
@@ -122,10 +124,10 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(!mRedoRecordFragment.doUpdteInventory()) {
-                                    Toast.makeText(MyApp.getInstance(), "更新货位盘点数据失败，请检查", Toast.LENGTH_SHORT).show();
+                                    AndroidUtil.showToast("更新货位盘点数据失败，请检查");
                                 } else {
                                     mInventoryUpdated = true;
-                                    Toast.makeText(MyApp.getInstance(), "货位盘点数据已更新", Toast.LENGTH_SHORT).show();
+                                    AndroidUtil.showToast("货位盘点数据已更新");
                                     mRedoRecordFragment.doRefreshOnRecyclerView();
                                 }
                             }

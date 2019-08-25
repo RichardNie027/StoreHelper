@@ -5,93 +5,179 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:clickable="true"
-    android:focusableInTouchMode="true"
     tools:context=".activity.common.MainActivity">
 
-    <ImageView
-        android:id="@+id/ivBg"
+    <Button
+        android:id="@+id/btnExit"
+        style="@style/Custom.ButtonStyle"
+        android:layout_width="67dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="btnExitClick"
+        android:text="退出"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+    <TextView
+        android:id="@+id/tvStoreCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bg" />
-
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="42dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="40dp"
-        android:drawableLeft="@drawable/user"
-        android:drawablePadding="20dp"
-        android:ems="10"
-        android:hint="丽晶系统账号"
-        android:inputType="text"
-        android:textSize="12sp"
-        android:theme="@style/Custom.LightEditTextStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivBg" />
-
-    <EditText
-        android:drawableLeft="@drawable/lock"
-        android:id="@+id/etPwd"
-        android:drawablePadding="20dp"
-        android:theme="@style/Custom.LightEditTextStyle"
-        android:layout_width="0dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:inputType="numberPassword"
-        android:hint="登录密码"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@+id/etUsername"
-        app:layout_constraintStart_toStartOf="@+id/etUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etUsername" />
-
-    <Button
-        android:id="@+id/btnLogin"
-        style="@style/Custom.ButtonStyle"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:onClick="btnLoginClick"
-        android:text="登录"
+        android:layout_marginBottom="16dp"
+        android:text="门店："
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/etUsername"
-        app:layout_constraintStart_toStartOf="@+id/etUsername"
-        app:layout_constraintTop_toBottomOf="@+id/etPwd" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <com.tlg.storehelper.comm.TitleTextView
-        android:id="@+id/tvSlogan"
+    <TextView
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:text="不为失败找借口，只为成功找方法！"
-        android:textColor="@color/silver"
+        android:layout_marginBottom="16dp"
+        android:text="用户："
         android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tvCopyright"
+    <ImageView
+        android:id="@+id/ivSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Copyright@ 2019 TLG All Right Reserved"
-        android:textColor="@color/silver"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="32dp"
+        android:onClick="ivSearchClick"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivCollocation"
+        app:srcCompat="@drawable/search" />
+
+    <ImageView
+        android:id="@+id/ivCollocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="ivCollocationClick"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/collocation" />
+
+    <ImageView
+        android:id="@+id/ivPerformance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:onClick="ivSearchClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivCollocation"
+        app:srcCompat="@drawable/performance" />
+
+    <ImageView
+        android:id="@+id/ivInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:onClick="ivInventoryClick"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivSearch"
+        app:srcCompat="@drawable/inventory" />
+
+    <ImageView
+        android:id="@+id/ivSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:onClick="ivSettingsClick"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivInventory"
+        app:srcCompat="@drawable/settings" />
+
+    <TextView
+        android:id="@+id/tvSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivSearchClick"
+        android:text="查货"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivSearch"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivSearch" />
+
+    <TextView
+        android:id="@+id/tvCollocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivSearchClick"
+        android:text="搭配"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivCollocation"
+        app:layout_constraintStart_toStartOf="@+id/ivCollocation"
+        app:layout_constraintTop_toBottomOf="@+id/ivCollocation" />
+
+    <TextView
+        android:id="@+id/tvPerformance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivSearchClick"
+        android:text="业绩"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
+        app:layout_constraintStart_toStartOf="@+id/ivPerformance"
+        app:layout_constraintTop_toBottomOf="@+id/ivPerformance" />
+
+    <TextView
+        android:id="@+id/tvInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivInventoryClick"
+        android:text="盘点"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivInventory"
+        app:layout_constraintStart_toStartOf="@+id/ivInventory"
+        app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
+
+    <TextView
+        android:id="@+id/tvSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivSettingsClick"
+        android:text="设置"
+        android:textColor="@color/gray"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/ivSettings"
+        app:layout_constraintStart_toStartOf="@+id/ivSettings"
+        app:layout_constraintTop_toBottomOf="@+id/ivSettings" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStoreCode"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreCode"
+        app:layout_constraintTop_toTopOf="@+id/tvStoreCode" />
+
+    <ImageView
+        android:id="@+id/ivBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:alpha="0.3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/bg1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

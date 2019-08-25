@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.boost.DatetimePickerFragment;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -44,6 +45,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_list);
         initView();
@@ -101,7 +103,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApp.getInstance(), "记录序号生成错误", Toast.LENGTH_SHORT);
+            AndroidUtil.showToast("记录序号生成错误");
             result = "01";
         } finally {
             db.close();
@@ -134,7 +136,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
             result = true;
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApp.getInstance(), "保存盘点单失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("保存盘点单失败");
         } finally {
             if (db != null) {
                 db.endTransaction();
@@ -158,10 +160,10 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
                 return true;
             case R.id.action_save:
                 if(!saveNewInventory()) {
-                    Toast.makeText(MyApp.getInstance(), "盘点单保存失败", Toast.LENGTH_SHORT).show();
+                    AndroidUtil.showToast("盘点单保存失败");
                     break;
                 }
-                //Toast.makeText(MyApp.getInstance(), "新盘点单", Toast.LENGTH_SHORT).show();
+                //AndroidUtil.showToast("新盘点单");
                 Intent intent = new Intent(this, InventoryActivity.class);
                 intent.putExtra("list_id", mNewId);
                 startActivityForResult(intent, 3);

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -39,6 +40,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventory_lists);
         initView();
@@ -76,7 +78,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
 
             @Override
             public boolean onItemLongClick(View view, int postion) {
-                //Toast.makeText(MyApp.getInstance(), "long click " + postion, Toast.LENGTH_SHORT).show();
+                //AndroidUtil.showToast("long click " + postion);
                 return true;
             }
         });
@@ -106,7 +108,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
             cursor.close();
             result = true;
         } catch (Throwable t) {
-            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("加载数据失败");
             datas.clear();
         } finally {
             db.close();

@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.SQLiteUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
@@ -161,7 +162,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("加载数据失败");
         } finally {
             db.close();
         }
@@ -194,7 +195,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             if (DbUtil.checkGoodsBarcode(barcode, true)) {
                 mEtBarcode.setText("");
             } else {                    //错误
-                Toast.makeText(MyApp.getInstance(), "条码不存在", Toast.LENGTH_SHORT).show();
+                AndroidUtil.showToast("条码不存在");
                 mEtBarcode.selectAll();
                 return;
             }
@@ -228,7 +229,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApp.getInstance(), "数据检索失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("数据检索失败");
         } finally {
             db.close();
         }
@@ -265,7 +266,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             result = -1;
-            //Toast.makeText(MyApp.getInstance(), "删盘点单出错", Toast.LENGTH_SHORT).show();
+            //AndroidUtil.showToast("删盘点单出错");
         } finally {
             if (db != null) {
                 db.endTransaction();

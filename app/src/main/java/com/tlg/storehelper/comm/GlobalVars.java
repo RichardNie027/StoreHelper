@@ -10,6 +10,4 @@ public final class GlobalVars {
     /** 网络访问令牌 */
     public static String token = "";
 
-    /** 访问网络和文件读写权限 */
-    public static boolean permissionOfNetworkAndStroage = false;
 }

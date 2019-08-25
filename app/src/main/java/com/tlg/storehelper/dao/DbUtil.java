@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.nec.lib.android.httprequest.net.dialog.CustomProgressDialogUtils;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class DbUtil {
             }
             cursor.close();
         } catch (Throwable t) {
-            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("加载数据失败");
             result = false;
         } finally {
             db.close();
@@ -53,9 +54,9 @@ public class DbUtil {
                 super.onPostExecute(aBoolean);
                 CustomProgressDialogUtils.getInstance().dismissProgress();
                 if(aBoolean)
-                    Toast.makeText(MyApp.getInstance(), "商品资料同步完成", Toast.LENGTH_SHORT).show();
+                    AndroidUtil.showToast("商品资料同步完成");
                 else
-                    Toast.makeText(MyApp.getInstance(), "商品资料保存失败", Toast.LENGTH_SHORT).show();
+                    AndroidUtil.showToast("商品资料保存失败");
             }
 
             @Override

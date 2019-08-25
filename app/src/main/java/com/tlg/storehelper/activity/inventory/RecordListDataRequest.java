@@ -9,6 +9,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.android.loadmoreview.AsynDataRequest;
@@ -100,7 +101,7 @@ public class RecordListDataRequest implements AsynDataRequest {
             cursor.close();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApp.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("加载数据失败");
         } finally {
             db.close();
         }

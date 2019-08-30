@@ -33,6 +33,9 @@ public class LoginActivity extends BaseRxAppCompatActivity {
         mEditTextName = findViewById(R.id.etUsername);
         mEditTextPwd = findViewById(R.id.etPwd);
         mBtnLogin = findViewById(R.id.btnLogin);
+
+        // initialize controls
+        hideKeyboard(true);
     }
 
     public void btnLoginClick(View v) {

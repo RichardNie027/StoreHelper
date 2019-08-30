@@ -7,94 +7,141 @@
     android:background="@color/white"
     tools:context=".activity.common.MainActivity">
 
-    <Button
-        android:id="@+id/btnExit"
-        style="@style/Custom.ButtonStyle"
-        android:layout_width="67dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="btnExitClick"
-        android:text="退出"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+    <View
+        android:id="@+id/tvHeader"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvStoreCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="门店："
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        android:text="用户："
+        android:text="店铺："
+        android:textColor="@color/colorSecond"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        style="@android:style/Widget.DeviceDefault.Light.Spinner"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:prompt="@string/choice_store"
+        android:spinnerMode="dialog"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStoreCode"
+        app:layout_constraintStart_toEndOf="@+id/tvStoreCode"
+        app:layout_constraintTop_toTopOf="@+id/tvStoreCode" />
+
+    <View
+        android:id="@+id/tvUnderline"
+        android:layout_width="26dp"
+        android:layout_height="0.5dp"
+        android:background="@color/colorSecond"
+        app:layout_constraintStart_toStartOf="@+id/spinner"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <Button
+        android:id="@+id/btnExit"
+        style="@style/Custom.ReverseButtonStyle"
+        android:layout_width="67dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="btnExitClick"
+        android:text="退出系统"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toStartOf="@+id/btnSetting"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
+
+    <Button
+        android:id="@+id/btnSetting"
+        style="@style/Custom.ReverseButtonStyle"
+        android:layout_width="37dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="btnSettingsClick"
+        android:text="设置"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="@+id/tvHeader"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
 
     <ImageView
         android:id="@+id/ivSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
         android:onClick="ivSearchClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivCollocation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ivCollocation"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeader"
         app:srcCompat="@drawable/search" />
 
     <ImageView
         android:id="@+id/ivCollocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
         android:onClick="ivCollocationClick"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivPerformance"
+        app:layout_constraintStart_toEndOf="@+id/ivSearch"
+        app:layout_constraintTop_toTopOf="@+id/ivSearch"
         app:srcCompat="@drawable/collocation" />
 
     <ImageView
         android:id="@+id/ivPerformance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
         android:onClick="ivSearchClick"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ivInventory"
+        app:layout_constraintStart_toEndOf="@+id/ivCollocation"
         app:layout_constraintTop_toTopOf="@id/ivCollocation"
-        app:srcCompat="@drawable/performance" />
+        app:srcCompat="@drawable/bill" />
 
     <ImageView
         android:id="@+id/ivInventory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:onClick="ivInventoryClick"
-        app:layout_constraintStart_toStartOf="@+id/ivSearch"
-        app:layout_constraintTop_toBottomOf="@+id/ivSearch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivPerformance"
+        app:layout_constraintTop_toTopOf="@+id/ivPerformance"
         app:srcCompat="@drawable/inventory" />
 
-    <ImageView
-        android:id="@+id/ivSettings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:onClick="ivSettingsClick"
-        app:layout_constraintStart_toStartOf="@+id/ivSearch"
-        app:layout_constraintTop_toBottomOf="@+id/ivInventory"
-        app:srcCompat="@drawable/settings" />
+    <RadioGroup
+        android:id="@+id/rgTabs"
+        android:layout_width="80dp"
+        android:layout_height="18dp"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPerformanceLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPerformanceLabel">
+
+        <RadioButton
+            android:id="@+id/rbYesterday"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="昨天"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/rbToday"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:checked="true"
+            android:focusable="false"
+            android:text="今天"
+            android:textSize="11sp" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/tvSearch"
@@ -103,7 +150,6 @@
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
         android:text="查货"
-        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivSearch"
         app:layout_constraintStart_toStartOf="@+id/ivSearch"
@@ -116,7 +162,6 @@
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
         android:text="搭配"
-        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivCollocation"
         app:layout_constraintStart_toStartOf="@+id/ivCollocation"
@@ -128,8 +173,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
-        android:text="业绩"
-        android:textColor="@color/gray"
+        android:text="开单"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
         app:layout_constraintStart_toStartOf="@+id/ivPerformance"
@@ -142,42 +186,158 @@
         android:layout_marginTop="8dp"
         android:onClick="ivInventoryClick"
         android:text="盘点"
-        android:textColor="@color/gray"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/ivInventory"
         app:layout_constraintStart_toStartOf="@+id/ivInventory"
         app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
 
     <TextView
-        android:id="@+id/tvSetting"
+        android:id="@+id/tvPerformanceLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:onClick="ivSettingsClick"
-        android:text="设置"
-        android:textColor="@color/gray"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="销售业绩"
+        android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/ivSettings"
-        app:layout_constraintStart_toStartOf="@+id/ivSettings"
-        app:layout_constraintTop_toBottomOf="@+id/ivSettings" />
-
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="72dp"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/tvStoreCode"
-        app:layout_constraintStart_toEndOf="@+id/tvStoreCode"
-        app:layout_constraintTop_toTopOf="@+id/tvStoreCode" />
-
-    <ImageView
-        android:id="@+id/ivBg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerInside"
-        android:alpha="0.3"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/bg1" />
+        app:layout_constraintTop_toBottomOf="@id/tvSearch" />
+
+    <TextView
+        android:id="@+id/tvPanel1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvPersonLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvPersonLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toEndOf="@+id/tvAllowanceLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvAllowanceLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPersonCodeLabel"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="工号"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPerformanceLabel" />
+
+    <TextView
+        android:id="@+id/tvPersonLabel"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="姓名"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvQuantityLabel"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="数量"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvPersonLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvSalesAmountLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="销售额"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvAllowanceLabel"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="提成"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPanel2">
+
+        <com.nec.lib.android.loadmoreview.LoadMoreRecyclerView
+            android:id="@+id/recycler_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorSecond"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_record_load_more_list_item_linear" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

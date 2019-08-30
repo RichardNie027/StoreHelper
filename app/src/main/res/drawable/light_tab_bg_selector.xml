@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="false"><!--未选中-->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/colorSecond"></solid>
+            <stroke android:width="0.2dp" android:color="@color/colorPrimaryLight"></stroke> <!--边框-->
+        </shape>
+    </item>
+    <item android:state_checked="true"><!--选中时-->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/colorPrimaryLight"></solid>
+            <stroke android:width="0.2dp" android:color="@color/colorPrimaryLight"></stroke> <!--边框-->
+        </shape>
+    </item>
+</selector>

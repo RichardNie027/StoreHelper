@@ -62,6 +62,9 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
         //toolbar
         setSupportActionBar(mToolbar);
 
+        // initialize controls
+        hideKeyboard(true);
+
         //设置RecycleView的布局方式，线性布局默认垂直
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadData();

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.httprequest.net.dialog.CustomProgressDialogUtils;
 import com.nec.lib.android.utils.AndroidUtil;
+import com.nec.lib.android.utils.DateUtil;
 import com.tlg.storehelper.MyApp;
 
 import java.util.List;
@@ -87,4 +88,63 @@ public class DbUtil {
         }.execute();
     }
 
+    public static Inventory getInventory(SQLiteDatabase db, String id) {
+        Inventory inventory = new Inventory();
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        SQLiteDatabase _db = db;
+        try {
+            if(db == null)
+                _db = helper.getReadableDatabase();
+            String sql = new StringBuffer().append("select *").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
+                    .append(" where id=?")
+                    .toString();
+            Cursor cursor = _db.rawQuery(sql, new String[]{id});
+            if (cursor.moveToFirst()) {
+                inventory.id = cursor.getString(cursor.getColumnIndex("id"));
+                inventory.store_code = cursor.getString(cursor.getColumnIndex("store_code"));
+                inventory.list_date = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("list_date")));
+                inventory.idx = cursor.getInt(cursor.getColumnIndex("idx"));
+                inventory.username = cursor.getString(cursor.getColumnIndex("username"));
+                inventory.list_no = cursor.getString(cursor.getColumnIndex("list_no"));
+                inventory.create_time = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("create_time")));
+                inventory.last_time = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("last_time")));
+            }
+            cursor.close();
+        } catch (Throwable t) {
+            Log.e(DbUtil.class.getName(), t.getMessage(), t);
+        } finally {
+            if(db == null)
+                _db.close();
+        }
+        return inventory;
+    }
+
+    public static InventoryDetail getInventoryDetail(SQLiteDatabase db, String id) {
+        InventoryDetail inventoryDetail = new InventoryDetail();
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        SQLiteDatabase _db = db;
+        try {
+            if(db == null)
+                _db = helper.getReadableDatabase();
+            String sql = new StringBuffer().append("select *").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
+                    .append(" where id=?")
+                    .toString();
+            Cursor cursor = _db.rawQuery(sql, new String[]{id});
+            if (cursor.moveToFirst()) {
+                inventoryDetail.id = cursor.getString(cursor.getColumnIndex("id"));
+                inventoryDetail.pid = cursor.getString(cursor.getColumnIndex("pid"));
+                inventoryDetail.idx = cursor.getInt(cursor.getColumnIndex("idx"));
+                inventoryDetail.bin_coding = cursor.getString(cursor.getColumnIndex("bin_coding"));
+                inventoryDetail.barcode = cursor.getString(cursor.getColumnIndex("barcode"));
+                inventoryDetail.quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
+            }
+            cursor.close();
+        } catch (Throwable t) {
+            Log.e(DbUtil.class.getName(), t.getMessage(), t);
+        } finally {
+            if(db == null)
+                _db.close();
+        }
+        return inventoryDetail;
+    }
 }

@@ -35,16 +35,17 @@ public class MainActivity extends BaseRxAppCompatActivity {
 
     private void initView() {
         // find view
-        TextView tvUsername = findViewById(R.id.tvUsername);
         mSpinner = findViewById(R.id.spinner);
+
+        // initialize controls
+        hideKeyboard(true);
 
         ///获取用户可用门店集合
         Bundle extras = getIntent().getExtras();
         mStoreCodes = extras.getStringArray("storeCodes");
-        tvUsername.setText("用户：" + GlobalVars.username);
 
         //填充店铺列表
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_select, mStoreCodes);
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_light_select, mStoreCodes);
         spinnerAdapter.setDropDownViewResource(R.layout.spinner_item_drop);
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(spinnerAdapter);
@@ -102,7 +103,7 @@ public class MainActivity extends BaseRxAppCompatActivity {
         startActivity(intent);
     }
 
-    public void ivSettingsClick(View v) {
+    public void btnSettingsClick(View v) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }

@@ -82,6 +82,18 @@
         <item name="android:textColor">@drawable/tab_text_color_selector</item>
     </style>
 
+    <style name="Custom.LightTabRadioButtonStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/light_tab_bg_selector</item>
+        <item name="android:textColor">@drawable/light_tab_text_color_selector</item>
+    </style>
+
     <style name="Custom.LightEditTextStyle" parent="Theme.AppCompat.Light">
         <item name="android:drawablePadding">8dp</item>
         <item name="colorControlNormal">@color/whitesmoke</item>
@@ -93,9 +105,17 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Custom.LightButtonStyle">
-        <item name="android:background">@drawable/button_selector</item>
+    <style name="Custom.ReverseButtonStyle">
+        <item name="android:background">@color/transparency</item>
         <item name="android:textColor">@drawable/button_text_color_selector</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Custom.LightButtonStyle">
+        <item name="android:background">@drawable/light_button_selector</item>
+        <item name="android:textColor">@drawable/light_button_text_color_selector</item>
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

@@ -30,6 +30,7 @@ import com.nec.lib.android.utils.DateUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
+import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.dao.Inventory;
 import com.tlg.storehelper.dao.InventoryDetail;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
@@ -564,9 +565,18 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             long result = db.insert(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, null, contentValues);
             if(result == -1L)
                 throw new Exception("新增记录出错");
+            Inventory inventory = DbUtil.getInventory(db, mStatisticInfo.id);
+            inventory.last_time = new Date();
+            ContentValues contentValues2 = SQLiteUtil.toContentValues(inventory);
+            long result2 = db.update(SQLiteDbHelper.TABLE_INVENTORY, contentValues2, "id=?", new String[]{mStatisticInfo.id});
+            if(result2 <= 0L)
+                throw new Exception("新增记录出错");
+            else
+                mInventory.last_time = inventory.last_time;
             db.setTransactionSuccessful();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
+            inventoryDetail = null;
             //AndroidUtil.showToast("新增记录出错");
         } finally {
             if (db != null) {
@@ -595,6 +605,14 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                 long _result = db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "id=?", new String[]{id});
                 if(_result == 0)
                     throw new Exception("没有记录被删除");
+                Inventory inventory = DbUtil.getInventory(db, mStatisticInfo.id);
+                inventory.last_time = new Date();
+                ContentValues contentValues2 = SQLiteUtil.toContentValues(inventory);
+                long result2 = db.update(SQLiteDbHelper.TABLE_INVENTORY, contentValues2, "id=?", new String[]{mStatisticInfo.id});
+                if(result2 <= 0L)
+                    throw new Exception("记录删除出错");
+                else
+                    mInventory.last_time = inventory.last_time;
             }
             result = true;
             db.setTransactionSuccessful();

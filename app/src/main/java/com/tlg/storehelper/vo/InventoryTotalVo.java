@@ -7,14 +7,14 @@ import java.io.Serializable;
  */
 public class InventoryTotalVo implements Serializable {
     /**货架编码*/
-    public String bin_coding;
+    public String binCoding;
     /**款码统计*/
     public int sizeQuantity;
     /**商品数量*/
     public int quantity;
 
-    public InventoryTotalVo(String bin_coding, int sizeQuantity, int quantity) {
-        this.bin_coding = bin_coding;
+    public InventoryTotalVo(String binCoding, int sizeQuantity, int quantity) {
+        this.binCoding = binCoding;
         this.sizeQuantity = sizeQuantity;
         this.quantity = quantity;
     }

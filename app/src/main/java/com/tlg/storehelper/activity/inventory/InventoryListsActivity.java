@@ -18,12 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.nec.lib.android.utils.AndroidUtil;
-import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.SQLiteDbHelper;
@@ -91,18 +89,18 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
         SQLiteDatabase db = null;
         try {
             db = helper.getReadableDatabase();
-            String sql = new StringBuffer().append("select a.id, a.list_no, sum(b.quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
+            String sql = new StringBuffer().append("select a.id, a.listNo, sum(b.quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
                     .append(" a left join ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL).append(" b on a.id=b.pid")
-                    .append(" where a.store_code=?")
-                    .append(" group by a.id,a.list_no order by a.list_date desc, a.idx desc")
+                    .append(" where a.storeCode=?")
+                    .append(" group by a.id,a.listNo order by a.listDate desc, a.idx desc")
                     .append(" limit 0,50")
                     .toString();
             Cursor cursor = db.rawQuery(sql, new String[] {GlobalVars.storeCode});
             while(cursor.moveToNext()){
                 String id = cursor.getString(cursor.getColumnIndex("id"));
-                String list_no = cursor.getString(cursor.getColumnIndex("list_no"));
+                String listNo = cursor.getString(cursor.getColumnIndex("listNo"));
                 int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
-                InventoryListVo inventoryListVo = new InventoryListVo(id, list_no, quantity);
+                InventoryListVo inventoryListVo = new InventoryListVo(id, listNo, quantity);
                 datas.add(inventoryListVo);
             }
             cursor.close();
@@ -142,7 +140,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
             recyclerViewHolder.itemView.setTag(mDatas.get(position).id);
-            recyclerViewHolder.tvInventoryListNo.setText(mDatas.get(position).list_no);
+            recyclerViewHolder.tvInventoryListNo.setText(mDatas.get(position).listNo);
             recyclerViewHolder.tvQuantity.setText(String.valueOf(mDatas.get(position).quantity));
             recyclerViewHolder.ivIcon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_view));
         }

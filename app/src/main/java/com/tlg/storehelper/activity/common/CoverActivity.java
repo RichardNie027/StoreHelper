@@ -30,10 +30,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.boost.CommonProgressDialog;
 import com.nec.lib.android.utils.AndroidUtil;
+import com.nec.lib.android.utils.DownloadUtil;
 import com.nec.lib.android.utils.StringUtil;
 import com.nec.lib.android.utils.UiUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
@@ -169,13 +171,7 @@ public class CoverActivity extends BaseRxAppCompatActivity {
     //                          升级                                  //
     //****************************************************************//
 
-    private static final String DOWNLOAD_DIR_NAME = "Download";     // 下载在服务端的路径名
-    private static final String DOWNLOAD_NAME = "StoreHelper.apk";  // 下载在服务端的文件名
-    private static final String DOWNLOAD_URL = "http://192.168.1.176:8080/pre_api/downloadApk"; //安装包下载地址
-
-    private CommonProgressDialog pBar;
-
-    public static int localVersion() {
+    private int localVersion() {
         try {
             PackageManager manager = MyApp.getInstance().getPackageManager();
             PackageInfo info = manager.getPackageInfo(MyApp.getInstance().getPackageName(),0);
@@ -198,183 +194,27 @@ public class CoverActivity extends BaseRxAppCompatActivity {
                 String content = response.msg;
                 if (vision < newVersionCode) {
                     // 版本号不同
-                    ShowDialog(vision, newVersion, content, DOWNLOAD_URL);
+                    new DownloadUtil(GlobalVars.DL_PATH, GlobalVars.APK_FILENAME, MyApp.baseUrl + "pre_api/downloadApk", true, new DownloadUtil.DownloadListener() {
+                        @Override
+                        public void onDownloadFail(String localFilePath, String msg) {
+                            AndroidUtil.showAlertDialog("更新失败", "请联系信息部或稍后再试\n" + msg);
+                        }
+                        @Override
+                        public void onDownloaded(String localFilePath) {
+                            updateApk(localFilePath);
+                        }
+                    }).showDialog("版本更新", response.msg, "更新");
+
                 } else
                     enterAppComeOn();   //进入登录界面
             }
         });
     }
 
-    private void ShowDialog(int vision, String newversion, String content, final String url) {
-        new android.app.AlertDialog.Builder(this)
-                .setTitle("版本更新")
-                .setMessage(content)
-                .setPositiveButton("更新", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        pBar = new CommonProgressDialog(CoverActivity.this);
-                        pBar.setCanceledOnTouchOutside(false);
-                        pBar.setTitle("正在下载");
-                        //动态构造对话框Layout
-                        View rootView = getWindow().getDecorView().getRootView();
-                        LinearLayout mLinearLayout = new LinearLayout(rootView.getContext());
-                        mLinearLayout.setGravity(Gravity.CENTER);
-                        mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-                        LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.MATCH_PARENT);
-                        mLinearLayout.setLayoutParams(mLayoutParams1);
-                        TextView textView = new TextView(rootView.getContext());
-                        LinearLayout.LayoutParams mLayoutParams2 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-                        textView.setTextColor(Color.WHITE);
-                        textView.setTextSize(14);
-                        textView.setText("正在下载");
-                        mLinearLayout.addView(textView);
-                        //设置对话框
-                        pBar.setCustomTitle(mLinearLayout);
-                        pBar.setMessage("正在下载");
-                        pBar.setIndeterminate(true);
-                        pBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                        pBar.setCancelable(true);
-                        // downFile(URLData.DOWNLOAD_URL);
-                        final DownloadTask downloadTask = new DownloadTask(CoverActivity.this);
-                        downloadTask.execute(url);
-                        pBar.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                            @Override
-                            public void onCancel(DialogInterface dialog) {
-                                downloadTask.cancel(true);
-                            }
-                        });
-                    }
-                })
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
-    }
-
-
-    class DownloadTask extends AsyncTask<String, Integer, String> {
-
-        private Context context;
-        private PowerManager.WakeLock mWakeLock;
-
-        public DownloadTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected String doInBackground(String... sUrl) {
-            InputStream input = null;
-            OutputStream output = null;
-            HttpURLConnection connection = null;
-            File file = null;
-            try {
-                URL url = new URL(sUrl[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-                // expect HTTP 200 OK, so we don't mistakenly save error
-                // report
-                // instead of the file
-                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    return "Server returned HTTP "
-                            + connection.getResponseCode() + " "
-                            + connection.getResponseMessage();
-                }
-                // this will be useful to display download percentage
-                // might be -1: server did not report the length
-                int fileLength = connection.getContentLength();
-                if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                    file = new File(Environment.getExternalStorageDirectory(), DOWNLOAD_DIR_NAME);
-                    if (!file.exists()) {
-                        file.mkdirs();
-                    }
-                    if (!file.exists()) {
-                        // 判断父文件夹是否存在
-                        if (!file.getParentFile().exists()) {
-                            file.getParentFile().mkdirs();
-                        }
-                    }
-                    file = new File(file, DOWNLOAD_NAME);
-                } else {
-                    AndroidUtil.showToastLong("存储未挂载");
-                }
-                input = connection.getInputStream();
-                output = new FileOutputStream(file);
-                byte data[] = new byte[4096];
-                long total = 0;
-                int count;
-                while ((count = input.read(data)) != -1) {
-                    // allow canceling with back button
-                    if (isCancelled()) {
-                        input.close();
-                        return null;
-                    }
-                    total += count;
-                    // publishing the progress....
-                    if (fileLength > 0) // only if total length is known
-                        publishProgress((int) (total * 100 / fileLength));
-                    output.write(data, 0, count);
-
-                }
-            } catch (Exception e) {
-                System.out.println(e.toString());
-                return e.toString();
-
-            } finally {
-                try {
-                    if (output != null)
-                        output.close();
-                    if (input != null)
-                        input.close();
-                } catch (IOException ignored) {
-                    ignored.toString();
-                }
-                if (connection != null)
-                    connection.disconnect();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            // take CPU lock to prevent CPU from going off if the user
-            // presses the power button during download
-            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, getClass().getName());
-            mWakeLock.acquire();
-            pBar.show();
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... progress) {
-            super.onProgressUpdate(progress);
-            // if we get here, length is known, now set indeterminate to false
-            pBar.setIndeterminate(false);
-            pBar.setMax(100);
-            pBar.setProgress(progress[0]);
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            mWakeLock.release();
-            pBar.dismiss();
-            if (result != null) {
-                Log.d(this.getClass().getName(), result);
-                AndroidUtil.showToastLong("失败：" + result);
-            } else {
-                update();
-            }
-        }
-    }
-
-    private void update() {
+    private void updateApk(String filePath) {
         //安装应用
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        File file = new File(Environment.getExternalStorageDirectory(), DOWNLOAD_DIR_NAME+"/"+DOWNLOAD_NAME);
+        File file = new File(filePath);
         if(file.length() > 100) {
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
             startActivity(intent);

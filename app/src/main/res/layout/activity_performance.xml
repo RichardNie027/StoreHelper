@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.performance.PerformanceActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:titleTextAppearance="@style/ToolbarTextAppearance"
+        app:popupTheme="@style/OverflowMenuStyle"
+        app:title="业绩"></androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/tvPerformanceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="销售业绩"
+        android:textColor="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+    <TextView
+        android:id="@+id/tvPanel1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvPersonLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvPersonLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.8"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPanel5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.6"
+        android:background="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toEndOf="@+id/tvAllowanceLabel"
+        app:layout_constraintStart_toStartOf="@+id/tvAllowanceLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvPersonCodeLabel"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="工号"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPerformanceLabel" />
+
+    <TextView
+        android:id="@+id/tvPersonLabel"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="姓名"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvQuantityLabel"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:text="数量"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvPersonLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvSalesAmountLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="销售额"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvQuantityLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <TextView
+        android:id="@+id/tvAllowanceLabel"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="提成"
+        android:textAlignment="textEnd"
+        android:textColor="@color/colorSecond"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvSalesAmountLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+
+    <RadioGroup
+        android:id="@+id/rgTabs"
+        android:layout_width="80dp"
+        android:layout_height="18dp"
+        android:background="@color/colorPrimaryLight"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@+id/tvPerformanceLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPerformanceLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RadioButton
+            android:id="@+id/rbYesterday"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="昨天"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/rbToday"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:checked="true"
+            android:focusable="false"
+            android:text="今天"
+            android:textSize="11sp" />
+    </RadioGroup>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPanel2">
+
+        <com.nec.lib.android.loadmoreview.LoadMoreRecyclerView
+            android:id="@+id/recycler_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorSecond"
+            app:layoutManager="LinearLayoutManager"
+            tools:listitem="@layout/fragment_record_load_more_list_item_linear" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

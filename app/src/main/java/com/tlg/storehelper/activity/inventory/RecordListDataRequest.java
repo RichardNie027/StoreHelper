@@ -1,5 +1,6 @@
 package com.tlg.storehelper.activity.inventory;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
@@ -36,7 +36,7 @@ public class RecordListDataRequest implements AsynDataRequest {
     private List<InventoryDetailVo> mInventoryDetailList = new ArrayList<InventoryDetailVo>();
 
     @Override
-    public void fetchData(int page, int what, Handler handler, Bundle dataBundle) {
+    public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
         this.mRecordPerPage = 20;
         this.mPage = page;
         PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mRecordPerPage);
@@ -92,10 +92,10 @@ public class RecordListDataRequest implements AsynDataRequest {
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex("id"));
                 int idx = mRecordCount;
-                String bin_coding = cursor.getString(cursor.getColumnIndex("bin_coding"));
+                String binCoding = cursor.getString(cursor.getColumnIndex("binCoding"));
                 String barcode = cursor.getString(cursor.getColumnIndex("barcode"));
                 int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
-                InventoryDetailVo inventoryDetailVo = new InventoryDetailVo(id, idx, bin_coding, barcode, quantity);
+                InventoryDetailVo inventoryDetailVo = new InventoryDetailVo(id, idx, binCoding, barcode, quantity);
                 mInventoryDetailList.add(inventoryDetailVo);
             }
             cursor.close();

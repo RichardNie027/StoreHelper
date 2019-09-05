@@ -91,7 +91,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
         try {
             db = helper.getReadableDatabase();
             String sql = new StringBuffer().append("select max(idx) as idx").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
-                    .append(" where store_code=? and list_date like ?").toString();
+                    .append(" where storeCode=? and listDate like ?").toString();
             Cursor cursor = db.rawQuery(sql, new String[] {GlobalVars.storeCode, mTvDate.getText().toString()+"%"});
             if(cursor.moveToFirst()) {
                 int idx = cursor.getInt(cursor.getColumnIndex("idx")) + 1;
@@ -119,14 +119,14 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
             db = helper.getWritableDatabase();
             db.beginTransaction();
             ///取值
-            String store_code = mTvStoreCode.getText().toString();
-            Date list_date = DateUtil.fromStr(mTvDate.getText().toString());
+            String storeCode = mTvStoreCode.getText().toString();
+            Date listDate = DateUtil.fromStr(mTvDate.getText().toString());
             int idx = Integer.parseInt(mTvIndex.getText().toString());
             String username = mTvUsername.getText().toString();
             String listNo = mTvListNo.getText().toString() + mEtListNo.getText().toString();
             Date create_date = new Date();
             ///生成对象并插入
-            Inventory inventory = new Inventory(null, store_code, list_date, idx, username, listNo, create_date, create_date);
+            Inventory inventory = new Inventory(null, storeCode, listDate, idx, username, listNo, create_date, create_date);
             ContentValues contentValues = SQLiteUtil.toContentValues(inventory);
             long ret = db.insert(SQLiteDbHelper.TABLE_INVENTORY, null, contentValues);
             if(ret == -1)

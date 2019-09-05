@@ -29,7 +29,7 @@ public class RedoRecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<I
         itemLongClickable = true;
         reassignListItemLayout();
         //设置ViewHolder的类，在构造实例后紧接调用！
-        setViewHolderClass(this, RedoRecordRecyclerViewItemAdapter.MyLinearViewHolder.class, RedoRecordRecyclerViewItemAdapter.MyStaggeredViewHolder.class);
+        setViewHolderClass(this, MyLinearViewHolder.class, MyStaggeredViewHolder.class);
     }
 
     private void reassignListItemLayout() {

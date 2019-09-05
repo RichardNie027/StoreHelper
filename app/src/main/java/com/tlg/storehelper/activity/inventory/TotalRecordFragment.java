@@ -66,17 +66,17 @@ public class TotalRecordFragment extends LoadMoreFragment {
             @Override
             public boolean onItemLongClick(final View view, int postion) {
                 Log.d(TotalRecordFragment.class.getName(), "long-click at " + postion);
-                final String bin_coding = view.getTag(R.id.tag_first).toString();
+                final String binCoding = view.getTag(R.id.tag_first).toString();
                 new AlertDialog.Builder(MyApp.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)
                         .setTitle("复盘提示")
-                        .setMessage("是否复盘货位：" + bin_coding + "？")
+                        .setMessage("是否复盘货位：" + binCoding + "？")
                         .setCancelable(true)
                         .setPositiveButton("复盘", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if(mListener != null)
-                                    mListener.onInventoryLocatorRedo(bin_coding);
+                                    mListener.onInventoryLocatorRedo(binCoding);
                             }
                         })
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -118,8 +118,8 @@ public class TotalRecordFragment extends LoadMoreFragment {
     public interface OnFragmentInteractionListener {
         /**
          * 货位复盘触发
-         * @param bin_coding
+         * @param binCoding
          */
-        void onInventoryLocatorRedo(String bin_coding);
+        void onInventoryLocatorRedo(String binCoding);
     }
 }

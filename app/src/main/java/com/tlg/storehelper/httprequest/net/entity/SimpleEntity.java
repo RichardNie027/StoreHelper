@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class SimpleEntity<T> extends BaseResponseEntity {
 
-    public List<T> result_list = new ArrayList<>();
+    public List<T> resultList = new ArrayList<>();
 
-    public Map<String, Object> result_map = new HashMap<>();
+    public Map<String, Object> resultMap = new HashMap<>();
 
 }

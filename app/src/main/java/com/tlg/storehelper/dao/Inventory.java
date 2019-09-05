@@ -9,34 +9,34 @@ public class Inventory implements Serializable {
     /**ID，UUID*/
     public String id;
     /**店编*/
-    public String store_code;
+    public String storeCode;
     /**盘点日期*/
-    public Date list_date;
+    public Date listDate;
     /**序号*/
     public int idx;
     /**创建用户*/
     public String username;
     /**盘点单号*/
-    public String list_no;
+    public String listNo;
     /**创建时间*/
-    public Date create_time;
+    public Date createTime;
     /**修改时间*/
-    public Date last_time;
+    public Date lastTime;
 
     public Inventory() {
         id = StringUtil.getUUID();
     }
-    public Inventory(String id, String store_code, Date list_date, int idx, String username, String list_no, Date create_time, Date last_time) {
+    public Inventory(String id, String storeCode, Date listDate, int idx, String username, String listNo, Date createTime, Date lastTime) {
         if(id==null)
             this.id = StringUtil.getUUID();
         else
             this.id = id;
-        this.store_code = store_code;
-        this.list_date = list_date;
+        this.storeCode = storeCode;
+        this.listDate = listDate;
         this.idx = idx;
         this.username = username;
-        this.list_no = list_no;
-        this.create_time = create_time;
-        this.last_time = last_time;
+        this.listNo = listNo;
+        this.createTime = createTime;
+        this.lastTime = lastTime;
     }
 }

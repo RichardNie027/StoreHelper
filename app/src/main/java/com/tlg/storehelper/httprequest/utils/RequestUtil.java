@@ -5,7 +5,6 @@ import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import android.util.ArrayMap;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
@@ -24,8 +23,12 @@ import com.tlg.storehelper.httprequest.net.api.MainApiService;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+import com.tlg.storehelper.vo.GoodsSimpleVo;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -111,7 +114,7 @@ public class RequestUtil {
                     public void onSuccess(SimpleEntity<String> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         GlobalVars.username = username;
-                        GlobalVars.token = response.result_map.get("token").toString();
+                        GlobalVars.token = response.resultMap.get("token").toString();
                         ApiConfig.setToken(GlobalVars.token);
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -119,9 +122,9 @@ public class RequestUtil {
                 });
     }
 
-    public static void requestGoodBarcodes(@NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+    public static void requestGoodBarcodes(@NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener, OnFailingListener onFailingListener, OnRequestEndListener onRequestEndListener) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
-        String lastModDate = pref.getString("lastModDate", "2000-01-01 00:00:00");
+        String lastModDate = pref.getString("lastModDate", "20000101000000");
         SharedPreferences.Editor editor = pref.edit();
 
         Map requestMap = new RequestMap()
@@ -146,15 +149,17 @@ public class RequestUtil {
                                     .show();
                         } else
                             super.onFailing(response);
+                        if(onFailingListener != null)
+                            onFailingListener.onFailing(response);
                     }
 
                     @Override
                     public void onSuccess(SimpleEntity<String> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
-                        if(response.result_list.size() > 0) {
-                            DbUtil.saveGoodsBarcodes(response.result_list);
+                        if(response.resultList.size() > 0) {
+                            DbUtil.saveGoodsBarcodes(response.resultList, lastModDate.equals("20000101000000"));
 
-                            String lastModDate = response.result_map.get("lastModDate").toString();
+                            String lastModDate = response.resultMap.get("lastModDate").toString();
                             editor.putString("lastModDate", lastModDate);
                             editor.commit();
                         } else {
@@ -162,6 +167,13 @@ public class RequestUtil {
                         }
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
+                    }
+
+                    @Override
+                    protected void onRequestEnd() {
+                        super.onRequestEnd();
+                        if(onRequestEndListener != null)
+                            onRequestEndListener.onRequestEnd();
                     }
                 });
     }
@@ -224,7 +236,45 @@ public class RequestUtil {
                 });
     }
 
-    public static void downloadPic(String url, @NonNull BaseRxAppCompatActivity activity, OnFileDownloadedListener onFileDownloadedListener) {
+    public static void requestBestSelling(String storeCode, String dim, int page, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        Map requestMap = new RequestMap()
+                .put("storeCode", storeCode)
+                .put("dim", dim)
+                .put("page", String.valueOf(page))
+                .map;
+        signRequest(requestMap);
+
+        MainApiService.getInstance()
+                .getBestSelling(storeCode, dim, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.bindToLifecycle())
+                .subscribe(new AppBaseObserver<SimpleListPageEntity<GoodsSimpleVo>>(activity, false,"正在获取畅销款") {
+                    @Override
+                    public void onFailing(SimpleListPageEntity<GoodsSimpleVo> response) {
+                        int code = response.getCode();
+                        if (code >= 900 && code < 999) {
+                            new android.app.AlertDialog.Builder(MyApp.getInstance())
+                                    .setTitle("获取畅销款信息失败")
+                                    .setMessage(response.msg)
+                                    .setPositiveButton("确定", null)
+                                    .show();
+                        } else
+                            super.onFailing(response);
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleListPageEntity<GoodsSimpleVo> response) {
+                        Log.d(activity.getClass().getName(), "请求成功");
+                        if(onSuccessListener != null)
+                            onSuccessListener.onSuccess(response);
+                    }
+                });
+    }
+
+    /**
+    @Deprecated // 废除的下载方法（BUG:多次请求、字节流中部分字节丢失）
+    public static void downloadPic(String url, OnFileDownloadedListener onFileDownloadedListener) {
         DownloaderManager downloaderManager = new DownloaderManager(url, new DownloaderManager.ProgressListener() {
             @Override
             public void onPreExecute(long contentLength) {
@@ -242,19 +292,37 @@ public class RequestUtil {
                     if(onFileDownloadedListener != null)
                         if(pathFile != null)
                             onFileDownloadedListener.onSuccess(pathFile);
-                        else
+                        else {
+                            File file = new File(pathFile);
+                            if(file.exists() && file.length()==0)
+                                file.delete();
                             onFileDownloadedListener.onFail();
+                        }
                 }
             }
 
             @Override
             public void onFail() {
+                try {
+                    String pathFile = DownloadFileUtil.getDownloadPath(url, "/StoreHelper/pic");
+                    File file = new File(pathFile);
+                    if(file.exists() && file.length()==0)
+                        file.delete();
+                } catch (IOException e) {}
                 if(onFileDownloadedListener != null)
                     onFileDownloadedListener.onFail();
             }
         });
         downloaderManager.setSavePath("/StoreHelper/pic").downloadStartPoint(0L);
     }
+    public interface OnFileDownloadedListener {
+        //下载成功的监听事件
+        public void onSuccess(String pathFile);
+
+        //下载失败的监听事件
+        public void onFail();
+    }
+    */
 
     public interface OnSuccessListener<ResponseEntity extends BaseResponseEntity> {
         /**
@@ -263,16 +331,18 @@ public class RequestUtil {
         public void onSuccess(ResponseEntity response);
     }
 
-    public interface OnFileDownloadedListener {
+    public interface OnFailingListener<ResponseEntity extends BaseResponseEntity> {
         /**
-         * 下载成功的监听事件
+         * 网络请求返回失败的监听事件
          */
-        public void onSuccess(String pathFile);
+        public void onFailing(ResponseEntity response);
+    }
 
+    public interface OnRequestEndListener {
         /**
-         * 下载失败的监听事件
+         * 网络请求结束的监听事件
          */
-        public void onFail();
+        public void onRequestEnd();
     }
 
 }

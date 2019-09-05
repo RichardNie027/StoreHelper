@@ -16,62 +16,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvStoreCode"
+    <ImageView
+        android:id="@+id/ivStore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="店铺："
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvHeader"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/store" />
 
     <Spinner
         android:id="@+id/spinner"
         style="@android:style/Widget.DeviceDefault.Light.Spinner"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:prompt="@string/choice_store"
         android:spinnerMode="dialog"
-        app:layout_constraintBottom_toBottomOf="@+id/tvStoreCode"
-        app:layout_constraintStart_toEndOf="@+id/tvStoreCode"
-        app:layout_constraintTop_toTopOf="@+id/tvStoreCode" />
+        app:layout_constraintBottom_toBottomOf="@+id/ivStore"
+        app:layout_constraintStart_toEndOf="@+id/ivStore"
+        app:layout_constraintTop_toTopOf="@+id/ivStore" />
 
-    <View
-        android:id="@+id/tvUnderline"
-        android:layout_width="26dp"
-        android:layout_height="0.5dp"
-        android:background="@color/colorSecond"
-        app:layout_constraintStart_toStartOf="@+id/spinner"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+    <EditText
+        android:id="@+id/etBarcode"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/edittext_white_selector"
+        android:hint="搭配款的条码或货号"
+        android:ems="10"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:text=""
+        android:inputType="text"
+        android:textAlignment="viewStart"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/spinner"
+        app:layout_constraintEnd_toStartOf="@+id/ivExit"
+        app:layout_constraintStart_toEndOf="@+id/spinner"
+        app:layout_constraintTop_toTopOf="@+id/spinner" />
 
-    <Button
-        android:id="@+id/btnExit"
-        style="@style/Custom.ReverseButtonStyle"
-        android:layout_width="67dp"
-        android:layout_height="30dp"
+    <ImageView
+        android:id="@+id/ivExit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:onClick="btnExitClick"
-        android:text="退出系统"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/spinner"
-        app:layout_constraintEnd_toStartOf="@+id/btnSetting"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintEnd_toStartOf="@+id/ivSettings"
+        app:layout_constraintTop_toTopOf="@+id/spinner"
+        app:srcCompat="@drawable/exit" />
 
-    <Button
-        android:id="@+id/btnSetting"
-        style="@style/Custom.ReverseButtonStyle"
-        android:layout_width="37dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="8dp"
+    <ImageView
+        android:id="@+id/ivSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="btnSettingsClick"
-        android:text="设置"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="@+id/tvHeader"
-        app:layout_constraintTop_toTopOf="@+id/spinner" />
+        app:layout_constraintTop_toTopOf="@+id/spinner"
+        app:srcCompat="@drawable/settings" />
 
     <ImageView
         android:id="@+id/ivSearch"
@@ -79,29 +83,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="ivSearchClick"
-        app:layout_constraintEnd_toStartOf="@+id/ivCollocation"
+        app:layout_constraintEnd_toStartOf="@+id/ivPerformance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeader"
         app:srcCompat="@drawable/search" />
-
-    <ImageView
-        android:id="@+id/ivCollocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="ivCollocationClick"
-        app:layout_constraintEnd_toStartOf="@+id/ivPerformance"
-        app:layout_constraintStart_toEndOf="@+id/ivSearch"
-        app:layout_constraintTop_toTopOf="@+id/ivSearch"
-        app:srcCompat="@drawable/collocation" />
 
     <ImageView
         android:id="@+id/ivPerformance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="ivSearchClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivBill"
+        app:layout_constraintStart_toEndOf="@+id/ivSearch"
+        app:layout_constraintTop_toTopOf="@id/ivSearch"
+        app:srcCompat="@drawable/performance" />
+
+    <ImageView
+        android:id="@+id/ivBill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="ivSearchClick"
         app:layout_constraintEnd_toStartOf="@+id/ivInventory"
-        app:layout_constraintStart_toEndOf="@+id/ivCollocation"
-        app:layout_constraintTop_toTopOf="@id/ivCollocation"
+        app:layout_constraintStart_toEndOf="@+id/ivPerformance"
+        app:layout_constraintTop_toTopOf="@+id/ivPerformance"
         app:srcCompat="@drawable/bill" />
 
     <ImageView
@@ -110,38 +114,9 @@
         android:layout_height="wrap_content"
         android:onClick="ivInventoryClick"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivPerformance"
-        app:layout_constraintTop_toTopOf="@+id/ivPerformance"
+        app:layout_constraintStart_toEndOf="@+id/ivBill"
+        app:layout_constraintTop_toTopOf="@+id/ivBill"
         app:srcCompat="@drawable/inventory" />
-
-    <RadioGroup
-        android:id="@+id/rgTabs"
-        android:layout_width="80dp"
-        android:layout_height="18dp"
-        android:background="@color/colorPrimaryLight"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPerformanceLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvPerformanceLabel">
-
-        <RadioButton
-            android:id="@+id/rbYesterday"
-            style="@style/Custom.LightTabRadioButtonStyle"
-            android:layout_weight="1"
-            android:focusable="false"
-            android:text="昨天"
-            android:textSize="11sp" />
-
-        <RadioButton
-            android:id="@+id/rbToday"
-            style="@style/Custom.LightTabRadioButtonStyle"
-            android:layout_weight="1"
-            android:checked="true"
-            android:focusable="false"
-            android:text="今天"
-            android:textSize="11sp" />
-    </RadioGroup>
 
     <TextView
         android:id="@+id/tvSearch"
@@ -156,28 +131,28 @@
         app:layout_constraintTop_toBottomOf="@+id/ivSearch" />
 
     <TextView
-        android:id="@+id/tvCollocation"
+        android:id="@+id/tvPerformance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
-        android:text="搭配"
+        android:text="业绩"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/ivCollocation"
-        app:layout_constraintStart_toStartOf="@+id/ivCollocation"
-        app:layout_constraintTop_toBottomOf="@+id/ivCollocation" />
+        app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
+        app:layout_constraintStart_toStartOf="@+id/ivPerformance"
+        app:layout_constraintTop_toBottomOf="@+id/ivPerformance" />
 
     <TextView
-        android:id="@+id/tvPerformance"
+        android:id="@+id/tvBill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="ivSearchClick"
         android:text="开单"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
-        app:layout_constraintStart_toStartOf="@+id/ivPerformance"
-        app:layout_constraintTop_toBottomOf="@+id/ivPerformance" />
+        app:layout_constraintEnd_toEndOf="@+id/ivBill"
+        app:layout_constraintStart_toStartOf="@+id/ivBill"
+        app:layout_constraintTop_toBottomOf="@+id/ivBill" />
 
     <TextView
         android:id="@+id/tvInventory"
@@ -192,152 +167,62 @@
         app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
 
     <TextView
-        android:id="@+id/tvPerformanceLabel"
+        android:id="@+id/tvBestSellingLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="销售业绩"
+        android:text="畅销款"
         android:textColor="@color/colorPrimaryLight"
         android:textSize="14sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvSearch" />
 
-    <TextView
-        android:id="@+id/tvPanel1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.6"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvPersonLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvPanel2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.8"
+    <RadioGroup
+        android:id="@+id/rgDimension"
+        android:layout_width="120dp"
+        android:layout_height="18dp"
         android:background="@color/colorPrimaryLight"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvPersonLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvPanel3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.6"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvPanel4"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.8"
-        android:background="@color/colorPrimaryLight"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvSalesAmountLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvPanel5"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:alpha="0.6"
-        android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toEndOf="@+id/tvAllowanceLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvAllowanceLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvPersonCodeLabel"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="工号"
-        android:textAlignment="center"
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPerformanceLabel" />
-
-    <TextView
-        android:id="@+id/tvPersonLabel"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:text="姓名"
-        android:textAlignment="center"
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintStart_toEndOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvQuantityLabel"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:text="数量"
-        android:textAlignment="textEnd"
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
-        app:layout_constraintStart_toEndOf="@+id/tvPersonLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvSalesAmountLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="销售额"
-        android:textAlignment="textEnd"
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
-        app:layout_constraintStart_toEndOf="@+id/tvQuantityLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
-
-    <TextView
-        android:id="@+id/tvAllowanceLabel"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:text="提成"
-        android:textAlignment="textEnd"
-        android:textColor="@color/colorSecond"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="@+id/tvBestSellingLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvBestSellingLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvSalesAmountLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintStart_toStartOf="parent">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
+        <RadioButton
+            android:id="@+id/rbWeek"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:checked="true"
+            android:focusable="false"
+            android:text="周销"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/rbMonth"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="月销"
+            android:textSize="11sp" />
+
+        <RadioButton
+            android:id="@+id/rbNew"
+            style="@style/Custom.LightTabRadioButtonStyle"
+            android:layout_weight="1"
+            android:focusable="false"
+            android:text="新款"
+            android:textSize="11sp" />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPanel2">
-
-        <com.nec.lib.android.loadmoreview.LoadMoreRecyclerView
-            android:id="@+id/recycler_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorSecond"
-            app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/fragment_record_load_more_list_item_linear" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@+id/tvBestSellingLabel"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

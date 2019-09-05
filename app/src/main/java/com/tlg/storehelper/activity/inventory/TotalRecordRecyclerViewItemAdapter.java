@@ -44,9 +44,9 @@ public class TotalRecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<
             if(mHolder.iconView != null)
                 mHolder.iconView.setVisibility(View.VISIBLE);
             mHolder.mItem = mValues.get(position);
-            mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.bin_coding);  //tag1:bin_coding
+            mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.binCoding);  //tag1:binCoding
             if(mHolder.mBinCodingView != null)
-                mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
+                mHolder.mBinCodingView.setText(mHolder.mItem.binCoding);
             if(mHolder.mSizeQuantityView != null)
                 mHolder.mSizeQuantityView.setText(String.valueOf(mHolder.mItem.sizeQuantity));
             if(mHolder.mQuantityView != null)
@@ -54,9 +54,9 @@ public class TotalRecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<
         } else if (mDisplayMode == LoadMoreFragment.DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
-            mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.bin_coding);  //tag1:bin_coding
+            mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.binCoding);  //tag1:binCoding
             if(mHolder.mBinCodingView != null)
-                mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
+                mHolder.mBinCodingView.setText(mHolder.mItem.binCoding);
             if(mHolder.mSizeQuantityView != null)
                 mHolder.mSizeQuantityView.setText(String.valueOf(mHolder.mItem.sizeQuantity));
             if(mHolder.mQuantityView != null)

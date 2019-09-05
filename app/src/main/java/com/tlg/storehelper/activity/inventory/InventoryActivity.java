@@ -20,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.utils.AndroidUtil;
@@ -29,7 +28,6 @@ import com.nec.lib.android.utils.StringUtil;
 import com.nec.lib.android.utils.DateUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
-import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.dao.Inventory;
 import com.tlg.storehelper.dao.InventoryDetail;
@@ -128,13 +126,13 @@ public class InventoryActivity extends BaseRxAppCompatActivity
 
         Bundle dataBundle2 = new Bundle();
         dataBundle2.putString(RecordFragment.sInventoryListIdLabel, mListId);
-        dataBundle2.putString(RecordFragment.sInventoryListNoLabel, mInventory.list_no);
+        dataBundle2.putString(RecordFragment.sInventoryListNoLabel, mInventory.listNo);
         mRecordFragment = RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle2);
         mFragments.add(mRecordFragment);
 
         Bundle dataBundle3 = new Bundle();
         dataBundle3.putString(TotalRecordFragment.sInventoryListIdLabel, mListId);
-        dataBundle3.putString(TotalRecordFragment.sInventoryListNoLabel, mInventory.list_no);
+        dataBundle3.putString(TotalRecordFragment.sInventoryListNoLabel, mInventory.listNo);
         mTotalRecordFragment = TotalRecordFragment.newInstance(TotalRecordFragment.class, TotalRecordRecyclerViewItemAdapter.class, new TotalRecordListDataRequest(), dataBundle3);
         mFragments.add(mTotalRecordFragment);
         // init view pager
@@ -337,13 +335,13 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                 cursor = db.rawQuery(sql, new String[]{mListId});
                 if (cursor.moveToFirst()) {
                     mInventory.id = cursor.getString(cursor.getColumnIndex("id"));
-                    mInventory.store_code = cursor.getString(cursor.getColumnIndex("store_code"));
-                    mInventory.list_date = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("list_date")));
+                    mInventory.storeCode = cursor.getString(cursor.getColumnIndex("storeCode"));
+                    mInventory.listDate = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("listDate")));
                     mInventory.idx = cursor.getInt(cursor.getColumnIndex("idx"));
                     mInventory.username = cursor.getString(cursor.getColumnIndex("username"));
-                    mInventory.list_no = cursor.getString(cursor.getColumnIndex("list_no"));
-                    mInventory.create_time = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("create_time")));
-                    mInventory.last_time = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("last_time")));
+                    mInventory.listNo = cursor.getString(cursor.getColumnIndex("listNo"));
+                    mInventory.createTime = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("createTime")));
+                    mInventory.lastTime = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("lastTime")));
                 } else {
                     mInventory.id = "";
                 }
@@ -361,7 +359,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                     inventoryDetail.id = cursor.getString(cursor.getColumnIndex("id"));
                     inventoryDetail.pid = cursor.getString(cursor.getColumnIndex("pid"));
                     inventoryDetail.idx = cursor.getInt(cursor.getColumnIndex("idx"));
-                    inventoryDetail.bin_coding = cursor.getString(cursor.getColumnIndex("bin_coding"));
+                    inventoryDetail.binCoding = cursor.getString(cursor.getColumnIndex("binCoding"));
                     inventoryDetail.barcode = cursor.getString(cursor.getColumnIndex("barcode"));
                     inventoryDetail.quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
                     mInventoryDetailList.add(inventoryDetail);
@@ -384,20 +382,20 @@ public class InventoryActivity extends BaseRxAppCompatActivity
      */
     private void updateStatisticInfo(String binCoding_lastSetNull) {
         mStatisticInfo.id = mInventory.id;
-        mStatisticInfo.listNo = mInventory.list_no;
+        mStatisticInfo.listNo = mInventory.listNo;
         mStatisticInfo.quantity = 0;
         mStatisticInfo.totalQuantity = 0;
         mStatisticInfo.lastBarcode = "";
         mStatisticInfo.lastBinCoding = "";
         if(mInventoryDetailList.size() > 0) {
             mStatisticInfo.lastBarcode = mInventoryDetailList.get(0).barcode;
-            mStatisticInfo.lastBinCoding = mInventoryDetailList.get(0).bin_coding;
+            mStatisticInfo.lastBinCoding = mInventoryDetailList.get(0).binCoding;
             if(binCoding_lastSetNull == null)
                 binCoding_lastSetNull = mStatisticInfo.lastBinCoding;
             int quantities = 0;
             int totalQuantities = 0;
             for(InventoryDetail detail: mInventoryDetailList) {
-                if(detail.bin_coding.equals(binCoding_lastSetNull)) {
+                if(detail.binCoding.equals(binCoding_lastSetNull)) {
                     quantities = quantities + detail.quantity;
                 }
                 totalQuantities = totalQuantities + detail.quantity;
@@ -466,10 +464,10 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     }
 
     //复盘
-    private void locatorRedo(String bin_coding) {
+    private void locatorRedo(String binCoding) {
         Intent intent = new Intent(this, RedoRecordActivity.class);
         intent.putExtra(RedoRecordFragment.sInventoryListIdLabel, mListId);
-        intent.putExtra(RedoRecordFragment.sInventoryBinCodingLabel, bin_coding);
+        intent.putExtra(RedoRecordFragment.sInventoryBinCodingLabel, binCoding);
         startActivityForResult(intent, 5);
     }
 
@@ -481,7 +479,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             new AlertDialog.Builder(MyApp.getInstance())
                     .setIcon(android.R.drawable.ic_dialog_info)
                     .setTitle("盘点单已经删除")
-                    .setMessage("单据尾号（" + StringUtil.right(mInventory.list_no, 4) + "），总数量（" + mInventoryDetailList.size() + "）")
+                    .setMessage("单据尾号（" + StringUtil.right(mInventory.listNo, 4) + "），总数量（" + mInventoryDetailList.size() + "）")
                     .setCancelable(true)
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
@@ -503,19 +501,19 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         }
         InventoryEntity inventoryEntity = new InventoryEntity();
         inventoryEntity.id = mInventory.id;
-        inventoryEntity.store_code = mInventory.store_code;
-        inventoryEntity.list_date = mInventory.list_date;
+        inventoryEntity.storeCode = mInventory.storeCode;
+        inventoryEntity.listDate = mInventory.listDate;
         inventoryEntity.idx = mInventory.idx;
         inventoryEntity.username = mInventory.username;
-        inventoryEntity.list_no = mInventory.list_no;
-        inventoryEntity.create_time = mInventory.create_time;
-        inventoryEntity.last_time = mInventory.last_time;
+        inventoryEntity.listNo = mInventory.listNo;
+        inventoryEntity.createTime = mInventory.createTime;
+        inventoryEntity.lastTime = mInventory.lastTime;
         for(InventoryDetail detail: mInventoryDetailList) {
             InventoryEntity.DetailBean bean = new InventoryEntity.DetailBean();
             bean.id = detail.id;
             bean.pid = detail.pid;
             bean.idx = detail.idx;
-            bean.bin_coding = detail.bin_coding;
+            bean.binCoding = detail.binCoding;
             bean.barcode = detail.barcode;
             bean.quantity = detail.quantity;
             inventoryEntity.detail.add(bean);
@@ -537,10 +535,10 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         }
         String excelFileName = "/INV" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + ".xls";
         String[] title = {"标识", "货架编码", "商品条码", "数量"};
-        String sheetName = mInventory.list_no;
+        String sheetName = mInventory.listNo;
         filePath = filePath + excelFileName;
         if(ExcelUtil.initExcel(filePath, sheetName, title))
-            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath, new String[] {"id","bin_coding","barcode","quantity"});
+            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath, new String[] {"id","binCoding","barcode","quantity"});
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -566,13 +564,13 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             if(result == -1L)
                 throw new Exception("新增记录出错");
             Inventory inventory = DbUtil.getInventory(db, mStatisticInfo.id);
-            inventory.last_time = new Date();
+            inventory.lastTime = new Date();
             ContentValues contentValues2 = SQLiteUtil.toContentValues(inventory);
             long result2 = db.update(SQLiteDbHelper.TABLE_INVENTORY, contentValues2, "id=?", new String[]{mStatisticInfo.id});
             if(result2 <= 0L)
                 throw new Exception("新增记录出错");
             else
-                mInventory.last_time = inventory.last_time;
+                mInventory.lastTime = inventory.lastTime;
             db.setTransactionSuccessful();
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
@@ -606,13 +604,13 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                 if(_result == 0)
                     throw new Exception("没有记录被删除");
                 Inventory inventory = DbUtil.getInventory(db, mStatisticInfo.id);
-                inventory.last_time = new Date();
+                inventory.lastTime = new Date();
                 ContentValues contentValues2 = SQLiteUtil.toContentValues(inventory);
                 long result2 = db.update(SQLiteDbHelper.TABLE_INVENTORY, contentValues2, "id=?", new String[]{mStatisticInfo.id});
                 if(result2 <= 0L)
                     throw new Exception("记录删除出错");
                 else
-                    mInventory.last_time = inventory.last_time;
+                    mInventory.lastTime = inventory.lastTime;
             }
             result = true;
             db.setTransactionSuccessful();
@@ -687,8 +685,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     }
 
     @Override
-    public void onInventoryLocatorRedo(String bin_coding) {
-        locatorRedo(bin_coding);
+    public void onInventoryLocatorRedo(String binCoding) {
+        locatorRedo(binCoding);
     }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {

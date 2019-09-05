@@ -7,7 +7,10 @@ import com.nec.lib.android.httprequest.use.RetrofitFactory;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+import com.tlg.storehelper.vo.GoodsSimpleVo;
 
 import io.reactivex.Observable;
 
@@ -48,5 +51,9 @@ public class MainApiService {
 
     public Observable<CollocationEntity> getCollocation(String goodsNo) {
         return mMainApi.getCollocation(goodsNo);
+    }
+
+    public Observable<SimpleListPageEntity<GoodsSimpleVo>> getBestSelling(String storeCode, String dim, int page) {
+        return mMainApi.getBestSelling(storeCode, dim, page);
     }
 }

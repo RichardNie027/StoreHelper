@@ -1,5 +1,6 @@
 package com.tlg.storehelper.activity.inventory;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -25,7 +26,7 @@ public class RedoRecordListDataRequest implements AsynDataRequest {
     private RequireRedoDataListener mListener;
 
     @Override
-    public void fetchData(int page, int what, Handler handler, Bundle dataBundle) {
+    public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
         this.mRecordPerPage = Integer.MAX_VALUE;
         this.mPageCount = 1;
         this.mPage = page;

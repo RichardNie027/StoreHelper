@@ -53,8 +53,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:text="[商品名称]"
+        android:layout_marginEnd="8dp"
+        android:text="."
         android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etBarcode" />
 
@@ -62,8 +64,10 @@
         android:id="@+id/tvGoodsNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="[商品货号]"
+        android:layout_marginEnd="8dp"
+        android:text="."
         android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +78,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="[吊牌价]"
+        android:text="."
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/tvGoodsNo"
         app:layout_constraintTop_toBottomOf="@+id/tvGoodsNo" />
@@ -104,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="10款最佳搭配（近60天）"
+        android:text="最佳搭配（近60天连带）"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/tvRecyclerViewHeader"
         app:layout_constraintEnd_toEndOf="parent"
@@ -114,8 +118,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="155dp"
-        android:background="@color/colorSecondDark"
+        android:layout_height="150dp"
+        android:background="@color/colorSecond"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

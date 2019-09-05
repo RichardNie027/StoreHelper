@@ -4,11 +4,12 @@ import android.util.ArrayMap;
 
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
-import com.tlg.storehelper.httprequest.net.entity.GoodsBarcodeEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+import com.tlg.storehelper.vo.GoodsSimpleVo;
 
 import java.util.Map;
 
@@ -59,4 +60,12 @@ public interface MainApi {
      */
     @GET("api/getCollocation")
     Observable<CollocationEntity> getCollocation(@Query("goodsNo")String goodsNo);
+
+    /**
+     * 接口描述：GET getBestSelling
+     * 接口参数：
+     * 接口返回：SimpleListPageEntity<GoodsSimpleVo>
+     */
+    @GET("api/getBestSelling")
+    Observable<SimpleListPageEntity<GoodsSimpleVo>> getBestSelling(@Query("storeCode")String storeCode, @Query("dim")String dim, @Query("page")int page);
 }

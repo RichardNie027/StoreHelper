@@ -83,9 +83,9 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
                     case 101:
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("lastModDate", "2000-01-01 00:00:00");
+                        editor.putString("lastModDate", "20000101000000");
                         editor.commit();
-                        RequestUtil.requestGoodBarcodes(_this, null);
+                        RequestUtil.requestGoodBarcodes(_this, null, null, null);
                         break;
                     case 102:
                         String filesSizeDesc = calculateCacheSize(true);

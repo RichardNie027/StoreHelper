@@ -2,8 +2,6 @@ package com.tlg.storehelper.activity.collocation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
@@ -19,19 +17,16 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.nec.lib.android.utils.AndroidUtil;
-import com.nec.lib.android.utils.ImageUtil;
-import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
+import com.tlg.storehelper.httprequest.utils.PicUtil;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
-import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +41,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private List<CollocationEntity.DetailBean> mDatas = new ArrayList<>();
+    private String mGoodsNo;        //预设货号
 
     private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
 
@@ -54,6 +50,9 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         mFullScreen = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collocation);
+        //接收参数
+        Intent intent =getIntent();
+        mGoodsNo = intent.getStringExtra("goodsNo");
         initView();
     }
 
@@ -99,7 +98,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         });
 
         //设置RecycleView的布局方式，线性布局默认垂直1
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, 0, false));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         RecyclerViewAdapter recycleViewAdapter = new RecyclerViewAdapter(CollocationActivity.this, mDatas);
         mRecyclerView.setAdapter(recycleViewAdapter);
@@ -154,12 +153,26 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 return false;
             }
         });
+        if (mGoodsNo!=null && !mGoodsNo.isEmpty()) {
+            mEtBarcode.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    onScanBarcode(mGoodsNo);
+                    mEtBarcode.requestFocus();
+                }
+            }, 500);
+        }
     }
 
     public void onScanBarcode(String barcode) {
         barcode = barcode.toUpperCase();
+        String goodsNo = "";
         if(barcode.length() > 0) {
-            if (DbUtil.checkGoodsBarcode(barcode, false)) {
+            if(DbUtil.checkGoodsNo(barcode))
+                goodsNo = barcode;
+            else
+                goodsNo = DbUtil.checkGoodsBarcode(barcode, true);
+            if (!goodsNo.isEmpty()) {
                 mEtBarcode.setText("");
             } else {                    //错误
                 AndroidUtil.showToast("货号 / 条码不存在");
@@ -168,14 +181,14 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             }
         } else
             return;
-        RequestUtil.requestCollocation(barcode, _this, new RequestUtil.OnSuccessListener<CollocationEntity>() {
+        RequestUtil.requestCollocation(goodsNo, _this, new RequestUtil.OnSuccessListener<CollocationEntity>() {
 
             @Override
             public void onSuccess(CollocationEntity response) {
                 tvGoodsName.setText(response.goodsName);
                 tvGoodsNo.setText(response.goodsNo);
                 tvPrice.setText(new DecimalFormat("￥,###").format(response.price));
-                loadFile(ivPic, localPicPath, response.pic, 2);
+                PicUtil.loadPic(ivPic, localPicPath, response.pic, 2);
                 ivPic.setTag(localPicPath + response.pic);
                 RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(CollocationActivity.this, response.detail);
                 mRecyclerView.setAdapter(recyclerViewAdapter);
@@ -190,30 +203,6 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                         return false;
                     }
                 });
-            }
-        });
-    }
-
-    /**加载图片控件，优先用本地文件*/
-    private void loadFile(ImageView ivPicture, String filePath, String filename, int sampleSize) {
-        String filename2find = filePath + filename;
-        File file2find = new File(filename2find);
-        if(file2find.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(filename2find, ImageUtil.getBitmapOption(sampleSize));
-            ivPicture.setImageBitmap(bitmap);
-            return;
-        }
-        RequestUtil.downloadPic(MyApp.baseUrl + "pre_api/pic/" + filename, _this, new RequestUtil.OnFileDownloadedListener() {
-
-            @Override
-            public void onSuccess(String pathFile) {
-                Bitmap bitmap = BitmapFactory.decodeFile(pathFile, ImageUtil.getBitmapOption(2));
-                ivPicture.setImageBitmap(bitmap);
-            }
-
-            @Override
-            public void onFail() {
-                ivPicture.setImageBitmap(ImageUtil.getBitmap(getApplicationContext(), R.drawable.nopic));
             }
         });
     }
@@ -241,8 +230,8 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder recyclerViewHolder = (CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder) holder;
             recyclerViewHolder.itemView.setTag(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvGoodsNo.setText(mDatas.get(position).goodsNo);
-            recyclerViewHolder.tvFrequency.setText(new DecimalFormat("#次").format(mDatas.get(position).frequency));
-            loadFile(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).pic, 4);
+            recyclerViewHolder.tvInfo.setText(mDatas.get(position).info);
+            PicUtil.loadPic(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).pic, 4);
         }
 
         @Override
@@ -258,7 +247,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
 
         ///适配器中的自定义内部类，其中的子对象用于呈现数据
         class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
-            TextView tvGoodsNo, tvFrequency;
+            TextView tvGoodsNo, tvInfo;
             ImageView ivPic;
             private RecycleViewItemClickListener mListener;
 
@@ -270,7 +259,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 //view.setOnLongClickListener(this);
                 //实例化自定义对象
                 tvGoodsNo = view.findViewById(R.id.tvGoodsNo);
-                tvFrequency = view.findViewById(R.id.tvFrequency);
+                tvInfo = view.findViewById(R.id.tvInfo);
                 ivPic = view.findViewById(R.id.ivPic);
             }
 

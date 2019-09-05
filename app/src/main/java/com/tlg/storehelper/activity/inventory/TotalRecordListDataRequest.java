@@ -1,5 +1,6 @@
 package com.tlg.storehelper.activity.inventory;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
@@ -36,7 +36,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
     private List<InventoryTotalVo> mInventoryTotalList = new ArrayList<InventoryTotalVo>();
 
     @Override
-    public void fetchData(int page, int what, Handler handler, Bundle dataBundle) {
+    public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
         this.mRecordPerPage = 12;
         this.mPage = page;
         PageContent<InventoryTotalVo> pageContent = new PageContent<InventoryTotalVo>(page, mRecordPerPage);
@@ -65,7 +65,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
             Cursor cursor = null;
 
             //取记录总数
-            sql = new StringBuffer().append("select count(distinct bin_coding)").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
+            sql = new StringBuffer().append("select count(distinct binCoding)").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=?")
                     .toString();
             cursor = db.rawQuery(sql, new String[]{mInventoryListId});
@@ -79,18 +79,18 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
 
             //取记录明细
             mInventoryTotalList.clear();
-            sql = new StringBuffer().append("select bin_coding, count(distinct barcode) as barcodes, sum(quantity) as quantities").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
+            sql = new StringBuffer().append("select binCoding, count(distinct barcode) as barcodes, sum(quantity) as quantities").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=?")
-                    .append(" group by bin_coding")
-                    .append(" order by bin_coding asc")
+                    .append(" group by binCoding")
+                    .append(" order by binCoding asc")
                     .append(" limit ?,").append(mRecordPerPage)
                     .toString();
             cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage*mRecordPerPage)});
             while (cursor.moveToNext()) {
-                String bin_coding = cursor.getString(cursor.getColumnIndex("bin_coding"));
+                String binCoding = cursor.getString(cursor.getColumnIndex("binCoding"));
                 int barcodes = cursor.getInt(cursor.getColumnIndex("barcodes"));
                 int quantities = cursor.getInt(cursor.getColumnIndex("quantities"));
-                InventoryTotalVo inventoryTotalVo = new InventoryTotalVo(bin_coding, barcodes, quantities);
+                InventoryTotalVo inventoryTotalVo = new InventoryTotalVo(binCoding, barcodes, quantities);
                 mInventoryTotalList.add(inventoryTotalVo);
             }
             cursor.close();

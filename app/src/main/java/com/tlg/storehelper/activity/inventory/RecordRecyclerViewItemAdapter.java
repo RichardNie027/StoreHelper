@@ -29,7 +29,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
         itemLongClickable = true;
         reassignListItemLayout();
         //设置ViewHolder的类，在构造实例后紧接调用！
-        setViewHolderClass(this, RecordRecyclerViewItemAdapter.MyLinearViewHolder.class, RecordRecyclerViewItemAdapter.MyStaggeredViewHolder.class);
+        setViewHolderClass(this, MyLinearViewHolder.class, MyStaggeredViewHolder.class);
     }
 
     private void reassignListItemLayout() {
@@ -49,7 +49,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
             if(mHolder.mIdxView != null)
                 mHolder.mIdxView.setText(String.valueOf(mHolder.mItem.idx));
             if(mHolder.mBinCodingView != null)
-                mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
+                mHolder.mBinCodingView.setText(mHolder.mItem.binCoding);
             if(mHolder.mBarcodeView != null)
                 mHolder.mBarcodeView.setText(mHolder.mItem.barcode);
             if(mHolder.mQuantityView != null)
@@ -62,7 +62,7 @@ public class RecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<Inven
             if(mHolder.mIdxView != null)
                 mHolder.mIdxView.setText(String.valueOf(mHolder.mItem.idx));
             if(mHolder.mBinCodingView != null)
-                mHolder.mBinCodingView.setText(mHolder.mItem.bin_coding);
+                mHolder.mBinCodingView.setText(mHolder.mItem.binCoding);
             if(mHolder.mBarcodeView != null)
                 mHolder.mBarcodeView.setText(mHolder.mItem.barcode);
             if(mHolder.mQuantityView != null)

@@ -21,6 +21,8 @@ public class CollocationEntity extends BaseResponseEntity {
     public static class DetailBean {
         /**商品编号*/
         public String goodsNo;
+        /**信息*/
+        public String info;
         /**连带次数*/
         public int frequency;
         /**商品图片*/

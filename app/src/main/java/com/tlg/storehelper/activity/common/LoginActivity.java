@@ -49,7 +49,7 @@ public class LoginActivity extends BaseRxAppCompatActivity {
             @Override
             public void onSuccess(SimpleEntity<String> response) {
                 Intent intent = new Intent(_this, MainActivity.class);
-                String[] array = response.result_list.toArray(new String[response.result_list.size()]);
+                String[] array = response.resultList.toArray(new String[response.resultList.size()]);
                 intent.putExtra("storeCodes", array);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

@@ -11,16 +11,16 @@ public class InventoryDetailVo implements Serializable {
     /**序号*/
     public int idx;
     /**货架编码*/
-    public String bin_coding;
+    public String binCoding;
     /**商品条码*/
     public String barcode;
     /**数量*/
     public int quantity;
 
-    public InventoryDetailVo(String id, int idx, String bin_coding, String barcode, int quantity) {
+    public InventoryDetailVo(String id, int idx, String binCoding, String barcode, int quantity) {
         this.id = id;
         this.idx = idx;
-        this.bin_coding = bin_coding;
+        this.binCoding = binCoding;
         this.barcode = barcode;
         this.quantity = quantity;
     }

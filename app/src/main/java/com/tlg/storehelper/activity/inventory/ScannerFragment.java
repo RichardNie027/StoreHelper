@@ -29,7 +29,7 @@ import com.tlg.storehelper.vo.StatisticInfo;
 public class ScannerFragment extends BaseFragment {
 
     private static final String ARG1_NAME = "list_id";
-    private static final String ARG2_NAME = "list_no";
+    private static final String ARG2_NAME = "listNo";
     private static final String ARG3_NAME = "quantity";
     private static final String ARG4_NAME = "total_quantity";
     private static final String ARG5_NAME = "last_barcode";
@@ -286,7 +286,8 @@ public class ScannerFragment extends BaseFragment {
         }
         barcode = barcode.toUpperCase();
         if(barcode.length() > 0) {
-            if (DbUtil.checkGoodsBarcode(barcode, true)) {
+            barcode = DbUtil.checkGoodsBarcode(barcode);
+            if (!barcode.isEmpty()) {
                 mEtBarcode.setText("");
             } else {                    //错误
                 AndroidUtil.showToast("条码不存在");

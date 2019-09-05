@@ -12,7 +12,7 @@ public class InventoryDetail implements Serializable {
     /**序号*/
     public int idx;
     /**货架编码*/
-    public String bin_coding;
+    public String binCoding;
     /**商品条码*/
     public String barcode;
     /**数量*/
@@ -22,14 +22,14 @@ public class InventoryDetail implements Serializable {
         id = StringUtil.getUUID();
     }
 
-    public InventoryDetail(String id, String pid, int idx, String bin_coding, String barcode, int quantity) {
+    public InventoryDetail(String id, String pid, int idx, String binCoding, String barcode, int quantity) {
         if(id==null)
             this.id = StringUtil.getUUID();
         else
             this.id = id;
         this.pid = pid;
         this.idx = idx;
-        this.bin_coding = bin_coding;
+        this.binCoding = binCoding;
         this.barcode = barcode;
         this.quantity = quantity;
     }

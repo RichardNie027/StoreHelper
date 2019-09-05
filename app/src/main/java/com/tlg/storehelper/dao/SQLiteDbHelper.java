@@ -19,26 +19,27 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
     //创建 inventory 表的 sql 语句
     private static final String INVENTORY_CREATE_TABLE_SQL = "create table if not exists " + TABLE_INVENTORY + "("
             + "id char(32) primary key,"                //ID
-            + "store_code varchar(20) not null,"        //店编
-            + "list_date varchar(19) not null,"         //盘点日期
+            + "storeCode varchar(20) not null,"         //店编
+            + "listDate varchar(19) not null,"          //盘点日期
             + "idx integer not null,"                   //序号
             + "username varchar(20) not null,"          //创建用户
-            + "list_no varchar(20) not null,"           //盘点单号
-            + "create_time varchar(19) not null,"       //创建时间
-            + "last_time varchar(19) not null"          //修改时间
+            + "listNo varchar(20) not null,"            //盘点单号
+            + "createTime varchar(19) not null,"        //创建时间
+            + "lastTime varchar(19) not null"           //修改时间
             + ");";
 
     private static final String INVENTORY_DETAIL_CREATE_TABLE_SQL = "create table if not exists " + TABLE_INVENTORY_DETAIL + "("
             + "id char(32) primary key,"                //ID
             + "pid char(32) not null,"                  //主表ID
             + "idx integer not null,"                   //序号
-            + "bin_coding varchar(20) not null,"        //货架编码
+            + "binCoding varchar(20) not null,"         //货架编码
             + "barcode varchar(30) not null,"           //商品条码
             + "quantity integer not null"               //数量
             + ");";
 
     private static final String GOODS_BARCODE_CREATE_TABLE_SQL = "create table if not exists " + TABLE_GOODS_BARCODE + "("
-            + "barcode varchar(30) not null"            //商品条码
+            + "barcode varchar(30) not null,"            //商品条码
+            + "goodsNo varchar(30) not null"             //商品货号
             + ");";
 
     public SQLiteDbHelper(Context context) {

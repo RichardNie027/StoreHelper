@@ -148,7 +148,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             //记录明细汇总
             mInventoryRedoList.clear();
             sql = new StringBuffer().append("select barcode, sum(quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
-                    .append(" where pid=? and bin_coding=?")
+                    .append(" where pid=? and binCoding=?")
                     .append(" group by barcode")
                     .append(" order by barcode asc")
                     .toString();
@@ -192,7 +192,8 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     public void onScanBarcodeAsNewRecord(String barcode) {
         barcode = barcode.toUpperCase();
         if(barcode.length() > 0) {
-            if (DbUtil.checkGoodsBarcode(barcode, true)) {
+            barcode = DbUtil.checkGoodsBarcode(barcode);
+            if (!barcode.isEmpty()) {
                 mEtBarcode.setText("");
             } else {                    //错误
                 AndroidUtil.showToast("条码不存在");
@@ -221,7 +222,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             String sql = null;
             Cursor cursor = null;
             sql = new StringBuffer().append("select count(*) as num").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
-                    .append(" where pid=? and bin_coding=? and barcode=?").toString();
+                    .append(" where pid=? and binCoding=? and barcode=?").toString();
             cursor = db.rawQuery(sql, new String[]{mInventoryListId, mInventoryBinCoding, barcode});
             if (cursor.moveToFirst()) {
                 result = cursor.getInt(0) > 0;
@@ -243,7 +244,7 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         try {
             db = helper.getWritableDatabase();
             db.beginTransaction();
-            db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=? and bin_coding=?", new String[]{mInventoryListId, mInventoryBinCoding});
+            db.delete(SQLiteDbHelper.TABLE_INVENTORY_DETAIL, "pid=? and binCoding=?", new String[]{mInventoryListId, mInventoryBinCoding});
             int mMaxDetailIdx = 0;
             for(String key: mRedoDataMap.keySet()) {
                 InventoryDetail inventoryDetail = new InventoryDetail(null, mInventoryListId, ++mMaxDetailIdx, mInventoryBinCoding, key, mRedoDataMap.get(key));

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:clickable="true"
     android:background="@drawable/recycle_view_touch_ripple"
-    android:minHeight="40dp"
-    android:maxHeight="40dp"
+    android:minHeight="@dimen/list_row_height_normal"
+    android:maxHeight="@dimen/list_row_height_normal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -15,14 +15,24 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
         android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
+        app:layout_constraintEnd_toStartOf="@+id/ivLock"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/ivLock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/lock" />
 
     <TextView
         android:id="@+id/tvQuantity"
@@ -34,6 +44,7 @@
         android:text="1000"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

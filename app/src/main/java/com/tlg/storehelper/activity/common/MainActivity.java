@@ -207,6 +207,11 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
         startActivity(intent);
     }
 
+    @Override
+    public void onRecyclerViewHasFocus() {
+        mEtBarcode.requestFocus();
+    }
+
     private class StoreCodeOnItemSelectedListener implements AdapterView.OnItemSelectedListener{
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {

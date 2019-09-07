@@ -89,7 +89,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
         SQLiteDatabase db = null;
         try {
             db = helper.getReadableDatabase();
-            String sql = new StringBuffer().append("select a.id, a.listNo, sum(b.quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
+            String sql = new StringBuffer().append("select a.id, a.listNo, a.status, sum(b.quantity) as quantity").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
                     .append(" a left join ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL).append(" b on a.id=b.pid")
                     .append(" where a.storeCode=?")
                     .append(" group by a.id,a.listNo order by a.listDate desc, a.idx desc")
@@ -99,8 +99,9 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
             while(cursor.moveToNext()){
                 String id = cursor.getString(cursor.getColumnIndex("id"));
                 String listNo = cursor.getString(cursor.getColumnIndex("listNo"));
+                String status = cursor.getString(cursor.getColumnIndex("status"));
                 int quantity = cursor.getInt(cursor.getColumnIndex("quantity"));
-                InventoryListVo inventoryListVo = new InventoryListVo(id, listNo, quantity);
+                InventoryListVo inventoryListVo = new InventoryListVo(id, listNo, status, quantity);
                 datas.add(inventoryListVo);
             }
             cursor.close();
@@ -142,6 +143,8 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
             recyclerViewHolder.itemView.setTag(mDatas.get(position).id);
             recyclerViewHolder.tvInventoryListNo.setText(mDatas.get(position).listNo);
             recyclerViewHolder.tvQuantity.setText(String.valueOf(mDatas.get(position).quantity));
+            recyclerViewHolder.ivLock.setVisibility(mDatas.get(position).status.equals("U") ? View.VISIBLE : View.INVISIBLE);
+            recyclerViewHolder.ivLock.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_lock_lock));
             recyclerViewHolder.ivIcon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_view));
         }
 
@@ -159,6 +162,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
         ///适配器中的自定义内部类，其中的子对象用于呈现数据
         class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView tvInventoryListNo, tvQuantity;
+            ImageView ivLock;
             ImageView ivIcon;
             private RecycleViewItemClickListener mListener;
 
@@ -171,6 +175,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
                 //实例化自定义对象
                 tvInventoryListNo = view.findViewById(R.id.tvInventoryListNo);
                 tvQuantity = view.findViewById(R.id.tvQuantity);
+                ivLock = view.findViewById(R.id.ivLock);
                 ivIcon = view.findViewById(R.id.ivIcon);
             }
 

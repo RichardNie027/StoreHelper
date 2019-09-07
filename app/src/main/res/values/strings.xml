@@ -3,5 +3,7 @@
     <item name="tag_second" type="id" />
     <string name="app_name">店铺助手</string>
     <string name="choice_store">选择店铺</string>
+    <string name="choice_bin_type">选择货位类型</string>
+    <string name="choice_bin_coding">选择货位号</string>
 
 </resources>

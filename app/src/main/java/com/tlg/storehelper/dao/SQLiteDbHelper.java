@@ -24,6 +24,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             + "idx integer not null,"                   //序号
             + "username varchar(20) not null,"          //创建用户
             + "listNo varchar(20) not null,"            //盘点单号
+            + "status char(1) not null,"                //盘点单状态，I：初始；U：上传；L：锁定
             + "createTime varchar(19) not null,"        //创建时间
             + "lastTime varchar(19) not null"           //修改时间
             + ");";
@@ -38,7 +39,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             + ");";
 
     private static final String GOODS_BARCODE_CREATE_TABLE_SQL = "create table if not exists " + TABLE_GOODS_BARCODE + "("
-            + "barcode varchar(30) not null,"            //商品条码
+            + "barcode varchar(30) primary key,"         //商品条码
             + "goodsNo varchar(30) not null"             //商品货号
             + ");";
 

@@ -18,10 +18,13 @@ import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ExcelUtil;
 import com.nec.lib.android.utils.StringUtil;
@@ -78,6 +81,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     /**当前盘点单明细最大序号，加载数据时获取*/
     private int mMaxDetailIdx = 0;
 
+    private ImageView mIvSeal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mFullScreen = true;
@@ -94,6 +99,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         mToolbar = findViewById(R.id.toolbar);
         mViewPager = findViewById(R.id.vpFragment);
         mTabRadioGroup = findViewById(R.id.rgTabs);
+        mIvSeal = findViewById(R.id.ivSeal);
+
         //toolbar
         setSupportActionBar(mToolbar);
         // initialize controls
@@ -287,6 +294,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                         break;
                 }
             }
+            if(position == 0)
+                mScannerFragment.switched();
         }
 
         @Override
@@ -340,6 +349,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
                     mInventory.idx = cursor.getInt(cursor.getColumnIndex("idx"));
                     mInventory.username = cursor.getString(cursor.getColumnIndex("username"));
                     mInventory.listNo = cursor.getString(cursor.getColumnIndex("listNo"));
+                    mInventory.status = cursor.getString(cursor.getColumnIndex("status"));
                     mInventory.createTime = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("createTime")));
                     mInventory.lastTime = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("lastTime")));
                 } else {
@@ -374,6 +384,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         } finally {
             db.close();
         }
+        mIvSeal.setVisibility(mInventory.status.equals("U") ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -417,6 +428,10 @@ public class InventoryActivity extends BaseRxAppCompatActivity
      * @return 记录ID，"" 出错
      */
     private String insertDetailRecordThenSubsequentActions(int idx, String barcode, String binCoding, int num) {
+        if(mInventory.status.equals("U")) {
+            AndroidUtil.showToast("盘点单已上传，被锁定");
+            return "";
+        }
         InventoryDetail inventoryDetail = insertDetailRecord(idx, barcode, binCoding, num);
         if(inventoryDetail != null) {
             mInventoryDetailList.add(0, new InventoryDetail(inventoryDetail.id, mStatisticInfo.id, idx, binCoding, barcode, num));
@@ -437,6 +452,10 @@ public class InventoryActivity extends BaseRxAppCompatActivity
      * @return 成功
      */
     private boolean deleteDetailRecordThenSubsequentActions(String id) {
+        if(mInventory.status.equals("U")) {
+            AndroidUtil.showToast("盘点单已上传，被锁定");
+            return false;
+        }
         boolean deleteSuccess = deleteDetailRecord(id);
         if(deleteSuccess) {
             if(id.isEmpty())
@@ -465,6 +484,10 @@ public class InventoryActivity extends BaseRxAppCompatActivity
 
     //复盘
     private void locatorRedo(String binCoding) {
+        if(mInventory.status.equals("U")) {
+            AndroidUtil.showToast("盘点单已上传，被锁定");
+            return;
+        }
         Intent intent = new Intent(this, RedoRecordActivity.class);
         intent.putExtra(RedoRecordFragment.sInventoryListIdLabel, mListId);
         intent.putExtra(RedoRecordFragment.sInventoryBinCodingLabel, binCoding);
@@ -495,6 +518,10 @@ public class InventoryActivity extends BaseRxAppCompatActivity
 
     //上传盘存表
     private void uploadInventoryList() {
+        if(mInventory.status.equals("U")) {
+            AndroidUtil.showToast("盘点单已上传，被锁定");
+            return;
+        }
         if(mInventoryDetailList.size() == 0) {
             AndroidUtil.showToast("没有内容需要上传");
             return;
@@ -506,6 +533,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         inventoryEntity.idx = mInventory.idx;
         inventoryEntity.username = mInventory.username;
         inventoryEntity.listNo = mInventory.listNo;
+        inventoryEntity.status = mInventory.status;
         inventoryEntity.createTime = mInventory.createTime;
         inventoryEntity.lastTime = mInventory.lastTime;
         for(InventoryDetail detail: mInventoryDetailList) {
@@ -518,7 +546,17 @@ public class InventoryActivity extends BaseRxAppCompatActivity
             bean.quantity = detail.quantity;
             inventoryEntity.detail.add(bean);
         }
-        RequestUtil.requestUploadInventory(inventoryEntity, _this, null);
+        RequestUtil.requestUploadInventory(inventoryEntity, _this, new RequestUtil.OnSuccessListener() {
+            @Override
+            public void onSuccess(BaseResponseEntity response) {
+                Inventory inventory = DbUtil.getInventory(null, mInventory.id);
+                inventory.status = "U";
+                if(DbUtil.saveInventoty(null, inventory)) {
+                    mInventory.status = inventory.status;
+                    mIvSeal.setVisibility(mInventory.status.equals("U") ? View.VISIBLE : View.GONE);
+                }
+            }
+        });
     }
 
     //导出盘存表
@@ -579,8 +617,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         } finally {
             if (db != null) {
                 db.endTransaction();
+                db.close();
             }
-            db.close();
         }
         return inventoryDetail;
     }
@@ -621,8 +659,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         } finally {
             if (db != null) {
                 db.endTransaction();
+                db.close();
             }
-            db.close();
         }
         return result;
     }
@@ -652,8 +690,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         } finally {
             if (db != null) {
                 db.endTransaction();
+                db.close();
             }
-            db.close();
         }
         return result;
     }

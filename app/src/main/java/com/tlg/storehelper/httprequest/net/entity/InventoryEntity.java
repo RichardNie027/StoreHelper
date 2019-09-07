@@ -23,6 +23,8 @@ public class InventoryEntity  implements Serializable {
     public String username;
     /**盘点单号*/
     public String listNo;
+    /**盘点单状态，I：初始；U：上传；L：锁定*/
+    public String status;
     /**创建时间*/
     public Date createTime;
     /**修改时间*/

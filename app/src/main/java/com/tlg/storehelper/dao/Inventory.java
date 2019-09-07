@@ -18,6 +18,8 @@ public class Inventory implements Serializable {
     public String username;
     /**盘点单号*/
     public String listNo;
+    /**盘点单状态，I：初始；U：上传；L：锁定*/
+    public String status;
     /**创建时间*/
     public Date createTime;
     /**修改时间*/
@@ -25,8 +27,9 @@ public class Inventory implements Serializable {
 
     public Inventory() {
         id = StringUtil.getUUID();
+        this.listNo = "I";
     }
-    public Inventory(String id, String storeCode, Date listDate, int idx, String username, String listNo, Date createTime, Date lastTime) {
+    public Inventory(String id, String storeCode, Date listDate, int idx, String username, String listNo, String status, Date createTime, Date lastTime) {
         if(id==null)
             this.id = StringUtil.getUUID();
         else
@@ -36,6 +39,7 @@ public class Inventory implements Serializable {
         this.idx = idx;
         this.username = username;
         this.listNo = listNo;
+        this.status = status != null && status.equalsIgnoreCase("U") ? "U" : "I";
         this.createTime = createTime;
         this.lastTime = lastTime;
     }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.SQLiteUtil;
+import com.nec.lib.android.utils.SoundUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.DbUtil;
@@ -55,6 +56,8 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
     public static final String sInventoryListIdLabel = "inventory_list_id";
     public static final String sInventoryBinCodingLabel = "inventory_bin_coding";
 
+    private SoundUtil mSoundUtil;
+
     public RedoRecordFragment() {
         //资源名称
         mLayoutOfFragmentItemList = "fragment_redo_record";
@@ -71,6 +74,12 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         mInventoryListId = bundle.getString(sInventoryListIdLabel, "");
         mInventoryBinCoding = bundle.getString(sInventoryBinCodingLabel, "");
 
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSoundUtil = SoundUtil.newInstance(R.raw.warn);
     }
 
     @Override
@@ -198,6 +207,8 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
             } else {                    //错误
                 AndroidUtil.showToast("条码不存在");
                 mEtBarcode.selectAll();
+                if(mSoundUtil != null)
+                    mSoundUtil.playBeepSound(1);
                 return;
             }
         } else
@@ -271,8 +282,8 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
         } finally {
             if (db != null) {
                 db.endTransaction();
+                db.close();
             }
-            db.close();
         }
         if(result != -1)
             loadData();

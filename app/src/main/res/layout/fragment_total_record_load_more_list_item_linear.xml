@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:minHeight="30dp"
-    android:maxHeight="30dp"
+    android:minHeight="@dimen/list_row_height_normal"
+    android:maxHeight="@dimen/list_row_height_normal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -14,7 +14,7 @@
         android:layout_marginStart="0dp"
         android:text="货架"
         android:textAlignment="textStart"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,8 +27,8 @@
         android:text="商品数量"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimaryLight"
-        android:textSize="14sp"
         android:textStyle="bold"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvBinCoding"
         app:layout_constraintEnd_toStartOf="@+id/tvSizeQuantity"
         app:layout_constraintStart_toEndOf="@+id/tvBinCoding"
@@ -42,7 +42,7 @@
         android:alpha="0.3"
         android:text="款码统计"
         android:textAlignment="textEnd"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvBinCoding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvBinCoding" />

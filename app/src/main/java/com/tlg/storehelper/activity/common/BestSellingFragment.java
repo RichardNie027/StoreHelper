@@ -73,6 +73,16 @@ public class BestSellingFragment extends LoadMoreFragment {
                 return true;
             }
         });
+        mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus) {
+                    if(mListener != null) {
+                        mListener.onRecyclerViewHasFocus();
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -105,5 +115,7 @@ public class BestSellingFragment extends LoadMoreFragment {
          * @param goodsNo
          */
         void onClickGoodsItem(String goodsNo);
+
+        void onRecyclerViewHasFocus();
     }
 }

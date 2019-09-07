@@ -12,19 +12,22 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nec.lib.android.boost.CustomDialog;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ResUtil;
+import com.nec.lib.android.utils.SoundUtil;
 import com.nec.lib.android.utils.UiUtil;
 import com.nec.lib.android.base.BaseFragment;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.vo.StatisticInfo;
+
+import java.util.HashMap;
 
 public class ScannerFragment extends BaseFragment {
 
@@ -59,6 +62,8 @@ public class ScannerFragment extends BaseFragment {
     private int mBatchScanQuantity = 1; //批量扫描的件数
     private StatisticInfo mStatisticInfo = new StatisticInfo();  //盘点单统计信息
 
+    private SoundUtil mSoundUtil;
+
     public ScannerFragment() {
         // Required empty public constructor
     }
@@ -85,6 +90,7 @@ public class ScannerFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSoundUtil = SoundUtil.newInstance(R.raw.warn);
         if (getArguments() != null) {
             mStatisticInfo.id = getArguments().getString(ARG1_NAME);
             mStatisticInfo.listNo = getArguments().getString(ARG2_NAME);
@@ -223,6 +229,11 @@ public class ScannerFragment extends BaseFragment {
         mTvLastBinCoding.setText(statisticInfo.lastBinCoding);
     }
 
+    /**切换页面后条码框获得焦点*/
+    public void switched() {
+        mEtBarcode.requestFocus();
+    }
+
     /**重新统计，并更新显示*/
     private void recalculateQuantity() {
         if(mListener != null)
@@ -292,6 +303,8 @@ public class ScannerFragment extends BaseFragment {
             } else {                    //错误
                 AndroidUtil.showToast("条码不存在");
                 mEtBarcode.selectAll();
+                if(mSoundUtil != null)
+                    mSoundUtil.playBeepSound(1);
                 return;
             }
         } else
@@ -313,7 +326,6 @@ public class ScannerFragment extends BaseFragment {
             mTvBatchScanQuantity.setText("1");
         }
     }
-
 
     private void inputBatchNumber() {
         CustomDialog dialog = new CustomDialog(MyApp.getInstance(), R.layout.dialog_fragment_scanner_quantity, R.style.Custom_Dialog, new int[] {R.id.btnDialogOk});

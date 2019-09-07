@@ -126,7 +126,7 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
             String listNo = mTvListNo.getText().toString() + mEtListNo.getText().toString();
             Date create_date = new Date();
             ///生成对象并插入
-            Inventory inventory = new Inventory(null, storeCode, listDate, idx, username, listNo, create_date, create_date);
+            Inventory inventory = new Inventory(null, storeCode, listDate, idx, username, listNo, "I", create_date, create_date);
             ContentValues contentValues = SQLiteUtil.toContentValues(inventory);
             long ret = db.insert(SQLiteDbHelper.TABLE_INVENTORY, null, contentValues);
             if(ret == -1)
@@ -140,8 +140,8 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
         } finally {
             if (db != null) {
                 db.endTransaction();
+                db.close();
             }
-            db.close();
         }
         return result;
     }

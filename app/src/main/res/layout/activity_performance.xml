@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,7 +28,7 @@
         android:layout_marginTop="24dp"
         android:text="销售业绩"
         android:textColor="@color/colorPrimaryLight"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
@@ -95,7 +95,7 @@
         android:text="工号"
         android:textAlignment="center"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPerformanceLabel" />
 
@@ -106,7 +106,7 @@
         android:text="姓名"
         android:textAlignment="center"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
         app:layout_constraintStart_toEndOf="@+id/tvPersonCodeLabel"
         app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
@@ -118,7 +118,7 @@
         android:text="数量"
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
         app:layout_constraintStart_toEndOf="@+id/tvPersonLabel"
@@ -131,7 +131,7 @@
         android:text="销售额"
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
         app:layout_constraintStart_toEndOf="@+id/tvQuantityLabel"
@@ -144,7 +144,7 @@
         android:text="提成"
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvSalesAmountLabel"
@@ -153,9 +153,10 @@
     <RadioGroup
         android:id="@+id/rgTabs"
         android:layout_width="80dp"
-        android:layout_height="18dp"
+        android:layout_height="28dp"
         android:background="@color/colorPrimaryLight"
         android:orientation="horizontal"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintTop_toTopOf="@+id/tvPerformanceLabel"
         app:layout_constraintBottom_toBottomOf="@+id/tvPerformanceLabel"
         app:layout_constraintEnd_toEndOf="parent"
@@ -166,8 +167,7 @@
             style="@style/Custom.LightTabRadioButtonStyle"
             android:layout_weight="1"
             android:focusable="false"
-            android:text="昨天"
-            android:textSize="11sp" />
+            android:text="昨天" />
 
         <RadioButton
             android:id="@+id/rbToday"
@@ -175,8 +175,7 @@
             android:layout_weight="1"
             android:checked="true"
             android:focusable="false"
-            android:text="今天"
-            android:textSize="11sp" />
+            android:text="今天" />
     </RadioGroup>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

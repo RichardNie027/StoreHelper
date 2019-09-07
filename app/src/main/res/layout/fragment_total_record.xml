@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="盘点单号："
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,6 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="-"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvListNoLabel"
         app:layout_constraintStart_toEndOf="@+id/tvListNoLabel"
         app:layout_constraintTop_toTopOf="@+id/tvListNoLabel" />
@@ -67,7 +68,7 @@
         android:layout_marginTop="8dp"
         android:text="货架"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
 
@@ -79,7 +80,7 @@
         android:text="商品数量"
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvSizeQuantityLabel"
         app:layout_constraintStart_toEndOf="@+id/tvBinCodingLabel"
@@ -94,7 +95,7 @@
         android:text="款码统计"
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvBinCodingLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvBinCodingLabel" />

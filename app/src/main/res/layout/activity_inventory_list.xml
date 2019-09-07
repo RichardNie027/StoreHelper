@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="盘点单号："
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="0"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvListNoLabel"
         app:layout_constraintStart_toEndOf="@+id/tvListNoLabel"
         app:layout_constraintTop_toTopOf="@+id/tvListNoLabel" />
@@ -49,7 +50,7 @@
         android:layout_height="40dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvListNo"
         app:layout_constraintStart_toEndOf="@+id/tvListNo"
         app:layout_constraintTop_toTopOf="@+id/tvListNo" />
@@ -58,9 +59,9 @@
         android:id="@+id/tvStoreCodeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="盘点门店："
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="@+id/tvListNoLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvListNoLabel" />
 
@@ -70,6 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="0"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvStoreCodeLabel"
         app:layout_constraintStart_toEndOf="@+id/tvStoreCodeLabel"
         app:layout_constraintTop_toTopOf="@+id/tvStoreCodeLabel" />
@@ -78,9 +80,9 @@
         android:id="@+id/tvDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="盘点日期："
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="@+id/tvStoreCodeLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvStoreCodeLabel" />
 
@@ -90,6 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="0"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvDateLabel"
         app:layout_constraintStart_toEndOf="@+id/tvDateLabel"
         app:layout_constraintTop_toTopOf="@+id/tvDateLabel" />
@@ -102,6 +105,7 @@
         android:layout_marginStart="16dp"
         android:onClick="btnDateClick"
         android:text="修改日期"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvDate"
         app:layout_constraintStart_toEndOf="@+id/tvDate"
         app:layout_constraintTop_toTopOf="@+id/tvDate" />
@@ -110,9 +114,9 @@
         android:id="@+id/tvIndexLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="盘点次序："
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="@+id/tvDateLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvDateLabel" />
 
@@ -122,6 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="0"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvIndexLabel"
         app:layout_constraintStart_toEndOf="@+id/tvIndexLabel"
         app:layout_constraintTop_toTopOf="@+id/tvIndexLabel" />
@@ -130,9 +135,9 @@
         android:id="@+id/tvUsernameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="盘点人员："
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="@+id/tvIndexLabel"
         app:layout_constraintTop_toBottomOf="@+id/tvIndexLabel" />
 
@@ -142,6 +147,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="0"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvUsernameLabel"
         app:layout_constraintStart_toEndOf="@+id/tvUsernameLabel"
         app:layout_constraintTop_toTopOf="@+id/tvUsernameLabel" />

@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         android:theme="@style/ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -28,20 +28,20 @@
         android:layout_marginTop="16dp"
         android:text="货号 / 条码："
         android:textColor="@color/colorPrimaryLight"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <EditText
         android:id="@+id/etBarcode"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="42dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="扫描商品条码或输入货号"
         android:inputType="text"
         android:textAlignment="viewStart"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvBarcodeLabel0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvBarcodeLabel0"
@@ -51,24 +51,20 @@
         android:id="@+id/tvGoodsName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
         android:text="."
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toStartOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etBarcode" />
+        app:layout_constraintTop_toTopOf="@+id/ivPic" />
 
     <TextView
         android:id="@+id/tvGoodsNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
         android:text="."
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBottom_toTopOf="@+id/tvPrice"
         app:layout_constraintEnd_toStartOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvGoodsName" />
@@ -77,31 +73,30 @@
         android:id="@+id/tvPrice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="72dp"
         android:text="."
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/tvGoodsNo"
-        app:layout_constraintTop_toBottomOf="@+id/tvGoodsNo" />
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPic"
+        app:layout_constraintEnd_toStartOf="@+id/ivPic"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/ivPic"
-        android:layout_width="120dp"
-        android:layout_height="160dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/etBarcode"
-        app:layout_constraintEnd_toEndOf="@+id/etBarcode" />
+        android:layout_width="210dp"
+        android:layout_height="280dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvRecyclerViewHeader"
+        app:layout_constraintEnd_toEndOf="@+id/etBarcode"
+        app:layout_constraintTop_toBottomOf="@+id/etBarcode" />
 
     <View
         android:id="@+id/tvRecyclerViewHeader"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginStart="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_height="36dp"
         android:layout_marginBottom="4dp"
+        android:background="@color/colorSecondDark"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorSecondDark"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvRecyclerViewHeaderCaption"
@@ -109,7 +104,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="最佳搭配（近60天连带）"
-        android:textSize="14sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvRecyclerViewHeader"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +113,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="225dp"
         android:background="@color/colorSecond"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

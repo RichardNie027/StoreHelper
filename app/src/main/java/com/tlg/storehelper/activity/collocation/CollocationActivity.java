@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Environment;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -102,6 +103,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
 
         RecyclerViewAdapter recycleViewAdapter = new RecyclerViewAdapter(CollocationActivity.this, mDatas);
         mRecyclerView.setAdapter(recycleViewAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL));
         recycleViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {
@@ -231,7 +233,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             recyclerViewHolder.itemView.setTag(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvGoodsNo.setText(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvInfo.setText(mDatas.get(position).info);
-            PicUtil.loadPic(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).pic, 4);
+            PicUtil.loadPic(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).pic, 2);
         }
 
         @Override

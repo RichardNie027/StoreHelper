@@ -122,8 +122,8 @@ public class DbUtil {
                 } finally {
                     if (db != null) {
                         db.endTransaction();
+                        db.close();
                     }
-                    db.close();
                 }
                 return result;
             }
@@ -133,9 +133,10 @@ public class DbUtil {
     public static Inventory getInventory(SQLiteDatabase db, String id) {
         Inventory inventory = new Inventory();
         SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        boolean dbIsNull = db == null;
         SQLiteDatabase _db = db;
         try {
-            if(db == null)
+            if(dbIsNull)
                 _db = helper.getReadableDatabase();
             String sql = new StringBuffer().append("select *").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY)
                     .append(" where id=?")
@@ -148,6 +149,7 @@ public class DbUtil {
                 inventory.idx = cursor.getInt(cursor.getColumnIndex("idx"));
                 inventory.username = cursor.getString(cursor.getColumnIndex("username"));
                 inventory.listNo = cursor.getString(cursor.getColumnIndex("listNo"));
+                inventory.status = cursor.getString(cursor.getColumnIndex("status"));
                 inventory.createTime = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("createTime")));
                 inventory.lastTime = DateUtil.fromStr(cursor.getString(cursor.getColumnIndex("lastTime")));
             }
@@ -155,18 +157,47 @@ public class DbUtil {
         } catch (Throwable t) {
             Log.e(DbUtil.class.getName(), t.getMessage(), t);
         } finally {
-            if(db == null)
+            if(dbIsNull)
                 _db.close();
         }
         return inventory;
     }
 
+    public static boolean saveInventoty(SQLiteDatabase db, Inventory inventory) {
+        boolean result = false;
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        boolean dbIsNull = db == null;
+        SQLiteDatabase _db = db;
+        try {
+            if(dbIsNull) {
+                _db = helper.getWritableDatabase();
+                _db.beginTransaction();
+            }
+            ContentValues contentValues2 = SQLiteUtil.toContentValues(inventory);
+            long result2 = _db.update(SQLiteDbHelper.TABLE_INVENTORY, contentValues2, "id=?", new String[]{inventory.id});
+            if(result2 <= 0L)
+                throw new Exception("更新记录出错");
+            if(dbIsNull)
+                _db.setTransactionSuccessful();
+            result = true;
+        } catch (Throwable t) {
+            Log.e(DbUtil.class.getName(), t.getMessage(), t);
+        } finally {
+            if(dbIsNull) {
+                _db.endTransaction();
+                _db.close();
+            }
+        }
+        return result;
+    }
+
     public static InventoryDetail getInventoryDetail(SQLiteDatabase db, String id) {
         InventoryDetail inventoryDetail = new InventoryDetail();
         SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        boolean dbIsNull = db == null;
         SQLiteDatabase _db = db;
         try {
-            if(db == null)
+            if(dbIsNull)
                 _db = helper.getReadableDatabase();
             String sql = new StringBuffer().append("select *").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where id=?")
@@ -184,7 +215,7 @@ public class DbUtil {
         } catch (Throwable t) {
             Log.e(DbUtil.class.getName(), t.getMessage(), t);
         } finally {
-            if(db == null)
+            if(dbIsNull)
                 _db.close();
         }
         return inventoryDetail;

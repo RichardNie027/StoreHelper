@@ -71,7 +71,7 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
 
         SettingsActivity.MyStickHeaderRecyclerViewAdapter recycleViewAdapter = new MyStickHeaderRecyclerViewAdapter(mDatas);
         recycleViewAdapter.setViewHolderClass(recycleViewAdapter, MyStickHeaderRecyclerViewAdapter.MyViewHolder.class);
-        mRecyclerView.addItemDecoration(new StickHeaderDecoration(this, 20, 16, 14, ResUtil.getColor("white"), ResUtil.getColor("colorPrimaryLight"), ResUtil.getColor("silver")));
+        mRecyclerView.addItemDecoration(new StickHeaderDecoration(this, 28, 16, 16, ResUtil.getColor("white"), ResUtil.getColor("colorPrimaryLight"), ResUtil.getColor("silver")));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(recycleViewAdapter);
 
@@ -228,8 +228,8 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
         } finally {
             if (db != null) {
                 db.endTransaction();
+                db.close();
             }
-            db.close();
         }
         return result;
     }

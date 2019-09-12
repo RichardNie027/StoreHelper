@@ -38,10 +38,10 @@
         android:layout_height="0dp"
         android:alpha="0.6"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvPersonLabel"
-        app:layout_constraintStart_toStartOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintStart_toStartOf="@+id/tvJobNumberLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvPanel2"
@@ -49,10 +49,10 @@
         android:layout_height="0dp"
         android:alpha="0.8"
         android:background="@color/colorPrimaryLight"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvQuantityLabel"
         app:layout_constraintStart_toStartOf="@+id/tvPersonLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvPanel3"
@@ -60,10 +60,10 @@
         android:layout_height="0dp"
         android:alpha="0.6"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
         app:layout_constraintStart_toStartOf="@+id/tvQuantityLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvPanel4"
@@ -71,10 +71,10 @@
         android:layout_height="0dp"
         android:alpha="0.8"
         android:background="@color/colorPrimaryLight"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
         app:layout_constraintStart_toStartOf="@+id/tvSalesAmountLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvPanel5"
@@ -82,13 +82,13 @@
         android:layout_height="0dp"
         android:alpha="0.6"
         android:background="@color/colorPrimary"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toEndOf="@+id/tvAllowanceLabel"
         app:layout_constraintStart_toStartOf="@+id/tvAllowanceLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
-        android:id="@+id/tvPersonCodeLabel"
+        android:id="@+id/tvJobNumberLabel"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -107,9 +107,9 @@
         android:textAlignment="center"
         android:textColor="@color/colorSecond"
         android:textSize="@dimen/text_size_normal"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintStart_toEndOf="@+id/tvPersonCodeLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvJobNumberLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvQuantityLabel"
@@ -119,10 +119,10 @@
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
         android:textSize="@dimen/text_size_normal"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvSalesAmountLabel"
         app:layout_constraintStart_toEndOf="@+id/tvPersonLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvSalesAmountLabel"
@@ -132,10 +132,10 @@
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
         android:textSize="@dimen/text_size_normal"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toStartOf="@+id/tvAllowanceLabel"
         app:layout_constraintStart_toEndOf="@+id/tvQuantityLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <TextView
         android:id="@+id/tvAllowanceLabel"
@@ -145,10 +145,10 @@
         android:textAlignment="textEnd"
         android:textColor="@color/colorSecond"
         android:textSize="@dimen/text_size_normal"
-        app:layout_constraintBottom_toBottomOf="@+id/tvPersonCodeLabel"
+        app:layout_constraintBottom_toBottomOf="@+id/tvJobNumberLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tvSalesAmountLabel"
-        app:layout_constraintTop_toTopOf="@+id/tvPersonCodeLabel" />
+        app:layout_constraintTop_toTopOf="@+id/tvJobNumberLabel" />
 
     <RadioGroup
         android:id="@+id/rgTabs"

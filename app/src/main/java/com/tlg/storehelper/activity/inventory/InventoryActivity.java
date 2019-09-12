@@ -38,6 +38,7 @@ import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.android.utils.SQLiteUtil;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
+import com.tlg.storehelper.vo.InventoryDetailVo;
 import com.tlg.storehelper.vo.StatisticInfo;
 
 import java.io.File;
@@ -571,12 +572,15 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         if (!file.exists()) {
             file.mkdirs();
         }
-        String excelFileName = "/INV" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + ".xls";
+        int total = 0;
+        for(InventoryDetail detail: mInventoryDetailList)
+            total += detail.quantity;
+        String excelFileName = "/" + DateUtil.toStr(new Date(), "yyyyMMddHHmmss") + "_" + mInventory.storeCode + "_"  + total + ".xls";
         String[] title = {"标识", "货架编码", "商品条码", "数量"};
         String sheetName = mInventory.listNo;
         filePath = filePath + excelFileName;
         if(ExcelUtil.initExcel(filePath, sheetName, title))
-            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath, new String[] {"id","binCoding","barcode","quantity"});
+            ExcelUtil.writeObjListToExcel(mInventoryDetailList, filePath, new String[] {"barcode","quantity","binCoding"});
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////

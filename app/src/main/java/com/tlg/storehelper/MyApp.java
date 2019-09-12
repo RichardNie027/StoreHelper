@@ -7,7 +7,7 @@ import com.nec.lib.android.httprequest.utils.ApiConfig;
 
 public class MyApp extends MyApplication {
 
-    public static String baseUrl = "http://192.168.1.176:8080/";
+    public static String baseUrl = "http://192.168.1.5:8080/storehelper/";
 
     @Override
     public void onCreate() {

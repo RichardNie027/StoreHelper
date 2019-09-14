@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivSearch"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:onClick="unsupportedClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivMembership"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/search" />
+
+    <ImageView
+        android:id="@+id/ivMembership"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:onClick="unsupportedClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivBill"
+        app:layout_constraintStart_toEndOf="@+id/ivSearch"
+        app:layout_constraintTop_toTopOf="@id/ivSearch"
+        app:srcCompat="@drawable/membership" />
+
+    <ImageView
+        android:id="@+id/ivBill"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:onClick="unsupportedClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivCalculator"
+        app:layout_constraintStart_toEndOf="@+id/ivMembership"
+        app:layout_constraintTop_toTopOf="@+id/ivSearch"
+        app:srcCompat="@drawable/bill" />
+
+    <ImageView
+        android:id="@+id/ivCalculator"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:onClick="ivCalculatorClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivInventory"
+        app:layout_constraintStart_toEndOf="@+id/ivBill"
+        app:layout_constraintTop_toTopOf="@id/ivSearch"
+        app:srcCompat="@drawable/calculator" />
+
+    <ImageView
+        android:id="@+id/ivInventory"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:onClick="ivInventoryClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivCalculator"
+        app:layout_constraintTop_toTopOf="@+id/ivSearch"
+        app:srcCompat="@drawable/inventory" />
+
+    <TextView
+        android:id="@+id/tvSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="unsupportedClick"
+        android:text="查货"
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivSearch"
+        app:layout_constraintStart_toStartOf="@+id/ivSearch"
+        app:layout_constraintTop_toBottomOf="@+id/ivSearch" />
+
+    <TextView
+        android:id="@+id/tvMembership"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="unsupportedClick"
+        android:text="会员"
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivMembership"
+        app:layout_constraintStart_toStartOf="@+id/ivMembership"
+        app:layout_constraintTop_toBottomOf="@+id/ivMembership" />
+
+    <TextView
+        android:id="@+id/tvBill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="unsupportedClick"
+        android:text="开单"
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivBill"
+        app:layout_constraintStart_toStartOf="@+id/ivBill"
+        app:layout_constraintTop_toBottomOf="@+id/ivBill" />
+
+    <TextView
+        android:id="@+id/tvCalculator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivCalculatorClick"
+        android:text="计算"
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivCalculator"
+        app:layout_constraintStart_toStartOf="@+id/ivCalculator"
+        app:layout_constraintTop_toBottomOf="@+id/ivCalculator" />
+
+    <TextView
+        android:id="@+id/tvInventory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="ivInventoryClick"
+        android:text="盘点"
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivInventory"
+        app:layout_constraintStart_toStartOf="@+id/ivInventory"
+        app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

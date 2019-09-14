@@ -4,6 +4,7 @@
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="text_size_normal">16sp</dimen>
     <dimen name="text_size_big">20sp</dimen>
+    <dimen name="text_size_bigger">26sp</dimen>
 
     <dimen name="list_row_height_normal">45dp</dimen>
 

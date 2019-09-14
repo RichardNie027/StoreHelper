@@ -77,107 +77,75 @@
         app:layout_constraintTop_toTopOf="@+id/spinner"
         app:srcCompat="@drawable/settings" />
 
-    <ImageView
-        android:id="@+id/ivSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:onClick="ivSearchClick"
-        app:layout_constraintEnd_toStartOf="@+id/ivPerformance"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvHeader"
-        app:srcCompat="@drawable/search" />
-
-    <ImageView
-        android:id="@+id/ivPerformance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="ivSearchClick"
-        app:layout_constraintEnd_toStartOf="@+id/ivBill"
-        app:layout_constraintStart_toEndOf="@+id/ivSearch"
-        app:layout_constraintTop_toTopOf="@id/ivSearch"
-        app:srcCompat="@drawable/performance" />
-
-    <ImageView
-        android:id="@+id/ivBill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="ivSearchClick"
-        app:layout_constraintEnd_toStartOf="@+id/ivInventory"
-        app:layout_constraintStart_toEndOf="@+id/ivPerformance"
-        app:layout_constraintTop_toTopOf="@+id/ivPerformance"
-        app:srcCompat="@drawable/bill" />
-
-    <ImageView
-        android:id="@+id/ivInventory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="ivInventoryClick"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vpToobarPager"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivBill"
-        app:layout_constraintTop_toTopOf="@+id/ivBill"
-        app:srcCompat="@drawable/inventory" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeader" />
 
-    <TextView
-        android:id="@+id/tvSearch"
+    <ImageView
+        android:id="@+id/ivLeft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:onClick="ivSearchClick"
-        android:text="查货"
-        android:textSize="@dimen/text_size_normal"
-        app:layout_constraintEnd_toEndOf="@+id/ivSearch"
-        app:layout_constraintStart_toStartOf="@+id/ivSearch"
-        app:layout_constraintTop_toBottomOf="@+id/ivSearch" />
+        android:layout_marginStart="4dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/vpToobarPager"
+        app:layout_constraintStart_toStartOf="@+id/vpToobarPager"
+        app:layout_constraintTop_toTopOf="@+id/vpToobarPager"
+        app:layout_constraintVertical_bias="0.40"
+        app:srcCompat="@drawable/left" />
 
-    <TextView
-        android:id="@+id/tvPerformance"
+    <ImageView
+        android:id="@+id/ivRight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:onClick="ivSearchClick"
-        android:text="业绩"
-        android:textSize="@dimen/text_size_normal"
-        app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
-        app:layout_constraintStart_toStartOf="@+id/ivPerformance"
-        app:layout_constraintTop_toBottomOf="@+id/ivPerformance" />
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/vpToobarPager"
+        app:layout_constraintEnd_toEndOf="@+id/vpToobarPager"
+        app:layout_constraintTop_toTopOf="@+id/vpToobarPager"
+        app:layout_constraintVertical_bias="0.40"
+        app:srcCompat="@drawable/right" />
 
-    <TextView
-        android:id="@+id/tvBill"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:onClick="ivSearchClick"
-        android:text="开单"
-        android:textSize="@dimen/text_size_normal"
-        app:layout_constraintEnd_toEndOf="@+id/ivBill"
-        app:layout_constraintStart_toStartOf="@+id/ivBill"
-        app:layout_constraintTop_toBottomOf="@+id/ivBill" />
+    <View
+        android:id="@+id/vSection1"
+        android:layout_width="12dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/colorPrimaryLight"
+        app:layout_constraintBottom_toBottomOf="@+id/vpToobarPager"
+        app:layout_constraintEnd_toStartOf="@+id/vSection2"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/tvInventory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:onClick="ivInventoryClick"
-        android:text="盘点"
-        android:textSize="@dimen/text_size_normal"
-        app:layout_constraintEnd_toEndOf="@+id/ivInventory"
-        app:layout_constraintStart_toStartOf="@+id/ivInventory"
-        app:layout_constraintTop_toBottomOf="@+id/ivInventory" />
+    <View
+        android:id="@+id/vSection2"
+        android:layout_width="12dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/colorSecondDark"
+        app:layout_constraintBottom_toBottomOf="@+id/vpToobarPager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/vSection1" />
 
     <TextView
         android:id="@+id/tvBestSellingLabel"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="畅销款"
         android:textColor="@color/colorPrimaryLight"
         android:textStyle="bold"
         android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSearch" />
+        app:layout_constraintTop_toBottomOf="@id/vpToobarPager" />
 
     <RadioGroup
         android:id="@+id/rgDimension"

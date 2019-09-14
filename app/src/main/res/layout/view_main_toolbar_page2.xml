@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/ivPerformance"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:onClick="unsupportedClick"
+        app:layout_constraintEnd_toStartOf="@+id/ivBtn2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/performance" />
+
+    <ImageView
+        android:id="@+id/ivBtn2"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivBtn3"
+        app:layout_constraintStart_toEndOf="@+id/ivPerformance"
+        app:layout_constraintTop_toTopOf="@id/ivPerformance" />
+
+    <ImageView
+        android:id="@+id/ivBtn3"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivBtn4"
+        app:layout_constraintStart_toEndOf="@+id/ivBtn2"
+        app:layout_constraintTop_toTopOf="@+id/ivPerformance" />
+
+    <ImageView
+        android:id="@+id/ivBtn4"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivBtn5"
+        app:layout_constraintStart_toEndOf="@+id/ivBtn3"
+        app:layout_constraintTop_toTopOf="@id/ivPerformance" />
+
+    <ImageView
+        android:id="@+id/ivBtn5"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/ivBtn4"
+        app:layout_constraintTop_toTopOf="@+id/ivPerformance" />
+
+    <TextView
+        android:id="@+id/tvPerformance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="unsupportedClick"
+        android:text="业绩"
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivPerformance"
+        app:layout_constraintStart_toStartOf="@+id/ivPerformance"
+        app:layout_constraintTop_toBottomOf="@+id/ivPerformance" />
+
+    <TextView
+        android:id="@+id/tvBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivBtn2"
+        app:layout_constraintStart_toStartOf="@+id/ivBtn2"
+        app:layout_constraintTop_toBottomOf="@+id/ivBtn2" />
+
+    <TextView
+        android:id="@+id/tvBtn3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivBtn3"
+        app:layout_constraintStart_toStartOf="@+id/ivBtn3"
+        app:layout_constraintTop_toBottomOf="@+id/ivBtn3" />
+
+    <TextView
+        android:id="@+id/tvBtn4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivBtn4"
+        app:layout_constraintStart_toStartOf="@+id/ivBtn4"
+        app:layout_constraintTop_toBottomOf="@+id/ivBtn4" />
+
+    <TextView
+        android:id="@+id/tvBtn5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text=""
+        android:textColor="@color/colorSecondDark"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="@+id/ivBtn5"
+        app:layout_constraintStart_toStartOf="@+id/ivBtn5"
+        app:layout_constraintTop_toBottomOf="@+id/ivBtn5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

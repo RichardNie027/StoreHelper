@@ -132,6 +132,14 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="Custom.HeavyButtonStyle">
+        <item name="android:background">@drawable/heavy_button_selector</item>
+        <item name="android:textColor">@drawable/button_text_color_selector</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
     <style name="Custom.Dialog" parent="android:Theme.Dialog">
         <!-- 背景颜色及透明程度 -->
         <item name="android:windowBackground">@android:color/transparent</item>

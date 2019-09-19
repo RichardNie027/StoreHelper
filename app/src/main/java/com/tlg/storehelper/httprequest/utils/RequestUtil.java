@@ -46,7 +46,7 @@ public class RequestUtil {
         headerMap.put("ApiVersion", String.valueOf(1));
         headerMap.put("Timestamp", DateUtil.toStr(new Date(), "yyyyMMddHHmmss"));
         headerMap.put("Uid", GlobalVars.username);
-        headerMap.put("Authorization", GlobalVars.token);   //Authorization在HttpHeaderInterceptor中添加
+        headerMap.put("Auth", GlobalVars.token);   //Authorization在HttpHeaderInterceptor中添加
         //生成签名
         Map<String, Object> sortedMap = new TreeMap<>();
         sortedMap.putAll(headerMap);

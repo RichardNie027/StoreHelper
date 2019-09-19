@@ -42,6 +42,7 @@ import com.tlg.storehelper.vo.InventoryDetailVo;
 import com.tlg.storehelper.vo.StatisticInfo;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -572,6 +573,9 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         if (!file.exists()) {
             file.mkdirs();
         }
+        try {
+            Runtime.getRuntime().exec("chmod 777 " +  filePath );
+        } catch (IOException e) {}
         int total = 0;
         for(InventoryDetail detail: mInventoryDetailList)
             total += detail.quantity;

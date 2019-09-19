@@ -7,7 +7,7 @@ import com.nec.lib.android.httprequest.utils.ApiConfig;
 
 public class MyApp extends MyApplication {
 
-    public static String baseUrl = "http://www.tianlige.com:8080/storehelper/";
+    public static String baseUrl = "http://www.tianlige.com/storehelper/";
 
     @Override
     public void onCreate() {

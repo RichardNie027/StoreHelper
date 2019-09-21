@@ -47,14 +47,8 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_collocation);
-        //接收参数
-        Intent intent =getIntent();
-        mGoodsNo = intent.getStringExtra("goodsNo");
-        initView();
     }
 
     @Override
@@ -72,7 +66,12 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
+        //接收参数
+        Intent intent =getIntent();
+        mGoodsNo = intent.getStringExtra("goodsNo");
+
         // find view
         mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -164,6 +163,11 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 }
             }, 500);
         }
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_collocation;
     }
 
     public void onScanBarcode(String barcode) {

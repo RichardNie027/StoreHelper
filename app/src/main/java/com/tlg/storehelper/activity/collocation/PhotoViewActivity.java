@@ -20,14 +20,12 @@ public class PhotoViewActivity extends BaseRxAppCompatActivity {
     private ImageView ivBack;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_photo_view);
-        initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         ivPhotoView = findViewById(R.id.ivPhotoView);
         ivBack = findViewById(R.id.ivBack);
@@ -47,5 +45,10 @@ public class PhotoViewActivity extends BaseRxAppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(filename2find, ImageUtil.getBitmapOption(1));
             ivPhotoView.setImageBitmap(bitmap);
         }
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_photo_view;
     }
 }

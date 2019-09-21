@@ -47,14 +47,12 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
     private List<MyStickHeaderViewGroupData> mDatas = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
-        initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -131,6 +129,11 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_settings;
     }
 
     private String calculateCacheSize(boolean deletion) {

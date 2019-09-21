@@ -60,14 +60,12 @@ import permissions.dispatcher.RuntimePermissions;
 public class CoverActivity extends BaseRxAppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        mFullScreen = true; //super前
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cover);
-        initView();
+    protected void beforeCreate(Bundle savedInstanceState) {
+        mFullScreen = true;
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         Button btnEnter = findViewById(R.id.btnEnter);
 
@@ -83,6 +81,11 @@ public class CoverActivity extends BaseRxAppCompatActivity {
 
         // 初始化系统的屏幕尺寸信息
         UiUtil.getAndroiodScreenProperty(this);
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_cover;
     }
 
 

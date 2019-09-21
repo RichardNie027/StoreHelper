@@ -49,14 +49,7 @@ public class BestSellingFragment extends LoadMoreFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        initView(view);
-        return view;
-    }
-
-    private void initView(View rootView) {
+    protected void initView(View rootView, Bundle bundle) {
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int postion) {

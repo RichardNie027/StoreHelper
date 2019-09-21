@@ -34,18 +34,17 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
     private RedoRecordFragment mRedoRecordFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_redo_record);
+    }
+
+    @Override
+    protected void initView() {
         //接收参数
         Intent intent =getIntent();
         mListId = intent.getStringExtra(RedoRecordFragment.sInventoryListIdLabel);
         mBinCoding = intent.getStringExtra(RedoRecordFragment.sInventoryBinCodingLabel);
-        initView();
-    }
 
-    private void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
         //toolbar
@@ -82,6 +81,11 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
         redoRecordListDataRequest.setmListener(mRedoRecordFragment);
         fragmentTransaction.add(R.id.fragment_container, mRedoRecordFragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_redo_record;
     }
 
     @Override

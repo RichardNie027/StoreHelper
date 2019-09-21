@@ -43,14 +43,7 @@ public class TotalRecordFragment extends LoadMoreFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        initView(view);
-        return view;
-    }
-
-    private void initView(View rootView) {
+    protected void initView(View rootView, Bundle bundle) {
         // find view
         mTvListNo = rootView.findViewById(R.id.tvListNo);
 

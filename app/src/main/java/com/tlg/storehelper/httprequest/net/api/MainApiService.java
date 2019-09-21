@@ -11,6 +11,7 @@ import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
+import com.tlg.storehelper.vo.StockVo;
 
 import io.reactivex.Observable;
 
@@ -55,5 +56,9 @@ public class MainApiService {
 
     public Observable<SimpleListPageEntity<GoodsSimpleVo>> getBestSelling(String storeCode, String dim, int page) {
         return mMainApi.getBestSelling(storeCode, dim, page);
+    }
+
+    public Observable<SimpleEntity<StockVo>> getStoreStock(String storeCode, String goodsNo) {
+        return mMainApi.getStoreStock(storeCode, goodsNo);
     }
 }

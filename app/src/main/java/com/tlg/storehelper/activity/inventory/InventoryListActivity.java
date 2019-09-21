@@ -44,14 +44,12 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
     private String mNewId = null;    // 新盘点单记录的ID
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory_list);
-        initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
         mTvListNo = findViewById(R.id.tvListNo);
@@ -69,6 +67,11 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
         mCalendar = Calendar.getInstance(Locale.CHINA);
         processDatetimePickerResult(mCalendar);
         updateUi();
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_inventory_list;
     }
 
     private void updateUi() {

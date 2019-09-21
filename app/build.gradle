@@ -66,6 +66,7 @@ dependencies {
     implementation 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.1'
     //PermissionsDispatcher
     implementation 'org.permissionsdispatcher:permissionsdispatcher:4.5.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'org.permissionsdispatcher:permissionsdispatcher-processor:4.5.0'
 
     //Test

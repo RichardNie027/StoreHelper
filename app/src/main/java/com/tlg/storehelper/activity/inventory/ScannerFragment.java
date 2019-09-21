@@ -12,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -26,8 +25,6 @@ import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.vo.StatisticInfo;
-
-import java.util.HashMap;
 
 public class ScannerFragment extends BaseFragment {
 
@@ -91,6 +88,11 @@ public class ScannerFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSoundUtil = SoundUtil.newInstance(R.raw.warn);
+    }
+
+    @Override
+    protected void initView(View rootView, Bundle bundle) {
+        // bundle
         if (getArguments() != null) {
             mStatisticInfo.id = getArguments().getString(ARG1_NAME);
             mStatisticInfo.listNo = getArguments().getString(ARG2_NAME);
@@ -99,17 +101,7 @@ public class ScannerFragment extends BaseFragment {
             mStatisticInfo.lastBarcode = getArguments().getString(ARG5_NAME);
             mStatisticInfo.lastBinCoding = getArguments().getString(ARG6_NAME);
         }
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_scanner, container, false);
-        initView(rootView);
-        return rootView;
-    }
-
-    private void initView(View rootView) {
         // find view
         mTvListNo = rootView.findViewById(R.id.tvListNo);
         mSpnBinType = rootView.findViewById(R.id.spnBinType);
@@ -205,6 +197,11 @@ public class ScannerFragment extends BaseFragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.fragment_scanner;
     }
 
     /**如果货位改变，重新统计，并更新显示*/

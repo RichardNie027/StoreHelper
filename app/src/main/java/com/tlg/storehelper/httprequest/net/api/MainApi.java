@@ -10,6 +10,7 @@ import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
+import com.tlg.storehelper.vo.StockVo;
 
 import java.util.Map;
 
@@ -68,4 +69,12 @@ public interface MainApi {
      */
     @GET("api/getBestSelling")
     Observable<SimpleListPageEntity<GoodsSimpleVo>> getBestSelling(@Query("storeCode")String storeCode, @Query("dim")String dim, @Query("page")int page);
+
+    /**
+     * 接口描述：GET getStoreStock
+     * 接口参数：
+     * 接口返回：SimpleListEntity<StockVo>
+     */
+    @GET("api/getStoreStock")
+    Observable<SimpleEntity<StockVo>> getStoreStock(@Query("storeCode")String storeCode, @Query("goodsNo")String goodsNo);
 }

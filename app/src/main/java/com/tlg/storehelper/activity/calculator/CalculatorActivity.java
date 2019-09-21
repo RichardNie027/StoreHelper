@@ -40,16 +40,12 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
     private RecyclerView mRecyclerView2;
     private List<CalculatorVo> mDatas = new ArrayList<>();
 
-    private int mLayoutState = 1;
     private FlexboxLayoutManager mLayoutManager1;
     private LinearLayoutManager mLayoutManager2;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculator);
-        initView();
     }
 
     @Override
@@ -77,7 +73,8 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
         mRecyclerView1 = (RecyclerView) findViewById(R.id.recyclerView1);
@@ -111,6 +108,11 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
         mRecyclerView1.setAdapter(recyclerViewAdapter1);
         RecyclerViewAdapter2 recyclerViewAdapter2 = new RecyclerViewAdapter2(CalculatorActivity.this, mDatas);
         mRecyclerView2.setAdapter(recyclerViewAdapter2);
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_calculator;
     }
 
     ///自定义类继承RecycleView.Adapter类作为数据适配器
@@ -262,7 +264,6 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
     }
 
     private void showCalculator() {
-        mLayoutState = 1;
         for(View view: AndroidUtil.getAllViews(this, true)) {
             if (view instanceof Button)
                 view.setVisibility(View.VISIBLE);

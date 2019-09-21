@@ -27,6 +27,7 @@ import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
+import com.tlg.storehelper.vo.StockVo;
 
 import java.io.File;
 import java.io.IOException;
@@ -265,6 +266,41 @@ public class RequestUtil {
 
                     @Override
                     public void onSuccess(SimpleListPageEntity<GoodsSimpleVo> response) {
+                        Log.d(activity.getClass().getName(), "请求成功");
+                        if(onSuccessListener != null)
+                            onSuccessListener.onSuccess(response);
+                    }
+                });
+    }
+
+    public static void requestStoreStock(String storeCode, String goodsNo, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        Map requestMap = new RequestMap()
+                .put("storeCode", storeCode)
+                .put("goodsNo", goodsNo)
+                .map;
+        signRequest(requestMap);
+
+        MainApiService.getInstance()
+                .getStoreStock(storeCode, goodsNo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.bindToLifecycle())
+                .subscribe(new AppBaseObserver<SimpleEntity<StockVo>>(activity, false,"正在获取库存") {
+                    @Override
+                    public void onFailing(SimpleEntity<StockVo> response) {
+                        int code = response.getCode();
+                        if (code >= 900 && code < 999) {
+                            new android.app.AlertDialog.Builder(MyApp.getInstance())
+                                    .setTitle("获取库存失败")
+                                    .setMessage(response.msg)
+                                    .setPositiveButton("确定", null)
+                                    .show();
+                        } else
+                            super.onFailing(response);
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleEntity<StockVo> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);

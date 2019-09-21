@@ -21,14 +21,12 @@ public class LoginActivity extends BaseRxAppCompatActivity {
     private Button mBtnLogin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         mEditTextName = findViewById(R.id.etUsername);
         mEditTextPwd = findViewById(R.id.etPwd);
@@ -36,6 +34,11 @@ public class LoginActivity extends BaseRxAppCompatActivity {
 
         // initialize controls
         hideKeyboard(true);
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_login;
     }
 
     public void btnLoginClick(View v) {

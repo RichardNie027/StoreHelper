@@ -28,6 +28,7 @@ import com.tlg.storehelper.activity.calculator.CalculatorActivity;
 import com.tlg.storehelper.activity.collocation.CollocationActivity;
 import com.tlg.storehelper.activity.inventory.InventoryListsActivity;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.activity.stock.StockActivity;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
@@ -49,14 +50,12 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
     private BestSellingFragment mBestSellingFragment;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         mSpinner = findViewById(R.id.spinner);
         mEtBarcode = findViewById(R.id.etBarcode);
@@ -200,6 +199,11 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
 
     }
 
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_main;
+    }
+
     private void updateBestSelling(boolean reload) {
         String dimension;
         if(mRgDimension != null && mBestSellingFragment != null) {
@@ -269,6 +273,11 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
         public void onNothingSelected(AdapterView<?> adapterView) {
 
         }
+    }
+
+    public void ivStockClick(View v) {
+        Intent intent = new Intent(this, StockActivity.class);
+        startActivity(intent);
     }
 
     public void ivInventoryClick(View v) {

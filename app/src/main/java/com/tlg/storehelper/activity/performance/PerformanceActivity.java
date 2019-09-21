@@ -8,14 +8,17 @@ import com.tlg.storehelper.R;
 public class PerformanceActivity extends BaseRxAppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_performance);
-        initView();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
 
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_performance;
     }
 }

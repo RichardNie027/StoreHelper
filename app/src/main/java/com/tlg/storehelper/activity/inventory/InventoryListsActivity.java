@@ -37,11 +37,8 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
     private List<InventoryListVo> mDatas = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory_lists);
-        initView();
     }
 
     @Override
@@ -51,7 +48,8 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
             mRecyclerView.getAdapter().notifyDataSetChanged();
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -80,6 +78,11 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_inventory_lists;
     }
 
     private boolean loadData() {

@@ -38,7 +38,6 @@ import com.tlg.storehelper.dao.SQLiteDbHelper;
 import com.nec.lib.android.utils.SQLiteUtil;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
-import com.tlg.storehelper.vo.InventoryDetailVo;
 import com.tlg.storehelper.vo.StatisticInfo;
 
 import java.io.File;
@@ -86,17 +85,16 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     private ImageView mIvSeal;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory);
+    }
+
+    @Override
+    protected void initView() {
         //接收参数
         Intent intent =getIntent();
         mListId = intent.getStringExtra("list_id");
-        initView();
-    }
 
-    private void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
         mViewPager = findViewById(R.id.vpFragment);
@@ -151,6 +149,11 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         // register listener
         mViewPager.addOnPageChangeListener(mPageChangeListener);
         mTabRadioGroup.setOnCheckedChangeListener(mOnCheckedChangeListener);
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.activity_inventory;
     }
 
     @Override

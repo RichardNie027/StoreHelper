@@ -21,13 +21,14 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
-import com.nec.lib.android.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.activity.calculator.CalculatorActivity;
 import com.tlg.storehelper.activity.collocation.CollocationActivity;
 import com.tlg.storehelper.activity.inventory.InventoryListsActivity;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.activity.membership.MembershipActivity;
 import com.tlg.storehelper.activity.stock.StockActivity;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
@@ -142,7 +143,7 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
                 }
                 dataBundle.putString(BestSellingFragment.sDimensionLabel, dimension);
                 BestSellingListDataRequest bestSellingListDataRequest = new BestSellingListDataRequest();
-                mBestSellingFragment = BestSellingFragment.newInstance(BestSellingFragment.class, BestSellingRecyclerViewItemAdapter.class, bestSellingListDataRequest, dataBundle, LoadMoreFragment.DisplayMode.STAGGERED, 3);
+                mBestSellingFragment = BestSellingFragment.newInstance(BestSellingFragment.class, BestSellingRecyclerViewItemAdapter.class, bestSellingListDataRequest, dataBundle, DisplayMode.STAGGERED, 3);
                 fragmentTransaction.add(R.id.fragment_container, mBestSellingFragment);
                 fragmentTransaction.commit();
             }
@@ -277,6 +278,11 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
 
     public void ivStockClick(View v) {
         Intent intent = new Intent(this, StockActivity.class);
+        startActivity(intent);
+    }
+
+    public void ivMembershipClick(View v) {
+        Intent intent = new Intent(this, MembershipActivity.class);
         startActivity(intent);
     }
 

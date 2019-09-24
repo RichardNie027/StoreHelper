@@ -6,11 +6,13 @@ import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.android.httprequest.use.RetrofitFactory;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
+import com.tlg.storehelper.httprequest.net.entity.ShopHistoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
+import com.tlg.storehelper.vo.ShopHistoryDetailVo;
 import com.tlg.storehelper.vo.StockVo;
 
 import io.reactivex.Observable;
@@ -60,5 +62,13 @@ public class MainApiService {
 
     public Observable<SimpleEntity<StockVo>> getStoreStock(String storeCode, String goodsNo) {
         return mMainApi.getStoreStock(storeCode, goodsNo);
+    }
+
+    public Observable<ShopHistoryEntity> getMembershipShopHistory(String membershipId, String storeCode) {
+        return mMainApi.getMembershipShopHistory(membershipId, storeCode);
+    }
+
+    public Observable<SimpleListPageEntity<ShopHistoryDetailVo>> getMembershipShopHistoryDetail(String membershipId, String storeCode, int page) {
+        return mMainApi.getMembershipShopHistoryDetail(membershipId, storeCode, page);
     }
 }

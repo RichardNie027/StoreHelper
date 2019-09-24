@@ -5,11 +5,13 @@ import android.util.ArrayMap;
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
+import com.tlg.storehelper.httprequest.net.entity.ShopHistoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
+import com.tlg.storehelper.vo.ShopHistoryDetailVo;
 import com.tlg.storehelper.vo.StockVo;
 
 import java.util.Map;
@@ -73,8 +75,25 @@ public interface MainApi {
     /**
      * 接口描述：GET getStoreStock
      * 接口参数：
-     * 接口返回：SimpleListEntity<StockVo>
+     * 接口返回：SimpleEntity<StockVo>
      */
     @GET("api/getStoreStock")
     Observable<SimpleEntity<StockVo>> getStoreStock(@Query("storeCode")String storeCode, @Query("goodsNo")String goodsNo);
+
+    /**
+     * 接口描述：GET getMembershipShopHistory
+     * 接口参数：
+     * 接口返回：ShopHistoryEntity
+     */
+    @GET("api/getMembershipShopHistory")
+    Observable<ShopHistoryEntity> getMembershipShopHistory(@Query("membershipId")String membershipId, @Query("storeCode")String storeCode);
+
+    /**
+     * 接口描述：GET getMembershipShopHistoryDetail
+     * 接口参数：
+     * 接口返回：SimpleListEntity<ShopHistoryDetailVo>
+     */
+    @GET("api/getMembershipShopHistoryDetail")
+    Observable<SimpleListPageEntity<ShopHistoryDetailVo>> getMembershipShopHistoryDetail(@Query("membershipId")String membershipId, @Query("storeCode")String storeCode, @Query("page")int page);
+
 }

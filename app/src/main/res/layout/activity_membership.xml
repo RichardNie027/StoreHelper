@@ -9,23 +9,23 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:toolbarId="@+id/toolbar"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
-            app:contentScrim="?attr/colorPrimary">
+            android:theme="@style/ToolbarTheme"
+            app:layout_scrollFlags="scroll|snap|enterAlways|enterAlwaysCollapsed"
+            app:contentScrim="@color/colorPrimary">
 
-            <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 xmlns:tools="http://schemas.android.com/tools"
-                app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_collapseMode="parallax"
+                android:background="@color/colorPrimary">
 
                 <TextView
                     android:id="@+id/tvLabel0"
@@ -35,11 +35,12 @@
                     android:layout_marginTop="54dp"
                     android:text="会员查询："
                     android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/colorSecond"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/etMemberId"
+                    android:id="@+id/etMembershipId"
                     android:layout_width="0dp"
                     android:layout_height="42dp"
                     android:layout_marginEnd="16dp"
@@ -54,26 +55,28 @@
                     app:layout_constraintTop_toTopOf="@+id/tvLabel0" />
 
                 <TextView
-                    android:id="@+id/tvMemberIdLabel"
+                    android:id="@+id/tvMembershipIdLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginStart="8dp"
                     android:text="卡号"
                     android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/colorSecond"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvLabel0" />
 
                 <TextView
-                    android:id="@+id/tvMemberName"
+                    android:id="@+id/tvMembershipName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="姓名"
                     android:textSize="@dimen/text_size_normal"
-                    app:layout_constraintStart_toEndOf="@+id/tvMemberIdLabel"
-                    app:layout_constraintTop_toTopOf="@+id/tvMemberIdLabel"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvMemberIdLabel"/>
+                    android:textColor="@color/colorSecond"
+                    app:layout_constraintStart_toEndOf="@+id/tvMembershipIdLabel"
+                    app:layout_constraintTop_toTopOf="@+id/tvMembershipIdLabel"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMembershipIdLabel"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -81,32 +84,35 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                android:theme="@style/ToolbarTheme"
-                app:layout_scrollFlags="scroll"
                 app:layout_collapseMode="pin"
                 app:titleTextAppearance="@style/ToolbarTextAppearance"
                 app:popupTheme="@style/OverflowMenuStyle"
                 app:navigationIcon="?attr/homeAsUpIndicator"
-                app:title="会员查询" />
+                app:title="" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="会员查询"
+                    android:textSize="@dimen/text_size_big"
+                    android:textColor="@color/colorSecond"
+                    app:layout_constraintStart_toEndOf="@+id/tvMembershipIdLabel"
+                    app:layout_constraintTop_toTopOf="@+id/tvMembershipIdLabel"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvMembershipIdLabel"/>
+
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <com.nec.lib.android.loadmoreview.LoadMoreRecyclerView
             android:id="@+id/recycler_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             tools:listitem="@layout/fragment_redo_record_load_more_list_item_linear" />
-
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

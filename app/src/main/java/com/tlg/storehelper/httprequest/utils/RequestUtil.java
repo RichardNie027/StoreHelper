@@ -22,11 +22,13 @@ import com.tlg.storehelper.httprequest.net.AppBaseObserver;
 import com.tlg.storehelper.httprequest.net.api.MainApiService;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
+import com.tlg.storehelper.httprequest.net.entity.ShopHistoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
+import com.tlg.storehelper.vo.ShopHistoryDetailVo;
 import com.tlg.storehelper.vo.StockVo;
 
 import java.io.File;
@@ -307,6 +309,81 @@ public class RequestUtil {
                     }
                 });
     }
+
+    public static void requestMembershipShopHistory(String membershipId, String storeCode, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        Map requestMap = new RequestMap()
+                .put("membershipId", membershipId)
+                .put("storeCode", storeCode)
+                .map;
+        signRequest(requestMap);
+
+        MainApiService.getInstance()
+                .getMembershipShopHistory(membershipId, storeCode)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.bindToLifecycle())
+                .subscribe(new AppBaseObserver<ShopHistoryEntity>(activity, false,"正在获取消费记录") {
+                    @Override
+                    public void onFailing(ShopHistoryEntity response) {
+                        int code = response.getCode();
+                        if (code >= 900 && code < 999) {
+                            new android.app.AlertDialog.Builder(MyApp.getInstance())
+                                    .setTitle("获取消费记录失败")
+                                    .setMessage(response.msg)
+                                    .setPositiveButton("确定", null)
+                                    .show();
+                        } else
+                            super.onFailing(response);
+                    }
+
+                    @Override
+                    public void onSuccess(ShopHistoryEntity response) {
+                        Log.d(activity.getClass().getName(), "请求成功");
+                        if(onSuccessListener != null)
+                            onSuccessListener.onSuccess(response);
+                    }
+                });
+    }
+
+    public static void requestMembershipShopHistoryDeltail(String membershipId, String storeCode, int page, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+        Map requestMap = new RequestMap()
+                .put("membershipId", membershipId)
+                .put("storeCode", storeCode)
+                .put("page", String.valueOf(page))
+                .map;
+        signRequest(requestMap);
+
+        MainApiService.getInstance()
+                .getMembershipShopHistoryDetail(membershipId, storeCode, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(activity.bindToLifecycle())
+                .subscribe(new AppBaseObserver<SimpleListPageEntity<ShopHistoryDetailVo>>(activity, false,"正在获取消费记录") {
+                    @Override
+                    public void onFailing(SimpleListPageEntity<ShopHistoryDetailVo> response) {
+                        int code = response.getCode();
+                        if (code >= 900 && code < 999) {
+                            new android.app.AlertDialog.Builder(MyApp.getInstance())
+                                    .setTitle("获取消费记录失败")
+                                    .setMessage(response.msg)
+                                    .setPositiveButton("确定", null)
+                                    .show();
+                        } else
+                            super.onFailing(response);
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleListPageEntity<ShopHistoryDetailVo> response) {
+                        Log.d(activity.getClass().getName(), "请求成功");
+                        if(onSuccessListener != null)
+                            onSuccessListener.onSuccess(response);
+                    }
+                });
+    }
+
+
+
+
 
     /**
     @Deprecated // 废除的下载方法（BUG:多次请求、字节流中部分字节丢失）

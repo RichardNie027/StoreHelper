@@ -5,9 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nec.lib.android.base.RecycleViewItemClickListener;
@@ -25,13 +23,6 @@ public class TotalRecordFragment extends LoadMoreFragment {
     //传参名称
     public static final String sInventoryListIdLabel = "inventory_list_id";
     public static final String sInventoryListNoLabel = "inventory_list_no";
-
-    public TotalRecordFragment() {
-        //资源名称
-        mLayoutOfFragmentItemList = "fragment_total_record";
-        mIdOfSwipeRefreshLayout = "refresh_layout"; //内部资源名称
-        mIdOfRecyclerView = "recycler_list";          //内部资源名称
-    }
 
     @Override
     protected void doParamBundle(Bundle bundle) {
@@ -82,6 +73,11 @@ public class TotalRecordFragment extends LoadMoreFragment {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.fragment_total_record;
     }
 
     @Override

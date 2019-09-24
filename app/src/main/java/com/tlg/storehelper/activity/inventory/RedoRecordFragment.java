@@ -58,13 +58,6 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
 
     private SoundUtil mSoundUtil;
 
-    public RedoRecordFragment() {
-        //资源名称
-        mLayoutOfFragmentItemList = "fragment_redo_record";
-        mIdOfSwipeRefreshLayout = "refresh_layout"; //内部资源名称
-        mIdOfRecyclerView = "recycler_list";          //内部资源名称
-    }
-
     @Override
     protected void doParamBundle(Bundle bundle) {
         //1、组装mDataBundle
@@ -138,6 +131,11 @@ public class RedoRecordFragment extends LoadMoreFragment implements RedoRecordLi
                 }
             }
         });
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.fragment_redo_record;
     }
 
     private void loadData() {

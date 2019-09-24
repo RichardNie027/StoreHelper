@@ -1,21 +1,13 @@
 package com.tlg.storehelper.activity.common;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.nec.lib.android.loadmoreview.LoadMoreFragment;
-import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
-import com.tlg.storehelper.activity.inventory.RecordFragment;
 import com.tlg.storehelper.comm.GlobalVars;
 
 public class BestSellingFragment extends LoadMoreFragment {
@@ -25,13 +17,6 @@ public class BestSellingFragment extends LoadMoreFragment {
     //传参名称
     public static final String sStoreCodeLabel = "storeCode";
     public static final String sDimensionLabel = "dimension";
-
-    public BestSellingFragment() {
-        //资源名称
-        mLayoutOfFragmentItemList = "fragment_best_selling";
-        mIdOfSwipeRefreshLayout = "refresh_layout";     //内部资源名称
-        mIdOfRecyclerView = "recycler_list";            //内部资源名称
-    }
 
     @Override
     protected void doParamBundle(Bundle bundle) {
@@ -76,6 +61,11 @@ public class BestSellingFragment extends LoadMoreFragment {
                 }
             }
         });
+    }
+
+    @Override
+    protected int setLayoutResourceID() {
+        return R.layout.fragment_best_selling;
     }
 
     @Override

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nec.lib.android.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.RecyclerViewItemAdapter;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.httprequest.utils.PicUtil;
@@ -45,7 +45,7 @@ public class BestSellingRecyclerViewItemAdapter extends RecyclerViewItemAdapter<
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (mDisplayMode == LoadMoreFragment.DisplayMode.STAGGERED) {
+        if (mDisplayMode == DisplayMode.STAGGERED) {
             MyStaggeredViewHolder mHolder = (MyStaggeredViewHolder) holder;
             mHolder.mItem = mValues.get(position);
             mHolder.mView.setTag(mHolder.mItem.goodsNo);
@@ -57,7 +57,7 @@ public class BestSellingRecyclerViewItemAdapter extends RecyclerViewItemAdapter<
                 mHolder.tvGoodsNoView.setText(String.valueOf(mHolder.mItem.goodsNo));
             if(mHolder.tvInfoView != null)
                 mHolder.tvInfoView.setText(new DecimalFormat("￥,###").format(mHolder.mItem.price) + " [" + mHolder.mItem.info + "]");
-        } else if (mDisplayMode == LoadMoreFragment.DisplayMode.LINEAR) {
+        } else if (mDisplayMode == DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
             mHolder.mView.setTag(mHolder.mItem.goodsNo);

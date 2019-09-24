@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nec.lib.android.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.RecyclerViewItemAdapter;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.vo.InventoryRedoVo;
@@ -39,7 +39,7 @@ public class RedoRecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<I
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (mDisplayMode == LoadMoreFragment.DisplayMode.STAGGERED) {
+        if (mDisplayMode == DisplayMode.STAGGERED) {
             MyStaggeredViewHolder mHolder = (MyStaggeredViewHolder) holder;
             if(mHolder.iconView != null)
                 mHolder.iconView.setVisibility(View.VISIBLE);
@@ -53,7 +53,7 @@ public class RedoRecordRecyclerViewItemAdapter extends RecyclerViewItemAdapter<I
                 mHolder.mQuantity2View.setText(String.valueOf(mHolder.mItem.quantity2));
             if(mHolder.mQuantity3View != null)
                 mHolder.mQuantity3View.setText(String.valueOf(mHolder.mItem.quantity3));
-        } else if (mDisplayMode == LoadMoreFragment.DisplayMode.LINEAR) {
+        } else if (mDisplayMode == DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
             mHolder.mView.setTag(R.id.tag_first, mHolder.mItem.barcode);  //tag1:barcode

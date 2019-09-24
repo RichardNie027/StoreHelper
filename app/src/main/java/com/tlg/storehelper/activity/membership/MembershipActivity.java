@@ -1,18 +1,27 @@
 package com.tlg.storehelper.activity.membership;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.LoadMoreActivity;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.httprequest.net.entity.ShopHistoryEntity;
+
+import java.util.List;
 
 public class MembershipActivity extends LoadMoreActivity {
 
@@ -43,55 +52,56 @@ public class MembershipActivity extends LoadMoreActivity {
     @Override
     protected void initViewEnd(View rootView) {
         // find view
-//        mEtMembershipId = rootView.findViewById(R.id.etMembershipId);
+        mEtMembershipId = rootView.findViewById(R.id.etMembershipId);
 
         hideKeyboard(true);
         if(mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setEnabled(false);
 
-//        ///设置“条形码”控件
-//        //回车键响应
-//        mEtMembershipId.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View view, int keyCode, KeyEvent event) {
-//                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-//                    onEnterPress(mEtMembershipId.getText().toString());
-//                    mEtMembershipId.requestFocus();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//        //获得焦点全选货位
-//        mEtMembershipId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if(hasFocus) {
-//                    mEtMembershipId.selectAll();
-//                }
-//            }
-//        });
-//        //Touch清空条形码
-//        mEtMembershipId.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View view, MotionEvent motionEvent) {
-//                mEtMembershipId.setText("");
-//                return false;
-//            }
-//        });
-//
-//        mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean hasFocus) {
-//                if(hasFocus) {
-//                    mEtMembershipId.requestFocus();
-//                }
-//            }
-//        });
+        ///设置“会员ID”控件
+        //回车键响应
+        mEtMembershipId.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent event) {
+                if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
+                    onEnterPress(mEtMembershipId.getText().toString());
+                    mEtMembershipId.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
+        //获得焦点全选货位
+        mEtMembershipId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus) {
+                    mEtMembershipId.selectAll();
+                }
+            }
+        });
+        //Touch清空条形码
+        mEtMembershipId.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                mEtMembershipId.setText("");
+                return false;
+            }
+        });
+
+        mRecyclerView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus) {
+                    mEtMembershipId.requestFocus();
+                }
+            }
+        });
 
     }
 
     private void onEnterPress(String memberId) {
         doRefreshOnRecyclerView();
     }
+
 }

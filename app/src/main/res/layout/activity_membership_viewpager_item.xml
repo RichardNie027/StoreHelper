@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/cardview"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardCornerRadius="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <ImageView
+            android:id="@+id/ivPic"
+            android:layout_width="135dp"
+            android:layout_height="180dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tvGoodsNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="货号"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toEndOf="@+id/ivPic"
+            app:layout_constraintTop_toTopOf="@+id/ivPic" />
+
+        <TextView
+            android:id="@+id/tvSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="尺码"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvGoodsNo" />
+
+        <TextView
+            android:id="@+id/tvGoodsName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="名称"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvSize" />
+
+        <TextView
+            android:id="@+id/tvQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="数量"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvGoodsName" />
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="牌价"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvQuantity" />
+
+        <TextView
+            android:id="@+id/tvDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="折扣"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrice" />
+
+        <TextView
+            android:id="@+id/tvAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="金额"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvDiscount" />
+
+        <TextView
+            android:id="@+id/tvSales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="导购"
+            android:textAlignment="viewStart"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintStart_toStartOf="@+id/tvGoodsNo"
+            app:layout_constraintTop_toBottomOf="@+id/tvAmount" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

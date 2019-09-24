@@ -69,12 +69,17 @@
         android:background="@color/colorSecondDark"/>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vpFragment"
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvShopDate" />
+        app:layout_constraintTop_toBottomOf="@+id/tvShopDate"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

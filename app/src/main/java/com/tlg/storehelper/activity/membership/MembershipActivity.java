@@ -1,14 +1,18 @@
 package com.tlg.storehelper.activity.membership;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -16,25 +20,35 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.LoadMoreActivity;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.httprequest.net.entity.ShopHistoryEntity;
+import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MembershipActivity extends LoadMoreActivity {
 
-    private Toolbar mToolbar;
     private EditText mEtMembershipId;
 
-    private ShopHistoryEntity mShopHistoryEntity;
+    private TextView mtvMembershipCardId;
+    private TextView mtvName;
+    private TextView mtvMobile;
+    private TextView mtvYearExpenditure;
+    private TextView mtvTotalExpenditure;
 
     @Override
     protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
-        mIdOfSwipeRefreshLayout = "refresh_layout";     //内部资源名称
-        mIdOfRecyclerView = "recycler_list";            //内部资源名称
+    }
+
+    @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
     }
 
     @Override
@@ -45,16 +59,24 @@ public class MembershipActivity extends LoadMoreActivity {
     @Override
     protected void initViewBegin(View rootView) {
         setArguments(MembershipRecyclerViewItemAdapter.class, new MembershipListDataRequest(), DisplayMode.LINEAR);
-        mDataBundle.putString("membership_id", "121212");
-        mDataBundle.putString("store_code", "222");
+        mDataBundle.putString("membership_id", "");
+        mDataBundle.putString("store_code", GlobalVars.storeCode);
+        mAutoload = false;
     }
 
     @Override
     protected void initViewEnd(View rootView) {
         // find view
         mEtMembershipId = rootView.findViewById(R.id.etMembershipId);
+        mtvMembershipCardId = rootView.findViewById(R.id.tvMembershipCardId);
+        mtvName = rootView.findViewById(R.id.tvName);
+        mtvMobile = rootView.findViewById(R.id.tvMobile);
+        mtvYearExpenditure = rootView.findViewById(R.id.tvYearExpenditure);
+        mtvTotalExpenditure = rootView.findViewById(R.id.tvTotalExpenditure);
 
         hideKeyboard(true);
+
+        //setup view
         if(mSwipeRefreshLayout != null)
             mSwipeRefreshLayout.setEnabled(false);
 
@@ -71,21 +93,13 @@ public class MembershipActivity extends LoadMoreActivity {
                 return false;
             }
         });
-        //获得焦点全选货位
+        //获得焦点全选
         mEtMembershipId.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(hasFocus) {
                     mEtMembershipId.selectAll();
                 }
-            }
-        });
-        //Touch清空条形码
-        mEtMembershipId.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                mEtMembershipId.setText("");
-                return false;
             }
         });
 
@@ -100,8 +114,29 @@ public class MembershipActivity extends LoadMoreActivity {
 
     }
 
-    private void onEnterPress(String memberId) {
-        doRefreshOnRecyclerView();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void onEnterPress(String membershipId) {
+        RequestUtil.requestMembershipShopHistory(membershipId, GlobalVars.storeCode, this, new RequestUtil.OnSuccessListener<ShopHistoryEntity>() {
+            @Override
+            public void onSuccess(ShopHistoryEntity response) {
+                mtvMembershipCardId.setText("卡号："+response.membershipCardId);
+                mtvName.setText("姓名："+response.name);
+                mtvMobile.setText("手机号："+response.mobile);
+                mtvYearExpenditure.setText("本年消费："+new DecimalFormat("￥,###").format(response.yearExpenditure));
+                mtvTotalExpenditure.setText("总消费额："+new DecimalFormat("￥,###").format(response.totalExpenditure));
+                mDataBundle.putString("membership_id", response.membershipCardId);
+                doRefreshOnRecyclerView();
+            }
+        });
     }
 
 }

@@ -34,7 +34,6 @@ import java.util.List;
 
 public class CalculatorActivity extends BaseRxAppCompatActivity {
 
-    private Toolbar mToolbar;
     private ImageView mIvBackground;
     private RecyclerView mRecyclerView1;
     private RecyclerView mRecyclerView2;
@@ -46,6 +45,11 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
     @Override
     protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
+    }
+
+    @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
     }
 
     @Override
@@ -76,13 +80,9 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
     @Override
     protected void initView() {
         // find view
-        mToolbar = findViewById(R.id.toolbar);
         mRecyclerView1 = (RecyclerView) findViewById(R.id.recyclerView1);
         mRecyclerView2 = (RecyclerView) findViewById(R.id.recyclerView2);
         mIvBackground = findViewById(R.id.ivBackground);
-
-        //toolbar
-        setSupportActionBar(mToolbar);
 
         // initialize controls
         hideKeyboard(true);

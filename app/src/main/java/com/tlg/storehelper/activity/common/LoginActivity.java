@@ -26,6 +26,11 @@ public class LoginActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return 0;
+    }
+
+    @Override
     protected void initView() {
         // find view
         mEditTextName = findViewById(R.id.etUsername);

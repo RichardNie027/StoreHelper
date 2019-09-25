@@ -41,7 +41,6 @@ import java.util.List;
 
 public class StockActivity extends BaseRxAppCompatActivity {
 
-    private Toolbar mToolbar;
     private EditText mEtBarcode = null;
     private TextView mTvGoodsNo = null;
     private TextView mTvGoodsName = null;
@@ -54,6 +53,11 @@ public class StockActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
+    }
+
+    @Override
     protected void initView() {
         // find view
         mToolbar = findViewById(R.id.toolbar);
@@ -62,11 +66,9 @@ public class StockActivity extends BaseRxAppCompatActivity {
         mTvGoodsNo = findViewById(R.id.tvGoodsNo);
         mTvGoodsName = findViewById(R.id.tvGoodsName);
 
-        //toolbar
-        setSupportActionBar(mToolbar);
-
-        // initialize controls
         hideKeyboard(true);
+
+        //setup view
         mTvGoodsNo.setVisibility(View.GONE);
         mTvGoodsName.setVisibility(View.GONE);
 

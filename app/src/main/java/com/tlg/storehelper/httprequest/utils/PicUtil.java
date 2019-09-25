@@ -27,6 +27,7 @@ public class PicUtil {
                 return;
             }
         }
+        ivPicture.setImageBitmap(com.nec.lib.android.utils.ImageUtil.getBitmap(MyApp.getInstance(), R.drawable.pic_loading));
         new DownloadUtil(filePath, filename, MyApp.baseUrl + "pre_api/pic/" + filename, false, new DownloadUtil.DownloadListener() {
             @Override
             public void onDownloadFail(String localFilePath, String msg) {

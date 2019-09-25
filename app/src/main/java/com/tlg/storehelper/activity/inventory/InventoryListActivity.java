@@ -32,7 +32,6 @@ import java.util.Locale;
 
 public class InventoryListActivity extends BaseRxAppCompatActivity implements DatetimePickerFragment.DatetimePickerResultInterface {
 
-    private Toolbar mToolbar;
     private EditText mEtListNo;
     private TextView mTvListNo;
     private TextView mTvStoreCode;
@@ -49,9 +48,13 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
+    }
+
+    @Override
     protected void initView() {
         // find view
-        mToolbar = findViewById(R.id.toolbar);
         mTvListNo = findViewById(R.id.tvListNo);
         mEtListNo = findViewById(R.id.etListNo);
         mTvStoreCode = findViewById(R.id.tvStoreCode);
@@ -59,11 +62,9 @@ public class InventoryListActivity extends BaseRxAppCompatActivity implements Da
         mTvIndex = findViewById(R.id.tvIndex);
         mTvUsername = findViewById(R.id.tvUsername);
 
-        // toolbar
-        setSupportActionBar(mToolbar);
-
-        // initialize controls
         hideKeyboard(true);
+
+        //setup view
         mCalendar = Calendar.getInstance(Locale.CHINA);
         processDatetimePickerResult(mCalendar);
         updateUi();

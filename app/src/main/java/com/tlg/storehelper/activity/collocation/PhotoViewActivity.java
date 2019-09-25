@@ -25,6 +25,11 @@ public class PhotoViewActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return 0;
+    }
+
+    @Override
     protected void initView() {
         // find view
         ivPhotoView = findViewById(R.id.ivPhotoView);

@@ -52,13 +52,14 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
+    }
+
+    @Override
     protected void initView() {
         // find view
-        mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        //toolbar
-        setSupportActionBar(mToolbar);
 
         // initialize controls
         hideKeyboard(true);

@@ -20,8 +20,6 @@ import com.tlg.storehelper.R;
 
 public class RedoRecordActivity extends BaseRxAppCompatActivity {
 
-    private Toolbar mToolbar;
-
     /**调用者传递过来的“盘点ID”，-1L为错误*/
     private String mListId;
     /**调用者传递过来的“盘点货位”，空白为错误*/
@@ -39,18 +37,19 @@ public class RedoRecordActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
+    }
+
+    @Override
     protected void initView() {
         //接收参数
         Intent intent =getIntent();
         mListId = intent.getStringExtra(RedoRecordFragment.sInventoryListIdLabel);
         mBinCoding = intent.getStringExtra(RedoRecordFragment.sInventoryBinCodingLabel);
 
-        // find view
-        mToolbar = findViewById(R.id.toolbar);
-        //toolbar
-        setSupportActionBar(mToolbar);
-        // initialize controls
         hideKeyboard(true);
+
         mToolbar.setTitle("复盘：" + mBinCoding);
         //处理异常
         if(mListId.isEmpty() || mBinCoding.isEmpty()) {

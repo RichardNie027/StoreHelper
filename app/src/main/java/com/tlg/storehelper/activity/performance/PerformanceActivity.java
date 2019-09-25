@@ -13,6 +13,11 @@ public class PerformanceActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return 0;
+    }
+
+    @Override
     protected void initView() {
 
     }

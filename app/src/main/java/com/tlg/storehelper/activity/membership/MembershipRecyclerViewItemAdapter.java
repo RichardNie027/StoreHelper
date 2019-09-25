@@ -1,13 +1,13 @@
 package com.tlg.storehelper.activity.membership;
 
 import android.content.Context;
-import android.util.TypedValue;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -15,15 +15,19 @@ import androidx.viewpager.widget.ViewPager;
 import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.RecyclerViewItemAdapter;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.httprequest.utils.PicUtil;
 import com.tlg.storehelper.vo.ShopHistoryDetailVo;
 
+import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<ShopHistoryDetailVo> {
 
     public MembershipRecyclerViewItemAdapter() {
         super();
-        itemClickable = true;
+        itemClickable = false;
         itemLongClickable = false;
         reassignListItemLayout();
         //设置ViewHolder的类，在构造实例后紧接调用！
@@ -56,7 +60,7 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
             if(mHolder.mQuantity != null)
                 mHolder.mQuantity.setText(String.valueOf(mHolder.mItem.quantity));
             if(mHolder.mAmount != null)
-                mHolder.mAmount.setText(String.valueOf(mHolder.mItem.amount));
+                mHolder.mAmount.setText(new DecimalFormat("￥,###").format(mHolder.mItem.amount));
         } else if (mDisplayMode == DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
@@ -65,16 +69,16 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
             if(mHolder.mSalesListCode != null)
                 mHolder.mSalesListCode.setText(mHolder.mItem.salesListCode);
             if(mHolder.mQuantity != null)
-                mHolder.mQuantity.setText(String.valueOf(mHolder.mItem.quantity));
+                mHolder.mQuantity.setText(String.valueOf(mHolder.mItem.quantity)+"件");
             if(mHolder.mAmount != null)
-                mHolder.mAmount.setText(String.valueOf(mHolder.mItem.amount));
+                mHolder.mAmount.setText(new DecimalFormat("￥,###").format(mHolder.mItem.amount));
             //ViewPager
             List<ShopHistoryDetailVo.ShopItemVo> list = mHolder.mItem.shopItemList;
             MyAdapter adapter = new MyAdapter(mHolder.mAmount.getRootView().getContext(), list);
+            mHolder.mViewPager.setOffscreenPageLimit(3); // cache 3 pages
             mHolder.mViewPager.setAdapter(adapter);
-            mHolder.mViewPager.setPageMargin((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    48, mHolder.mAmount.getRootView().getResources().getDisplayMetrics()));
-            mHolder.mViewPager.setPageTransformer(false, new ScaleTransformer(mHolder.mAmount.getRootView().getContext()));
+            mHolder.mViewPager.setPageMargin(20);
+            mHolder.mViewPager.setPageTransformer(false, new ScaleTransformer());
         } else {
             ;
         }
@@ -124,18 +128,19 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
 
     //CardView Adapter
     public class MyAdapter extends PagerAdapter {
-        private List<ShopHistoryDetailVo.ShopItemVo> list;
+        private List<ShopHistoryDetailVo.ShopItemVo> mList;
         private Context context;
         private LayoutInflater inflater;
+        private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
 
         public MyAdapter(Context context, List<ShopHistoryDetailVo.ShopItemVo> list) {
             this.context = context;
-            this.list = list;
+            this.mList = list;
             inflater = LayoutInflater.from(context);
         }
         @Override
         public int getCount() {
-            return list.size();
+            return mList.size();
         }
 
         @Override
@@ -146,6 +151,26 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             View view = inflater.inflate(R.layout.activity_membership_viewpager_item, container, false);
+            //find view
+            ImageView ivPic = view.findViewById(R.id.ivPic);
+            TextView tvGoodsNo = view.findViewById(R.id.tvGoodsNo);
+            TextView tvSize = view.findViewById(R.id.tvSize);
+            TextView tvGoodsName = view.findViewById(R.id.tvGoodsName);
+            TextView tvPrice = view.findViewById(R.id.tvPrice);
+            TextView tvQuantity = view.findViewById(R.id.tvQuantity);
+            TextView tvDiscount = view.findViewById(R.id.tvDiscount);
+            TextView tvAmount = view.findViewById(R.id.tvAmount);
+            TextView tvSales = view.findViewById(R.id.tvSales);
+            //setup view
+            tvGoodsNo.setText("货号："+mList.get(position).goodsNo);
+            tvSize.setText("尺码："+String.valueOf(mList.get(position).size));
+            tvGoodsName.setText("名称："+mList.get(position).goodsName);
+            tvPrice.setText("牌价："+new DecimalFormat("￥,###").format(mList.get(position).price));
+            tvQuantity.setText("×"+String.valueOf(mList.get(position).quantity)+"件");
+            tvDiscount.setText("×"+String.valueOf(mList.get(position).discount)+"折");
+            tvAmount.setText("金额："+new DecimalFormat("￥,###").format(mList.get(position).amount));
+            tvSales.setText("导购："+mList.get(position).sales);
+            PicUtil.loadPic(ivPic, localPicPath, mList.get(position).goodsNo, 2);
             container.addView(view);
             return view;
         }
@@ -157,26 +182,23 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
     }
 
     public class ScaleTransformer implements ViewPager.PageTransformer {
-        private Context context;
-        private float elevation;
-
-        public ScaleTransformer(Context context) {
-            this.context = context;
-            elevation = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                    20, context.getResources().getDisplayMetrics());
-        }
+        private static final float MIN_SCALE = 0.9f;
 
         @Override
-        public void transformPage(View page, float position) {
-            if (position < -1 || position > 1) {
+        public void transformPage(View view, float position) {
 
-            } else {
-                if (position < 0) {
-                    ((CardView) page).setCardElevation((1 + position) * elevation);
-                } else {
-                    ((CardView) page).setCardElevation((1 - position) * elevation);
-                }
+             //过滤那些 <-1 或 >1 的值，使它区于【-1，1】之间
+            if (position < -1) {
+                position = -1;
+            } else if (position > 1) {
+                position = 1;
             }
+             // 判断是前一页 1 + position ，右滑 pos -> -1 变 0
+             // 判断是后一页 1 - position ，左滑 pos -> 1 变 0
+            float tempScale = position < 0 ? 1 + position : 1 - position; // [0,1]
+            float scaleValue = MIN_SCALE + tempScale * 0.1f; // [0,1]
+            view.setScaleX(scaleValue);
+            view.setScaleY(scaleValue);
         }
     }
 

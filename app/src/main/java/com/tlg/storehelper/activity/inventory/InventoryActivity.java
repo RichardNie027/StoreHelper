@@ -50,7 +50,6 @@ import java.util.List;
 public class InventoryActivity extends BaseRxAppCompatActivity
         implements ScannerFragment.OnFragmentInteractionListener, RecordFragment.OnFragmentInteractionListener, TotalRecordFragment.OnFragmentInteractionListener {
 
-    private Toolbar mToolbar;
     private ViewPager mViewPager;
     private RadioGroup mTabRadioGroup;
     private List<Fragment> mFragments;
@@ -90,6 +89,11 @@ public class InventoryActivity extends BaseRxAppCompatActivity
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
+    }
+
+    @Override
     protected void initView() {
         //接收参数
         Intent intent =getIntent();
@@ -101,10 +105,8 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         mTabRadioGroup = findViewById(R.id.rgTabs);
         mIvSeal = findViewById(R.id.ivSeal);
 
-        //toolbar
-        setSupportActionBar(mToolbar);
-        // initialize controls
         hideKeyboard(true);
+
         //处理异常
         if(mListId.isEmpty()) {
             new AlertDialog.Builder(MyApp.getInstance())

@@ -32,13 +32,17 @@ import java.util.List;
 
 public class InventoryListsActivity extends BaseRxAppCompatActivity {
 
-    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private List<InventoryListVo> mDatas = new ArrayList<>();
 
     @Override
     protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
+    }
+
+    @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
     }
 
     @Override
@@ -51,11 +55,7 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
     @Override
     protected void initView() {
         // find view
-        mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        //toolbar
-        setSupportActionBar(mToolbar);
 
         //设置RecycleView的布局方式，线性布局默认垂直
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

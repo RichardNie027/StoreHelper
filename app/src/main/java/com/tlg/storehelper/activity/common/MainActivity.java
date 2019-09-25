@@ -56,6 +56,11 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return 0;
+    }
+
+    @Override
     protected void initView() {
         // find view
         mSpinner = findViewById(R.id.spinner);

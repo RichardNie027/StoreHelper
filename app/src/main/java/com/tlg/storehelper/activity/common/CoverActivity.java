@@ -65,6 +65,11 @@ public class CoverActivity extends BaseRxAppCompatActivity {
     }
 
     @Override
+    protected int setToolbarResourceID() {
+        return 0;
+    }
+
+    @Override
     protected void initView() {
         // find view
         Button btnEnter = findViewById(R.id.btnEnter);

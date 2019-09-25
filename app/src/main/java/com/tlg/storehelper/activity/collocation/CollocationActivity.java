@@ -39,7 +39,6 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     private TextView tvGoodsNo;     //商品货号
     private TextView tvPrice;       //吊牌价
     private ImageView ivPic;        //图片
-    private Toolbar mToolbar;
     private RecyclerView mRecyclerView;
     private List<CollocationEntity.DetailBean> mDatas = new ArrayList<>();
     private String mGoodsNo;        //预设货号
@@ -49,6 +48,11 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     @Override
     protected void beforeCreate(Bundle savedInstanceState) {
         mFullScreen = true;
+    }
+
+    @Override
+    protected int setToolbarResourceID() {
+        return R.id.toolbar;
     }
 
     @Override
@@ -72,8 +76,6 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         Intent intent =getIntent();
         mGoodsNo = intent.getStringExtra("goodsNo");
 
-        // find view
-        mToolbar = findViewById(R.id.toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mEtBarcode = findViewById(R.id.etBarcode);
         tvGoodsName = findViewById(R.id.tvGoodsName);
@@ -81,11 +83,9 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         tvPrice = findViewById(R.id.tvPrice);
         ivPic = findViewById(R.id.ivPic);
 
-        //toolbar
-        setSupportActionBar(mToolbar);
-
-        // initialize controls
         hideKeyboard(true);
+
+        //setup view
         ivPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

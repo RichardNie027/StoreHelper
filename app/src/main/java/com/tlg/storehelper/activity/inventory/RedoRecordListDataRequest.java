@@ -18,7 +18,7 @@ import java.util.List;
 public class RedoRecordListDataRequest implements AsynDataRequest {
 
     //分页属性
-    private int mRecordPerPage;
+    private int mPageSize;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
@@ -27,7 +27,7 @@ public class RedoRecordListDataRequest implements AsynDataRequest {
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
-        this.mRecordPerPage = Integer.MAX_VALUE;
+        this.mPageSize = Integer.MAX_VALUE;
         this.mPageCount = 1;
         this.mPage = page;
         PageContent<InventoryRedoVo> pageContent = new PageContent<InventoryRedoVo>(page, Integer.MAX_VALUE);

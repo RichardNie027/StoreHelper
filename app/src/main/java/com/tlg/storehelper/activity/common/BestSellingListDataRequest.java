@@ -8,7 +8,7 @@ import android.os.Message;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.loadmoreview.AsynDataRequest;
 import com.nec.lib.android.loadmoreview.PageContent;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimplePageListEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
 
@@ -24,7 +24,7 @@ public class BestSellingListDataRequest implements AsynDataRequest {
     private String mDimension;
 
     //分页属性
-    private int mRecordPerPage;
+    private int mPageSize;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
@@ -33,19 +33,19 @@ public class BestSellingListDataRequest implements AsynDataRequest {
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
-        this.mRecordPerPage = 10;   // by server side
+        this.mPageSize = 10;   // by server side
         this.mPage = page;
-        PageContent<GoodsSimpleVo> pageContent = new PageContent<GoodsSimpleVo>(page, mRecordPerPage);
+        PageContent<GoodsSimpleVo> pageContent = new PageContent<GoodsSimpleVo>(page, mPageSize);
 
         mStoreCode = dataBundle.getString(BestSellingFragment.sStoreCodeLabel);
         mDimension = dataBundle.getString(BestSellingFragment.sDimensionLabel);
-        RequestUtil.requestBestSelling(mStoreCode, mDimension, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimpleListPageEntity<GoodsSimpleVo>>() {
+        RequestUtil.requestBestSelling(mStoreCode, mDimension, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListEntity<GoodsSimpleVo>>() {
             @Override
-            public void onSuccess(SimpleListPageEntity<GoodsSimpleVo> response) {
-                mRecordPerPage = response.recordPerPage;
+            public void onSuccess(SimplePageListEntity<GoodsSimpleVo> response) {
+                mPageSize = response.pageSize;
                 mRecordCount = response.recordCount;
                 mPageCount = response.pageCount;
-                mGoodsList = response.result;
+                mGoodsList = response.list;
 
                 pageContent.hasMore = page < mPageCount-1;
                 for (int i = 0; i < mGoodsList.size(); i++) {

@@ -8,9 +8,9 @@ import android.os.Message;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.loadmoreview.AsynDataRequest;
 import com.nec.lib.android.loadmoreview.PageContent;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimplePageListEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
-import com.tlg.storehelper.vo.ShopHistoryDetailVo;
+import com.tlg.storehelper.vo.ShopHistoryVo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,32 +25,32 @@ public class MembershipListDataRequest implements AsynDataRequest {
     private String mMembershipId;
 
     //分页属性
-    private int mRecordPerPage;
+    private int mPageSize;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
 
-    private List<ShopHistoryDetailVo> mList = new ArrayList<ShopHistoryDetailVo>();
+    private List<ShopHistoryVo> mList = new ArrayList<ShopHistoryVo>();
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
-        this.mRecordPerPage = 10;   // by server side
+        this.mPageSize = 10;   // by server side
         this.mPage = page;
-        PageContent<ShopHistoryDetailVo> pageContent = new PageContent<ShopHistoryDetailVo>(page, mRecordPerPage);
+        PageContent<ShopHistoryVo> pageContent = new PageContent<ShopHistoryVo>(page, mPageSize);
 
         mMembershipId = dataBundle.getString("membership_id");
         mStoreCode = dataBundle.getString("store_code");
-        RequestUtil.requestMembershipShopHistoryDeltail(mMembershipId, mStoreCode, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimpleListPageEntity<ShopHistoryDetailVo>>() {
+        RequestUtil.requestMembershipShopHistory(mMembershipId, mStoreCode, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListEntity<ShopHistoryVo>>() {
             @Override
-            public void onSuccess(SimpleListPageEntity<ShopHistoryDetailVo> response) {
-                mRecordPerPage = response.recordPerPage;
+            public void onSuccess(SimplePageListEntity<ShopHistoryVo> response) {
+                mPageSize = response.pageSize;
                 mRecordCount = response.recordCount;
                 mPageCount = response.pageCount;
-                mList = response.result;
+                mList = response.list;
 
                 pageContent.hasMore = page < mPageCount-1;
                 for (int i = 0; i < mList.size(); i++) {
-                    ShopHistoryDetailVo vo = mList.get(i);
+                    ShopHistoryVo vo = mList.get(i);
                     pageContent.datas.add(vo);
                 }
 

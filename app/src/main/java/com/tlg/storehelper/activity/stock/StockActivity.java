@@ -12,27 +12,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayoutManager;
-import com.google.android.flexbox.JustifyContent;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
-import com.nec.lib.android.boost.CustomDialog;
 import com.nec.lib.android.utils.AndroidUtil;
-import com.nec.lib.android.utils.ResUtil;
-import com.nec.lib.android.utils.UiUtil;
-import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
-import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListMapEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 import com.tlg.storehelper.vo.StockVo;
 
@@ -95,7 +85,7 @@ public class StockActivity extends BaseRxAppCompatActivity {
                         }
                     } else
                         return false;
-                    loadData("", "");
+                    loadData(GlobalVars.storeCode, goodsNo);
                     return true;
                 }
                 return false;
@@ -156,16 +146,16 @@ public class StockActivity extends BaseRxAppCompatActivity {
 
     private void loadData(String storeCode, String goodsNo) {
         //获得库存
-        RequestUtil.requestStoreStock(storeCode, goodsNo, _this, new RequestUtil.OnSuccessListener<SimpleEntity<StockVo>>() {
+        RequestUtil.requestStoreStock(storeCode, goodsNo, _this, new RequestUtil.OnSuccessListener<SimpleListMapEntity<StockVo>>() {
             @Override
-            public void onSuccess(SimpleEntity<StockVo> response) {
+            public void onSuccess(SimpleListMapEntity<StockVo> response) {
                 mTvGoodsNo.setVisibility(View.VISIBLE);
                 mTvGoodsName.setVisibility(View.VISIBLE);
-                mTvGoodsNo.setText(response.resultMap.get("goodsNo").toString());
-                mTvGoodsName.setText(response.resultMap.get("goodsName").toString());
+                mTvGoodsNo.setText(response.map.get("goodsNo").toString());
+                mTvGoodsName.setText(response.map.get("goodsName").toString());
 
                 mDatas.clear();
-                mDatas.addAll(response.resultList);
+                mDatas.addAll(response.list);
                 mRecyclerView.getAdapter().notifyDataSetChanged();
             }
         });
@@ -204,6 +194,10 @@ public class StockActivity extends BaseRxAppCompatActivity {
             recyclerViewHolder.tvStocksAll.setText(String.valueOf(mDatas.get(position).stocksAll + " 家"));
             recyclerViewHolder.ivIcon.setVisibility(mDatas.get(position).stocksAll>0 ? View.VISIBLE : View.INVISIBLE);
             recyclerViewHolder.ivIcon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_view));
+            if(mDatas.get(position).stock==0 && mDatas.get(position).sales==0 && mDatas.get(position).stocksAll==0)
+                holder.itemView.setAlpha(0.5f);
+            else
+                holder.itemView.setAlpha(1f);
         }
 
         @Override

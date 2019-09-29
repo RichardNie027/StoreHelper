@@ -1,12 +1,12 @@
-package com.tlg.storehelper.httprequest.net.entity;
+package com.tlg.storehelper.vo;
 
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import java.io.Serializable;
 
-public class ShopHistoryEntity extends BaseResponseEntity {
+public class MembershipVo implements Serializable {
     /**卡号*/
     public String membershipCardId;
     /**姓名*/
-    public String name;
+    public String membershipName;
     /**手机号*/
     public String mobile;
     /**本年消费额*/

@@ -28,7 +28,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
     private String mInventoryListId;
 
     //分页属性
-    private int mRecordPerPage;
+    private int mPageSize;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
@@ -37,9 +37,9 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
-        this.mRecordPerPage = 12;
+        this.mPageSize = 12;
         this.mPage = page;
-        PageContent<InventoryTotalVo> pageContent = new PageContent<InventoryTotalVo>(page, mRecordPerPage);
+        PageContent<InventoryTotalVo> pageContent = new PageContent<InventoryTotalVo>(page, mPageSize);
 
         mInventoryListId = dataBundle.getString(TotalRecordFragment.sInventoryListIdLabel);
         loadData();
@@ -74,7 +74,7 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
             } else {
                 mRecordCount = 0;
             }
-            mPageCount =  (int)Math.ceil((double)mRecordCount/(double)mRecordPerPage);
+            mPageCount =  (int)Math.ceil((double)mRecordCount/(double) mPageSize);
             cursor.close();
 
             //取记录明细
@@ -83,9 +83,9 @@ public class TotalRecordListDataRequest implements AsynDataRequest {
                     .append(" where pid=?")
                     .append(" group by binCoding")
                     .append(" order by binCoding asc")
-                    .append(" limit ?,").append(mRecordPerPage)
+                    .append(" limit ?,").append(mPageSize)
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage*mRecordPerPage)});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage* mPageSize)});
             while (cursor.moveToNext()) {
                 String binCoding = cursor.getString(cursor.getColumnIndex("binCoding"));
                 int barcodes = cursor.getInt(cursor.getColumnIndex("barcodes"));

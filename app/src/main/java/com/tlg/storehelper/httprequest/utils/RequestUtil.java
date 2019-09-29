@@ -8,9 +8,7 @@ import android.util.Log;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
-import com.nec.lib.android.httprequest.use.DownloaderManager;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
-import com.nec.lib.android.httprequest.utils.DownloadFileUtil;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.BeanUtil;
 import com.nec.lib.android.utils.DateUtil;
@@ -22,17 +20,16 @@ import com.tlg.storehelper.httprequest.net.AppBaseObserver;
 import com.tlg.storehelper.httprequest.net.api.MainApiService;
 import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
-import com.tlg.storehelper.httprequest.net.entity.ShopHistoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListPageEntity;
+import com.tlg.storehelper.vo.MembershipVo;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListMapEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimplePageListEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
-import com.tlg.storehelper.vo.ShopHistoryDetailVo;
+import com.tlg.storehelper.vo.ShopHistoryVo;
 import com.tlg.storehelper.vo.StockVo;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,13 +108,13 @@ public class RequestUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleEntity<String>>(activity, true, "登录验证中") {
+                .subscribe(new AppBaseObserver<SimpleListMapEntity<String>>(activity, true, "登录验证中") {
 
                     @Override
-                    public void onSuccess(SimpleEntity<String> response) {
+                    public void onSuccess(SimpleListMapEntity<String> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         GlobalVars.username = username;
-                        GlobalVars.token = response.resultMap.get("token").toString();
+                        GlobalVars.token = response.map.get("token").toString();
                         ApiConfig.setToken(GlobalVars.token);
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -140,9 +137,9 @@ public class RequestUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleEntity<String>>(activity, true,"正在同步商品资料") {
+                .subscribe(new AppBaseObserver<SimpleListMapEntity<String>>(activity, true,"正在同步商品资料") {
                     @Override
-                    public void onFailing(SimpleEntity<String> response) {
+                    public void onFailing(SimpleListMapEntity<String> response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
@@ -157,12 +154,12 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(SimpleEntity<String> response) {
+                    public void onSuccess(SimpleListMapEntity<String> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
-                        if(response.resultList.size() > 0) {
-                            DbUtil.saveGoodsBarcodes(response.resultList, lastModDate.equals("20000101000000"));
+                        if(response.list.size() > 0) {
+                            DbUtil.saveGoodsBarcodes(response.list, lastModDate.equals("20000101000000"));
 
-                            String lastModDate = response.resultMap.get("lastModDate").toString();
+                            String lastModDate = response.map.get("lastModDate").toString();
                             editor.putString("lastModDate", lastModDate);
                             editor.commit();
                         } else {
@@ -252,9 +249,9 @@ public class RequestUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleListPageEntity<GoodsSimpleVo>>(activity, false,"正在获取畅销款") {
+                .subscribe(new AppBaseObserver<SimplePageListEntity<GoodsSimpleVo>>(activity, false,"正在获取畅销款") {
                     @Override
-                    public void onFailing(SimpleListPageEntity<GoodsSimpleVo> response) {
+                    public void onFailing(SimplePageListEntity<GoodsSimpleVo> response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
@@ -267,7 +264,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(SimpleListPageEntity<GoodsSimpleVo> response) {
+                    public void onSuccess(SimplePageListEntity<GoodsSimpleVo> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -287,9 +284,9 @@ public class RequestUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleEntity<StockVo>>(activity, false,"正在获取库存") {
+                .subscribe(new AppBaseObserver<SimpleListMapEntity<StockVo>>(activity, false,"正在获取库存") {
                     @Override
-                    public void onFailing(SimpleEntity<StockVo> response) {
+                    public void onFailing(SimpleListMapEntity<StockVo> response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
@@ -302,7 +299,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(SimpleEntity<StockVo> response) {
+                    public void onSuccess(SimpleListMapEntity<StockVo> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -310,7 +307,7 @@ public class RequestUtil {
                 });
     }
 
-    public static void requestMembershipShopHistory(String membershipId, String storeCode, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+    public static void requestMembership(String membershipId, String storeCode, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
         Map requestMap = new RequestMap()
                 .put("membershipId", membershipId)
                 .put("storeCode", storeCode)
@@ -318,13 +315,13 @@ public class RequestUtil {
         signRequest(requestMap);
 
         MainApiService.getInstance()
-                .getMembershipShopHistory(membershipId, storeCode)
+                .getMembership(membershipId, storeCode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<ShopHistoryEntity>(activity, false,"正在获取消费记录") {
+                .subscribe(new AppBaseObserver<SimpleListEntity<MembershipVo>>(activity, false,"正在获取消费记录") {
                     @Override
-                    public void onFailing(ShopHistoryEntity response) {
+                    public void onFailing(SimpleListEntity<MembershipVo> response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
@@ -337,7 +334,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(ShopHistoryEntity response) {
+                    public void onSuccess(SimpleListEntity<MembershipVo> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -345,7 +342,7 @@ public class RequestUtil {
                 });
     }
 
-    public static void requestMembershipShopHistoryDeltail(String membershipId, String storeCode, int page, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+    public static void requestMembershipShopHistory(String membershipId, String storeCode, int page, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
         Map requestMap = new RequestMap()
                 .put("membershipId", membershipId)
                 .put("storeCode", storeCode)
@@ -354,13 +351,13 @@ public class RequestUtil {
         signRequest(requestMap);
 
         MainApiService.getInstance()
-                .getMembershipShopHistoryDetail(membershipId, storeCode, page)
+                .getMembershipShopHistory(membershipId, storeCode, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleListPageEntity<ShopHistoryDetailVo>>(activity, false,"正在获取消费记录") {
+                .subscribe(new AppBaseObserver<SimplePageListEntity<ShopHistoryVo>>(activity, false,"正在获取消费记录") {
                     @Override
-                    public void onFailing(SimpleListPageEntity<ShopHistoryDetailVo> response) {
+                    public void onFailing(SimplePageListEntity<ShopHistoryVo> response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
@@ -373,7 +370,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(SimpleListPageEntity<ShopHistoryDetailVo> response) {
+                    public void onSuccess(SimplePageListEntity<ShopHistoryVo> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);

@@ -28,7 +28,7 @@ public class RecordListDataRequest implements AsynDataRequest {
     private String mInventoryListId;
 
     //分页属性
-    private int mRecordPerPage;
+    private int mPageSize;
     private int mPage;
     private int mRecordCount;
     private int mPageCount;
@@ -37,9 +37,9 @@ public class RecordListDataRequest implements AsynDataRequest {
 
     @Override
     public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity) {
-        this.mRecordPerPage = 20;
+        this.mPageSize = 20;
         this.mPage = page;
-        PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mRecordPerPage);
+        PageContent<InventoryDetailVo> pageContent = new PageContent<InventoryDetailVo>(page, mPageSize);
 
         mInventoryListId = dataBundle.getString(RecordFragment.sInventoryListIdLabel);
         loadData();
@@ -47,7 +47,7 @@ public class RecordListDataRequest implements AsynDataRequest {
         pageContent.hasMore = page < mPageCount-1;
         for (int i = 0; i < mInventoryDetailList.size(); i++) {
             InventoryDetailVo vo = mInventoryDetailList.get(i);
-            vo.idx = mRecordCount - i - (mPage * mRecordPerPage);
+            vo.idx = mRecordCount - i - (mPage * mPageSize);
             pageContent.datas.add(vo);
         }
 
@@ -78,7 +78,7 @@ public class RecordListDataRequest implements AsynDataRequest {
             } else {
                 mRecordCount = 0;
             }
-            mPageCount =  (int)Math.ceil((double)mRecordCount/(double)mRecordPerPage);
+            mPageCount =  (int)Math.ceil((double)mRecordCount/(double) mPageSize);
             cursor.close();
 
             //取记录明细
@@ -86,9 +86,9 @@ public class RecordListDataRequest implements AsynDataRequest {
             sql = new StringBuffer().append("select *").append(" from ").append(SQLiteDbHelper.TABLE_INVENTORY_DETAIL)
                     .append(" where pid=?")
                     .append(" order by idx desc")
-                    .append(" limit ?,").append(mRecordPerPage)
+                    .append(" limit ?,").append(mPageSize)
                     .toString();
-            cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage*mRecordPerPage)});
+            cursor = db.rawQuery(sql, new String[]{mInventoryListId, Integer.toString(mPage* mPageSize)});
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex("id"));
                 int idx = mRecordCount;

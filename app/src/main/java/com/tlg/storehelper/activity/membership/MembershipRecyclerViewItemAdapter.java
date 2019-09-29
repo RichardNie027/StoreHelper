@@ -14,16 +14,17 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.RecyclerViewItemAdapter;
+import com.nec.lib.android.utils.ResUtil;
+import com.nec.lib.android.utils.UiUtil;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.httprequest.utils.PicUtil;
-import com.tlg.storehelper.vo.ShopHistoryDetailVo;
-
-import org.w3c.dom.Text;
+import com.tlg.storehelper.vo.ShopHistoryItemVo;
+import com.tlg.storehelper.vo.ShopHistoryVo;
 
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<ShopHistoryDetailVo> {
+public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<ShopHistoryVo> {
 
     public MembershipRecyclerViewItemAdapter() {
         super();
@@ -34,7 +35,7 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
         setViewHolderClass(this, MyLinearViewHolder.class, MyStaggeredViewHolder.class);
     }
 
-    public MembershipRecyclerViewItemAdapter(List<ShopHistoryDetailVo> items) {
+    public MembershipRecyclerViewItemAdapter(List<ShopHistoryVo> items) {
         super(items);
         itemClickable = false;
         itemLongClickable = true;
@@ -64,21 +65,39 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
         } else if (mDisplayMode == DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
-            if(mHolder.mShopDate != null)
+            if(mHolder.mShopDate != null) {
+                mHolder.mShopDate.setAlpha(mHolder.mItem.shopHistoryItemList.size() > 0 ? 1.0f : 0.5f);
                 mHolder.mShopDate.setText(mHolder.mItem.shopDate);
-            if(mHolder.mSalesListCode != null)
+            }
+            if(mHolder.mSalesListCode != null) {
+                mHolder.mSalesListCode.setAlpha(mHolder.mItem.shopHistoryItemList.size() > 0 ? 1.0f : 0.5f);
                 mHolder.mSalesListCode.setText(mHolder.mItem.salesListCode);
-            if(mHolder.mQuantity != null)
-                mHolder.mQuantity.setText(String.valueOf(mHolder.mItem.quantity)+"件");
-            if(mHolder.mAmount != null)
-                mHolder.mAmount.setText(new DecimalFormat("￥,###").format(mHolder.mItem.amount));
-            //ViewPager
-            List<ShopHistoryDetailVo.ShopItemVo> list = mHolder.mItem.shopItemList;
-            MyAdapter adapter = new MyAdapter(mHolder.mAmount.getRootView().getContext(), list);
-            mHolder.mViewPager.setOffscreenPageLimit(3); // cache 3 pages
-            mHolder.mViewPager.setAdapter(adapter);
-            mHolder.mViewPager.setPageMargin(20);
-            mHolder.mViewPager.setPageTransformer(false, new ScaleTransformer());
+            }
+            if(mHolder.mQuantity != null) {
+                if(mHolder.mItem.quantity > 0) {
+                    mHolder.mQuantity.setText(String.valueOf(mHolder.mItem.quantity) + "件");
+                    mHolder.mQuantity.setVisibility(View.VISIBLE);
+                } else
+                    mHolder.mQuantity.setVisibility(View.GONE);
+            }
+            if(mHolder.mAmount != null) {
+                if(mHolder.mItem.amount > 0) {
+                    mHolder.mAmount.setText(new DecimalFormat("￥,###").format(mHolder.mItem.amount));
+                    mHolder.mAmount.setVisibility(View.VISIBLE);
+                } else
+                    mHolder.mAmount.setVisibility(View.GONE);
+            }
+            if(mHolder.mItem.shopHistoryItemList.size() > 0) {
+                //ViewPager
+                List<ShopHistoryItemVo> list = mHolder.mItem.shopHistoryItemList;
+                MyAdapter adapter = new MyAdapter(mHolder.mAmount.getRootView().getContext(), list);
+                mHolder.mViewPager.setOffscreenPageLimit(3); // cache 3 pages
+                mHolder.mViewPager.setAdapter(adapter);
+                mHolder.mViewPager.setPageMargin(20);
+                //mHolder.mViewPager.setPageTransformer(false, new ScaleTransformer());
+                mHolder.mViewPager.setVisibility(View.VISIBLE);
+            } else
+                mHolder.mViewPager.setVisibility(View.GONE);
         } else {
             ;
         }
@@ -90,7 +109,7 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
         public final TextView mQuantity;
         public final TextView mAmount;
         public final ViewPager mViewPager;
-        public ShopHistoryDetailVo mItem;
+        public ShopHistoryVo mItem;
 
         public MyStaggeredViewHolder(View view) {
             super(view);
@@ -109,7 +128,7 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
         public final TextView mQuantity;
         public final TextView mAmount;
         public final ViewPager mViewPager;
-        public ShopHistoryDetailVo mItem;
+        public ShopHistoryVo mItem;
 
         public MyLinearViewHolder(View view) {
             super(view);
@@ -128,12 +147,12 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
 
     //CardView Adapter
     public class MyAdapter extends PagerAdapter {
-        private List<ShopHistoryDetailVo.ShopItemVo> mList;
+        private List<ShopHistoryItemVo> mList;
         private Context context;
         private LayoutInflater inflater;
         private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
 
-        public MyAdapter(Context context, List<ShopHistoryDetailVo.ShopItemVo> list) {
+        public MyAdapter(Context context, List<ShopHistoryItemVo> list) {
             this.context = context;
             this.mList = list;
             inflater = LayoutInflater.from(context);
@@ -171,6 +190,17 @@ public class MembershipRecyclerViewItemAdapter extends RecyclerViewItemAdapter<S
             tvAmount.setText("金额："+new DecimalFormat("￥,###").format(mList.get(position).amount));
             tvSales.setText("导购："+mList.get(position).sales);
             PicUtil.loadPic(ivPic, localPicPath, mList.get(position).goodsNo, 2);
+            if(mList.get(position).quantity < 0)
+                tvGoodsNo.setTextColor(ResUtil.getColor("colorSecondDark"));
+            else
+                tvGoodsNo.setTextColor(ResUtil.getColor("colorPrimary"));
+            tvSize.setTextColor(tvGoodsNo.getCurrentTextColor());
+            tvGoodsName.setTextColor(tvGoodsNo.getCurrentTextColor());
+            tvPrice.setTextColor(tvGoodsNo.getCurrentTextColor());
+            tvQuantity.setTextColor(tvGoodsNo.getCurrentTextColor());
+            tvDiscount.setTextColor(tvGoodsNo.getCurrentTextColor());
+            tvAmount.setTextColor(tvGoodsNo.getCurrentTextColor());
+            tvSales.setTextColor(tvGoodsNo.getCurrentTextColor());
             container.addView(view);
             return view;
         }

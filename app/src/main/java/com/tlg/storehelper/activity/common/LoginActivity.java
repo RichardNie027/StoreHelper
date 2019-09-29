@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.R;
-import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListMapEntity;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 public class LoginActivity extends BaseRxAppCompatActivity {
@@ -53,11 +53,11 @@ public class LoginActivity extends BaseRxAppCompatActivity {
             AndroidUtil.showToast("用户名不能为空");
             return;
         }
-        RequestUtil.requestLogin(username, password, this, new RequestUtil.OnSuccessListener<SimpleEntity<String>>() {
+        RequestUtil.requestLogin(username, password, this, new RequestUtil.OnSuccessListener<SimpleListMapEntity<String>>() {
             @Override
-            public void onSuccess(SimpleEntity<String> response) {
+            public void onSuccess(SimpleListMapEntity<String> response) {
                 Intent intent = new Intent(_this, MainActivity.class);
-                String[] array = response.resultList.toArray(new String[response.resultList.size()]);
+                String[] array = response.list.toArray(new String[response.list.size()]);
                 intent.putExtra("storeCodes", array);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

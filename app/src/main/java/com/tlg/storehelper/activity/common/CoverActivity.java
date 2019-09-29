@@ -2,33 +2,21 @@ package com.tlg.storehelper.activity.common;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.PowerManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
-import com.nec.lib.android.boost.CommonProgressDialog;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.DownloadUtil;
 import com.nec.lib.android.utils.StringUtil;
@@ -41,13 +29,8 @@ import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -197,7 +180,7 @@ public class CoverActivity extends BaseRxAppCompatActivity {
 
             @Override
             public void onSuccess(SimpleMapEntity response) {
-                String newVersion = response.result.get("versionCode").toString();      //网络版本号
+                String newVersion = response.map.get("versionCode").toString();      //网络版本号
                 int newVersionCode = new Double(StringUtil.parseDouble(newVersion, 0)).intValue();
                 String content = response.msg;
                 if (vision < newVersionCode) {

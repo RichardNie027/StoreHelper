@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.httprequest.use.BaseObserver;
 import com.nec.lib.android.httprequest.utils.AppContextUtil;
 import com.tlg.storehelper.MyApp;
 
-public abstract class AppBaseObserver<T extends BaseResponseEntity> extends BaseObserver<T> {
+public abstract class AppBaseObserver<T extends BaseResponseVo> extends BaseObserver<T> {
     public AppBaseObserver() {
         super();
     }

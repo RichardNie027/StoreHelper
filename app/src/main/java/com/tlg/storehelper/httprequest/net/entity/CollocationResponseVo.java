@@ -1,11 +1,11 @@
 package com.tlg.storehelper.httprequest.net.entity;
 
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollocationEntity extends BaseResponseEntity {
+public class CollocationResponseVo extends BaseResponseVo {
 
     public List<DetailBean> detail = new ArrayList<>();
 

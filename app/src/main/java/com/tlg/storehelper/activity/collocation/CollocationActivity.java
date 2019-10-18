@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Bundle;
-import androidx.appcompat.widget.Toolbar;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,13 +23,16 @@ import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.activity.common.GoodsSearchingFragment;
+import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
-import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
+import com.tlg.storehelper.httprequest.net.entity.CollocationResponseVo;
 import com.tlg.storehelper.httprequest.utils.PicUtil;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class CollocationActivity extends BaseRxAppCompatActivity {
@@ -40,7 +43,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     private TextView tvPrice;       //吊牌价
     private ImageView ivPic;        //图片
     private RecyclerView mRecyclerView;
-    private List<CollocationEntity.DetailBean> mDatas = new ArrayList<>();
+    private List<CollocationResponseVo.DetailBean> mDatas = new ArrayList<>();
     private String mGoodsNo;        //预设货号
 
     private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
@@ -86,6 +89,14 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         hideKeyboard(true);
 
         //setup view
+        tvGoodsNo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AndroidUtil.copyText(tvGoodsNo.getText().toString());
+                AndroidUtil.showToast("货号已复制");
+                return true;
+            }
+        });
         ivPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,24 +110,6 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
 
         //设置RecycleView的布局方式，线性布局默认垂直1
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-
-        RecyclerViewAdapter recycleViewAdapter = new RecyclerViewAdapter(CollocationActivity.this, mDatas);
-        mRecyclerView.setAdapter(recycleViewAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL));
-        recycleViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, int postion) {
-                Intent intent = new Intent(CollocationActivity.this, CollocationActivity.class);
-                intent.putExtra("goodsNo", view.getTag().toString());
-                startActivity(intent);
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, int postion) {
-                //AndroidUtil.showToast("long click " + postion);
-                return true;
-            }
-        });
 
         ///设置“条形码”控件
         //回车键响应
@@ -174,23 +167,48 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         barcode = barcode.toUpperCase();
         String goodsNo = "";
         if(barcode.length() > 0) {
-            if(DbUtil.checkGoodsNo(barcode))
-                goodsNo = barcode;
-            else
-                goodsNo = DbUtil.checkGoodsBarcode(barcode, true);
+            goodsNo = DbUtil.checkGoodsBarcode(barcode, true);
             if (!goodsNo.isEmpty()) {
                 mEtBarcode.setText("");
-            } else {                    //错误
-                AndroidUtil.showToast("货号 / 条码不存在");
-                mEtBarcode.selectAll();
-                return;
+                showGoodsCollocation(goodsNo);
+            } else {
+                //货号模糊查找
+                searchingGoods(barcode);
             }
-        } else
+        }
+    }
+
+    private void searchingGoods(String input) {
+        LinkedHashMap<String, String> goodsMap = DbUtil.checkGoodsNoList(GlobalVars.storeCode.substring(0,1), input, 20);
+        if(goodsMap.isEmpty()) {
+            AndroidUtil.showToast("货号 / 条码不存在");
+            mEtBarcode.selectAll();
+            mEtBarcode.requestFocus();
             return;
-        RequestUtil.requestCollocation(goodsNo, _this, new RequestUtil.OnSuccessListener<CollocationEntity>() {
+        } else if(goodsMap.size() == 1) {
+            showGoodsCollocation(goodsMap.keySet().iterator().next());
+            return;
+        }
+        GoodsSearchingFragment fragment = new GoodsSearchingFragment(goodsMap);
+        fragment.setTextViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment.getDialog().dismiss();
+                bottomDialogItemClick(view.getTag().toString());
+            }
+        });
+        fragment.showDialog(getSupportFragmentManager());
+    }
+
+    private void bottomDialogItemClick(String goodsNo) {
+        showGoodsCollocation(goodsNo);
+    }
+
+    private void showGoodsCollocation(String goodsNo) {
+        RequestUtil.requestCollocation(goodsNo, _this, new RequestUtil.OnSuccessListener<CollocationResponseVo>() {
 
             @Override
-            public void onSuccess(CollocationEntity response) {
+            public void onSuccess(CollocationResponseVo response) {
                 tvGoodsName.setText(response.goodsName);
                 tvGoodsNo.setText(response.goodsNo);
                 tvPrice.setText(new DecimalFormat("￥,###").format(response.price));
@@ -200,13 +218,15 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 mRecyclerView.setAdapter(recyclerViewAdapter);
                 recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
                     @Override
-                    public void onItemClick(View view, int postion) {
-                        onScanBarcode(view.getTag().toString());
+                    public void onItemClick(View view, int position) {
+                        showGoodsCollocation(view.getTag().toString());
                     }
 
                     @Override
-                    public boolean onItemLongClick(View view, int postion) {
-                        return false;
+                    public boolean onItemLongClick(View view, int position) {
+                        AndroidUtil.copyText(view.getTag().toString());
+                        AndroidUtil.showToast("货号已复制");
+                        return true;
                     }
                 });
             }
@@ -217,10 +237,10 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     class RecyclerViewAdapter extends RecyclerView.Adapter {
 
         private Context mContext;
-        private List<CollocationEntity.DetailBean> mDatas;
+        private List<CollocationResponseVo.DetailBean> mDatas;
         private RecycleViewItemClickListener mClickListener;
 
-        public RecyclerViewAdapter(Context context, List<CollocationEntity.DetailBean> datas) {
+        public RecyclerViewAdapter(Context context, List<CollocationResponseVo.DetailBean> datas) {
             this.mContext = context;
             this.mDatas = datas;
         }
@@ -233,7 +253,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         ///对控件赋值
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder recyclerViewHolder = (CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder) holder;
+            RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
             recyclerViewHolder.itemView.setTag(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvGoodsNo.setText(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvInfo.setText(mDatas.get(position).info);
@@ -241,9 +261,9 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
         }
 
         @Override
-        public CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_collocation_recyclerview, parent, false);
-            CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder recyclerViewHolder = new CollocationActivity.RecyclerViewAdapter.RecyclerViewHolder(view, mClickListener);
+            RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view, mClickListener);
             return recyclerViewHolder;
         }
 
@@ -262,7 +282,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 mListener = listener;
                 //为ItemView添加点击事件
                 view.setOnClickListener(this);
-                //view.setOnLongClickListener(this);
+                view.setOnLongClickListener(this);
                 //实例化自定义对象
                 tvGoodsNo = view.findViewById(R.id.tvGoodsNo);
                 tvInfo = view.findViewById(R.id.tvInfo);
@@ -280,7 +300,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
                 if(mListener != null)
                     return mListener.onItemLongClick(view, getPosition());
                 else
-                    return false;
+                    return true;
             }
         }
     }

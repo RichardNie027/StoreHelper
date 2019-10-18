@@ -43,13 +43,13 @@ public class TotalRecordFragment extends LoadMoreFragment {
 
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion) {
-                Log.d(TotalRecordFragment.class.getName(), "click at " + postion);
+            public void onItemClick(View view, int position) {
+                Log.d(TotalRecordFragment.class.getName(), "click at " + position);
             }
 
             @Override
-            public boolean onItemLongClick(final View view, int postion) {
-                Log.d(TotalRecordFragment.class.getName(), "long-click at " + postion);
+            public boolean onItemLongClick(final View view, int position) {
+                Log.d(TotalRecordFragment.class.getName(), "long-click at " + position);
                 final String binCoding = view.getTag(R.id.tag_first).toString();
                 new AlertDialog.Builder(MyApp.getInstance())
                         .setIcon(android.R.drawable.ic_dialog_info)

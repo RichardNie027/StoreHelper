@@ -5,28 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:context=".activity.stock.StockFragment">
+    tools:context=".activity.stock.StockActivity$StockChecklistBottomFragment">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:background="@color/colorSecond"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="有库存的店铺"
+        android:text="有库存的店铺或仓库"
         android:textAlignment="center"
-        android:textSize="@dimen/text_size_big"
+        android:textSize="@dimen/text_size_normal"
+        android:textColor="@color/colorSecondDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorSecondDark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

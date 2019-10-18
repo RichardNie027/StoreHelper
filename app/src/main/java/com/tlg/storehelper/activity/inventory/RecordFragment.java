@@ -43,13 +43,13 @@ public class RecordFragment extends LoadMoreFragment {
 
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion) {
-                Log.d(this.getClass().getName(), "click at " + postion);
+            public void onItemClick(View view, int position) {
+                Log.d(this.getClass().getName(), "click at " + position);
             }
 
             @Override
-            public boolean onItemLongClick(final View view, int postion) {
-                Log.d(this.getClass().getName(), "long-click at " + postion);
+            public boolean onItemLongClick(final View view, int position) {
+                Log.d(this.getClass().getName(), "long-click at " + position);
                 final String id = view.getTag(R.id.tag_first).toString();
                 int idx = Integer.parseInt(view.getTag(R.id.tag_second).toString());
                 new AlertDialog.Builder(MyApp.getInstance())

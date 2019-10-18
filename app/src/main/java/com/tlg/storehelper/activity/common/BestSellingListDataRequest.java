@@ -8,7 +8,7 @@ import android.os.Message;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.loadmoreview.AsynDataRequest;
 import com.nec.lib.android.loadmoreview.PageContent;
-import com.tlg.storehelper.httprequest.net.entity.SimplePageListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimplePageListResponseVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
 
@@ -39,9 +39,9 @@ public class BestSellingListDataRequest implements AsynDataRequest {
 
         mStoreCode = dataBundle.getString(BestSellingFragment.sStoreCodeLabel);
         mDimension = dataBundle.getString(BestSellingFragment.sDimensionLabel);
-        RequestUtil.requestBestSelling(mStoreCode, mDimension, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListEntity<GoodsSimpleVo>>() {
+        RequestUtil.requestBestSelling(mStoreCode, mDimension, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListResponseVo<GoodsSimpleVo>>() {
             @Override
-            public void onSuccess(SimplePageListEntity<GoodsSimpleVo> response) {
+            public void onSuccess(SimplePageListResponseVo<GoodsSimpleVo> response) {
                 mPageSize = response.pageSize;
                 mRecordCount = response.recordCount;
                 mPageCount = response.pageCount;

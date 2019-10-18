@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.os.Environment;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -24,7 +23,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ExcelUtil;
 import com.nec.lib.android.utils.StringUtil;
@@ -555,7 +554,7 @@ public class InventoryActivity extends BaseRxAppCompatActivity
         }
         RequestUtil.requestUploadInventory(inventoryEntity, _this, new RequestUtil.OnSuccessListener() {
             @Override
-            public void onSuccess(BaseResponseEntity response) {
+            public void onSuccess(BaseResponseVo response) {
                 Inventory inventory = DbUtil.getInventory(null, mInventory.id);
                 inventory.status = "U";
                 if(DbUtil.saveInventoty(null, inventory)) {

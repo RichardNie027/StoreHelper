@@ -8,8 +8,8 @@ import com.nec.lib.android.utils.AndroidUtil;
 
 public class MyApp extends MyApplication {
 
-//    public static String baseUrl = "http://www.tianlige.com/storehelper/";
-    public static String baseUrl = "http://192.168.1.176:8080/storehelper/";
+    public static String baseUrl = "http://www.tianlige.com/storehelper/";
+//    public static String baseUrl = "http://192.168.1.176:8080/storehelper/";
 
     @Override
     public void onCreate() {

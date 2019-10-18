@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.R;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListMapEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListMapResponseVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 public class LoginActivity extends BaseRxAppCompatActivity {
@@ -53,9 +53,9 @@ public class LoginActivity extends BaseRxAppCompatActivity {
             AndroidUtil.showToast("用户名不能为空");
             return;
         }
-        RequestUtil.requestLogin(username, password, this, new RequestUtil.OnSuccessListener<SimpleListMapEntity<String>>() {
+        RequestUtil.requestLogin(username, password, this, new RequestUtil.OnSuccessListener<SimpleListMapResponseVo<String>>() {
             @Override
-            public void onSuccess(SimpleListMapEntity<String> response) {
+            public void onSuccess(SimpleListMapResponseVo<String> response) {
                 Intent intent = new Intent(_this, MainActivity.class);
                 String[] array = response.list.toArray(new String[response.list.size()]);
                 intent.putExtra("storeCodes", array);

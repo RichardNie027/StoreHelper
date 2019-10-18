@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.nec.lib.android.loadmoreview.LoadMoreFragment;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
 
@@ -37,8 +38,7 @@ public class BestSellingFragment extends LoadMoreFragment {
     protected void initView(View rootView, Bundle bundle) {
         myRecyclerViewItemAdapter.setOnItemClickListenerAgent(new RecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion) {
-                Log.d(this.getClass().getName(), "click at " + postion);
+            public void onItemClick(View view, int position) {
                 if(mListener != null) {
                     final String goodsNo = view.getTag().toString();
                     mListener.onClickGoodsItem(goodsNo);
@@ -46,8 +46,9 @@ public class BestSellingFragment extends LoadMoreFragment {
             }
 
             @Override
-            public boolean onItemLongClick(final View view, int postion) {
-                Log.d(this.getClass().getName(), "long-click at " + postion);
+            public boolean onItemLongClick(final View view, int position) {
+                AndroidUtil.copyText(view.getTag().toString());
+                AndroidUtil.showToast("货号已复制");
                 return true;
             }
         });

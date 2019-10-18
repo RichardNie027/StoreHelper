@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.utils.AndroidUtil;
@@ -77,14 +76,14 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recycleViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion) {
+            public void onItemClick(View view, int position) {
                 switch (Integer.parseInt(view.getTag().toString())) {
                     case 101:
                         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
                         SharedPreferences.Editor editor = pref.edit();
                         editor.putString("lastModDate", "20000101000000");
                         editor.commit();
-                        RequestUtil.requestGoodBarcodes(_this, null, null, null);
+                        RequestUtil.requestGoodsList(_this, null, null, null);
                         break;
                     case 102:
                         String filesSizeDesc = calculateCacheSize(true);
@@ -125,8 +124,8 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
             }
 
             @Override
-            public boolean onItemLongClick(View view, int postion) {
-                //AndroidUtil.showToast("long click " + postion);
+            public boolean onItemLongClick(View view, int position) {
+                //AndroidUtil.showToast("long click " + position);
                 return true;
             }
         });

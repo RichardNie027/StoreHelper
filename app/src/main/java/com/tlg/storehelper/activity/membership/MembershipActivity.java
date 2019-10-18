@@ -1,8 +1,9 @@
 package com.tlg.storehelper.activity.membership;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,9 +17,10 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.LoadMoreActivity;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
 import com.tlg.storehelper.vo.MembershipVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
@@ -65,6 +67,10 @@ public class MembershipActivity extends LoadMoreActivity {
         mTvHeaderIdx = rootView.findViewById(R.id.tvHeaderIdx);
 
         hideKeyboard(true);
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        String lastMembershipId = pref.getString("lastMembershipId", "");
+        mEtMembershipId.setText(lastMembershipId);
 
         //setup view
         if(mSwipeRefreshLayout != null)
@@ -115,9 +121,14 @@ public class MembershipActivity extends LoadMoreActivity {
     }
 
     private void onEnterPress(String membershipId) {
-        RequestUtil.requestMembership(membershipId, GlobalVars.storeCode, this, new RequestUtil.OnSuccessListener<SimpleListEntity<MembershipVo>>() {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("lastMembershipId", membershipId);
+        editor.commit();
+
+        RequestUtil.requestMembership(membershipId, GlobalVars.storeCode, this, new RequestUtil.OnSuccessListener<SimpleListResponseVo<MembershipVo>>() {
             @Override
-            public void onSuccess(SimpleListEntity<MembershipVo> response) {
+            public void onSuccess(SimpleListResponseVo<MembershipVo> response) {
                 //Header ViewPager
                 mMembershipList = response.list;
                 if(mMembershipList==null || mMembershipList.size() <= 1)
@@ -184,12 +195,14 @@ public class MembershipActivity extends LoadMoreActivity {
             TextView tvMembershipCardId = view.findViewById(R.id.tvMembershipCardId);
             TextView tvName = view.findViewById(R.id.tvName);
             TextView tvMobile = view.findViewById(R.id.tvMobile);
+            TextView tvPerExpenditure = view.findViewById(R.id.tvPerExpenditure);
             TextView tvYearExpenditure = view.findViewById(R.id.tvYearExpenditure);
             TextView tvTotalExpenditure = view.findViewById(R.id.tvTotalExpenditure);
 
             tvMembershipCardId.setText("卡号：" + mList.get(position).membershipCardId);
             tvName.setText("姓名：" + mList.get(position).membershipName);
             tvMobile.setText("手机：" + mList.get(position).mobile);
+            tvPerExpenditure.setText("单笔" + new DecimalFormat("￥,###").format(mList.get(position).perExpenditure));
             tvYearExpenditure.setText("年" + new DecimalFormat("￥,###").format(mList.get(position).yearExpenditure));
             tvTotalExpenditure.setText("总" + new DecimalFormat("￥,###").format(mList.get(position).totalExpenditure));
 

@@ -24,7 +24,7 @@ import com.nec.lib.android.utils.UiUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
-import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleMapResponseVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 
 import java.io.BufferedReader;
@@ -176,10 +176,10 @@ public class CoverActivity extends BaseRxAppCompatActivity {
     }
 
     private void getVersion(final int vision) {
-        RequestUtil.requestAppVersion(this, new RequestUtil.OnSuccessListener<SimpleMapEntity>() {
+        RequestUtil.requestAppVersion(this, new RequestUtil.OnSuccessListener<SimpleMapResponseVo>() {
 
             @Override
-            public void onSuccess(SimpleMapEntity response) {
+            public void onSuccess(SimpleMapResponseVo response) {
                 String newVersion = response.map.get("versionCode").toString();      //网络版本号
                 int newVersionCode = new Double(StringUtil.parseDouble(newVersion, 0)).intValue();
                 String content = response.msg;

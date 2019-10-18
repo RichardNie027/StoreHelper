@@ -1,7 +1,5 @@
 package com.tlg.storehelper.httprequest.net.entity;
 
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;

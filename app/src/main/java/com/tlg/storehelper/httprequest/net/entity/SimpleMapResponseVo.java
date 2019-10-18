@@ -1,11 +1,11 @@
 package com.tlg.storehelper.httprequest.net.entity;
 
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleMapEntity extends BaseResponseEntity {
+public class SimpleMapResponseVo extends BaseResponseVo {
 
     public Map<String, Object> map = new HashMap<>();
 

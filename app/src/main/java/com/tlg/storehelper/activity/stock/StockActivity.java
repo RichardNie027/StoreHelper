@@ -1,5 +1,6 @@
 package com.tlg.storehelper.activity.stock;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -18,15 +19,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
+import com.nec.lib.android.boost.BottomFlexboxDialogFragment;
 import com.nec.lib.android.utils.AndroidUtil;
+import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
+import com.tlg.storehelper.activity.common.GoodsSearchingFragment;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListMapEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListMapResponseVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 import com.tlg.storehelper.vo.StockVo;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class StockActivity extends BaseRxAppCompatActivity {
@@ -61,6 +66,14 @@ public class StockActivity extends BaseRxAppCompatActivity {
         //setup view
         mTvGoodsNo.setVisibility(View.GONE);
         mTvGoodsName.setVisibility(View.GONE);
+        mTvGoodsNo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                AndroidUtil.copyText(mTvGoodsNo.getText().toString());
+                AndroidUtil.showToast("货号已复制");
+                return true;
+            }
+        });
 
         ///设置“条形码”控件
         //回车键响应
@@ -71,22 +84,15 @@ public class StockActivity extends BaseRxAppCompatActivity {
                     String barcode = mEtBarcode.getText().toString().toUpperCase();
                     String goodsNo = "";
                     if(barcode.length() > 0) {
-                        if(DbUtil.checkGoodsNo(barcode))
-                            goodsNo = barcode;
-                        else
-                            goodsNo = DbUtil.checkGoodsBarcode(barcode, true);
+                        goodsNo = DbUtil.checkGoodsBarcode(barcode, true);
                         if (!goodsNo.isEmpty()) {
                             mEtBarcode.setText("");
-                        } else {                    //错误
-                            AndroidUtil.showToast("货号 / 条码不存在");
-                            mEtBarcode.selectAll();
-                            mEtBarcode.requestFocus();
-                            return false;
+                            loadData(GlobalVars.storeCode, goodsNo);
+                            return true;
+                        } else {
+                            searchingGoods(barcode);
                         }
-                    } else
-                        return false;
-                    loadData(GlobalVars.storeCode, goodsNo);
-                    return true;
+                    }
                 }
                 return false;
             }
@@ -104,7 +110,7 @@ public class StockActivity extends BaseRxAppCompatActivity {
         mEtBarcode.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-                mEtBarcode.setText("");
+                //mEtBarcode.setText("");
                 return false;
             }
         });
@@ -127,16 +133,44 @@ public class StockActivity extends BaseRxAppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion) {
-                popupDialog(mDatas.get(postion).storeList);
+            public void onItemClick(View view, int position) {
+                if(!mDatas.get(position).storeList.isEmpty())
+                    popupDialog(mDatas.get(position).storeList);
             }
 
             @Override
-            public boolean onItemLongClick(View view, int postion) {
-                //AndroidUtil.showToast("long click " + postion);
+            public boolean onItemLongClick(View view, int position) {
+                //AndroidUtil.showToast("long click " + position);
                 return true;
             }
         });
+    }
+
+    private void searchingGoods(String input) {
+        LinkedHashMap<String, String> goodsMap = DbUtil.checkGoodsNoList(GlobalVars.storeCode.substring(0,1), input, 20);
+        if(goodsMap.isEmpty()) {
+            AndroidUtil.showToast("货号 / 条码不存在");
+            mEtBarcode.selectAll();
+            mEtBarcode.requestFocus();
+            return;
+        } else if(goodsMap.size() == 1) {
+            bottomDialogItemClick(goodsMap.keySet().iterator().next());
+            return;
+        }
+        GoodsSearchingFragment fragment = new GoodsSearchingFragment(goodsMap);
+        fragment.setTextViewOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragment.getDialog().dismiss();
+                bottomDialogItemClick(view.getTag().toString());
+            }
+        });
+        fragment.showDialog(getSupportFragmentManager());
+    }
+
+    private void bottomDialogItemClick(String goodsNo) {
+        //mEtBarcode.setText("");
+        loadData(GlobalVars.storeCode, goodsNo);
     }
 
     @Override
@@ -146,9 +180,9 @@ public class StockActivity extends BaseRxAppCompatActivity {
 
     private void loadData(String storeCode, String goodsNo) {
         //获得库存
-        RequestUtil.requestStoreStock(storeCode, goodsNo, _this, new RequestUtil.OnSuccessListener<SimpleListMapEntity<StockVo>>() {
+        RequestUtil.requestStoreStock(storeCode, goodsNo, _this, new RequestUtil.OnSuccessListener<SimpleListMapResponseVo<StockVo>>() {
             @Override
-            public void onSuccess(SimpleListMapEntity<StockVo> response) {
+            public void onSuccess(SimpleListMapResponseVo<StockVo> response) {
                 mTvGoodsNo.setVisibility(View.VISIBLE);
                 mTvGoodsName.setVisibility(View.VISIBLE);
                 mTvGoodsNo.setText(response.map.get("goodsNo").toString());
@@ -163,7 +197,10 @@ public class StockActivity extends BaseRxAppCompatActivity {
     }
 
     private void popupDialog(List<String> datas) {
-        StockFragment.newInstance(datas).showDialog(getSupportFragmentManager());
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        for(String data: datas)
+            map.put(data, data);
+        new StockChecklistBottomFragment(map).showDialog(getSupportFragmentManager());
     }
 
     ///自定义类继承RecycleView.Adapter类作为数据适配器
@@ -257,4 +294,23 @@ public class StockActivity extends BaseRxAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**库存速览，底部弹窗*/
+    public static class StockChecklistBottomFragment extends BottomFlexboxDialogFragment {
+
+        @Override
+        protected int setLayoutResourceID() {
+            return R.layout.fragment_stock_checklist_bottom;
+        }
+
+        @Override
+        protected int setRecyclerViewResourceID() {
+            return R.id.recyclerView;
+        }
+
+        public StockChecklistBottomFragment(LinkedHashMap<String, String> datas) {
+            super();
+            this.setDataList(datas);
+        }
+
+    }
 }

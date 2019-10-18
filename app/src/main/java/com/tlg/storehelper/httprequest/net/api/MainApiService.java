@@ -2,16 +2,17 @@ package com.tlg.storehelper.httprequest.net.api;
 
 import android.util.ArrayMap;
 
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.httprequest.use.RetrofitFactory;
-import com.tlg.storehelper.httprequest.net.entity.CollocationEntity;
+import com.tlg.storehelper.httprequest.net.entity.CollocationResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.GoodsInfoResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.SimpleMapResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.SimplePageListResponseVo;
+import com.tlg.storehelper.vo.GoodsPopularityVo;
 import com.tlg.storehelper.vo.MembershipVo;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListMapEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimplePageListEntity;
-import com.tlg.storehelper.httprequest.net.entity.SimpleMapEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListMapResponseVo;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
 import com.tlg.storehelper.vo.ShopHistoryVo;
 import com.tlg.storehelper.vo.StockVo;
@@ -27,49 +28,53 @@ public class MainApiService {
     }
 
     public static MainApiService getInstance() {
-        return RegentServiceHolder.S_INSTANCE;
+        return MainApiServiceHolder.S_INSTANCE;
     }
 
-    private static class RegentServiceHolder {
+    private static class MainApiServiceHolder {
         private static final MainApiService S_INSTANCE = new MainApiService();
     }
 
-    public Observable<SimpleMapEntity> appAppVersion() {
+    public Observable<SimpleMapResponseVo> appAppVersion() {
         return mMainApi.appAppVersion();
     }
 
-    public Observable<SimpleListMapEntity<String>> loginValidation(String username, String password) {
+    public Observable<SimpleListMapResponseVo<String>> loginValidation(String username, String password) {
         ArrayMap<String, Object> map = new ArrayMap<>();
         map.put("username", username);
         map.put("password", password);
         return mMainApi.loginValidation(map);
     }
 
-    public Observable<SimpleListMapEntity<String>> getGoodsBarcodes(String lastModDate) {
-        return mMainApi.getGoodsBarcodes(lastModDate);
+    public Observable<GoodsInfoResponseVo> getGoodsList(String lastModDate) {
+        return mMainApi.getGoodsList(lastModDate);
     }
 
-    public Observable<BaseResponseEntity> uploadInventory(InventoryEntity inventoryEntity) {
+    public Observable<SimpleListResponseVo<GoodsPopularityVo>> getGoodsPopularity(String storeCode) {
+        return mMainApi.getGoodsPopularity(storeCode);
+    }
+
+    public Observable<BaseResponseVo> uploadInventory(InventoryEntity inventoryEntity) {
         return mMainApi.uploadInventory(inventoryEntity);
     }
 
-    public Observable<CollocationEntity> getCollocation(String goodsNo) {
+    public Observable<CollocationResponseVo> getCollocation(String goodsNo) {
         return mMainApi.getCollocation(goodsNo);
     }
 
-    public Observable<SimplePageListEntity<GoodsSimpleVo>> getBestSelling(String storeCode, String dim, int page) {
+    public Observable<SimplePageListResponseVo<GoodsSimpleVo>> getBestSelling(String storeCode, String dim, int page) {
         return mMainApi.getBestSelling(storeCode, dim, page);
     }
 
-    public Observable<SimpleListMapEntity<StockVo>> getStoreStock(String storeCode, String goodsNo) {
+    public Observable<SimpleListMapResponseVo<StockVo>> getStoreStock(String storeCode, String goodsNo) {
         return mMainApi.getStoreStock(storeCode, goodsNo);
     }
 
-    public Observable<SimpleListEntity<MembershipVo>> getMembership(String membershipId, String storeCode) {
+    public Observable<SimpleListResponseVo<MembershipVo>> getMembership(String membershipId, String storeCode) {
         return mMainApi.getMembership(membershipId, storeCode);
     }
 
-    public Observable<SimplePageListEntity<ShopHistoryVo>> getMembershipShopHistory(String membershipId, String storeCode, int page) {
+    public Observable<SimplePageListResponseVo<ShopHistoryVo>> getMembershipShopHistory(String membershipId, String storeCode, int page) {
         return mMainApi.getMembershipShopHistory(membershipId, storeCode, page);
     }
 }

@@ -63,6 +63,16 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
+            android:id="@+id/tvPerExpenditure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="单次消费"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/colorSecond"
+            app:layout_constraintStart_toStartOf="@+id/tvName"
+            app:layout_constraintTop_toTopOf="@+id/tvMobile" />
+
+        <TextView
             android:id="@+id/tvTotalExpenditure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

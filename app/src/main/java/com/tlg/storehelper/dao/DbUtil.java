@@ -13,7 +13,10 @@ import com.nec.lib.android.utils.DateUtil;
 import com.nec.lib.android.utils.SQLiteUtil;
 import com.nec.lib.android.utils.StringUtil;
 import com.tlg.storehelper.MyApp;
+import com.tlg.storehelper.vo.GoodsPopularityVo;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class DbUtil {
@@ -44,7 +47,7 @@ public class DbUtil {
                     break;
             }
         } catch (Throwable t) {
-            AndroidUtil.showToast("查询条码数据失败");
+            AndroidUtil.showToast("查询条码失败");
             result = "";
         } finally {
             db.close();
@@ -68,7 +71,7 @@ public class DbUtil {
             }
             cursor.close();
         } catch (Throwable t) {
-            AndroidUtil.showToast("查询货号数据失败");
+            AndroidUtil.showToast("查询货号失败");
             result = false;
         } finally {
             db.close();
@@ -76,7 +79,34 @@ public class DbUtil {
         return result;
     }
 
-    public static void saveGoodsBarcodes(List<String> goodsBarcodeList, boolean onEmpty) {
+    /**模糊查询货号，返回货号列表。字母以星号代替*/
+    public static LinkedHashMap<String, String> checkGoodsNoList(String storeCodeFirstLetter, String incompleteGoodsNo, int maxSize) {
+        LinkedHashMap<String, String> result = new LinkedHashMap<>();
+        incompleteGoodsNo = "%" + incompleteGoodsNo.replaceAll("[#*]", "_") + "%";
+        SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+        SQLiteDatabase db = null;
+        try {
+            db = helper.getReadableDatabase();
+            String sql = new StringBuffer().append("select a.goodsNo, a.goodsName||' @'||a.goodsNo as goodsName").append(" from ").append(SQLiteDbHelper.TABLE_GOODS)
+                    .append(" a left join goods_popularity b on a.goodsNo=b.goodsNo")
+                    .append(" where a.goodsNo like '").append(incompleteGoodsNo).append("'").append(" and a.storeHeaders like '%").append(storeCodeFirstLetter).append("%'")
+                    .append(" order by b.popularity DESC,a.createTime desc").append(" limit " + maxSize)
+                    .toString();
+            Cursor cursor = db.rawQuery(sql, new String[] {});
+            while (cursor.moveToNext()) {
+                result.put(cursor.getString(0), cursor.getString(1));
+            }
+            cursor.close();
+        } catch (Throwable t) {
+            AndroidUtil.showToast("模糊查询货号失败");
+            result.clear();
+        } finally {
+            db.close();
+        }
+        return result;
+    }
+
+    public static void saveGoodsList(List<String> goodsList, List<String> goodsBarcodeList, boolean onEmpty) {
 
         //在新线程保存数据
         new AsyncTask<List<String>, Integer, Boolean>() {
@@ -104,16 +134,83 @@ public class DbUtil {
                 try {
                     db = helper.getWritableDatabase();
                     db.beginTransaction();
-                    if(onEmpty)
+                    if(onEmpty) {
+                        db.delete(SQLiteDbHelper.TABLE_GOODS, null, null);
                         db.delete(SQLiteDbHelper.TABLE_GOODS_BARCODE, null, null);
+                    }
+                    for (String goods : goodsList) {
+                        String[] valueArray = goods.split("\\|");
+                        Object[] valueObjArray = new Object[valueArray.length];
+                        for(int i=0; i<valueArray.length; i++)
+                            valueObjArray[i] = valueArray[i];
+                        try {
+                            valueObjArray[4] = Integer.valueOf(valueArray[4]);
+                        } catch (Exception e) {
+                            valueObjArray[4] = Integer.valueOf(0);
+                        }
+                        ContentValues contentValues1 = SQLiteUtil.toContentValues(new Goods(valueArray[0],valueArray[1],valueArray[2],valueArray[3],(Integer)valueObjArray[4],valueArray[5],valueArray[6],valueArray[7]));
+                        long result1 = onEmpty ? -1 : db.update(SQLiteDbHelper.TABLE_GOODS, contentValues1, "goodsNo=?", new String[]{valueArray[0]});
+                        if(result1 <= 0L) {
+                            String sql = new StringBuffer().append("insert into ").append(SQLiteDbHelper.TABLE_GOODS).append(" values(?,?,?,?,?,?,?,?)").toString();
+                            db.execSQL(sql, valueObjArray);
+                        }
+                    }
                     for (String goodsBarcode : goodsBarcodeList) {
                         String[] valueArray = goodsBarcode.split("\\|");
-                        ContentValues contentValues1 = SQLiteUtil.toContentValues(new GoodsBarcode(valueArray[0],valueArray[1]));
+                        ContentValues contentValues1 = SQLiteUtil.toContentValues(new GoodsBarcode(valueArray[0],valueArray[1],valueArray[2]));
                         long result1 = onEmpty ? -1 : db.update(SQLiteDbHelper.TABLE_GOODS_BARCODE, contentValues1, "barcode=?", new String[]{valueArray[0]});
                         if(result1 <= 0L) {
-                            String sql = new StringBuffer().append("insert into ").append(SQLiteDbHelper.TABLE_GOODS_BARCODE).append(" values(?,?)").toString();
+                            String sql = new StringBuffer().append("insert into ").append(SQLiteDbHelper.TABLE_GOODS_BARCODE).append(" values(?,?,?)").toString();
                             db.execSQL(sql, valueArray);
                         }
+                    }
+                    result = true;
+                    db.setTransactionSuccessful();
+                } catch (Throwable t) {
+                    Log.e(this.getClass().getName(), t.getMessage(), t);
+                } finally {
+                    if (db != null) {
+                        db.endTransaction();
+                        db.close();
+                    }
+                }
+                return result;
+            }
+        }.execute();
+    }
+
+    public static void saveGoodsPopularity(List<GoodsPopularityVo> list) {
+
+        //在新线程保存数据
+        new AsyncTask<List<GoodsPopularityVo>, Integer, Boolean>() {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                //CustomProgressDialogUtils.getInstance().showProgress(MyApp.getInstance(), "正在保存商品热度");
+            }
+
+            @Override
+            protected void onPostExecute(Boolean aBoolean) {
+                super.onPostExecute(aBoolean);
+                CustomProgressDialogUtils.getInstance().dismissProgress();
+                if(aBoolean)
+                    ;//AndroidUtil.showToast("商品热度同步完成");
+                else
+                    AndroidUtil.showToast("商品热度保存失败");
+            }
+
+            @Override
+            protected Boolean doInBackground(List<GoodsPopularityVo>... lists) {
+                boolean result = false;
+                SQLiteOpenHelper helper = new SQLiteDbHelper(MyApp.getInstance());
+                SQLiteDatabase db = null;
+                try {
+                    db = helper.getWritableDatabase();
+                    db.beginTransaction();
+                    db.delete(SQLiteDbHelper.TABLE_GOODS_POPULARITY, null, null);
+                    for (GoodsPopularityVo vo : list) {
+                        String sql = new StringBuffer().append("insert into ").append(SQLiteDbHelper.TABLE_GOODS_POPULARITY).append(" values(?,?)").toString();
+                        db.execSQL(sql, new Object[]{vo.goodsNo, vo.popularity});
                     }
                     result = true;
                     db.setTransactionSuccessful();

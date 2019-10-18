@@ -8,7 +8,7 @@ import android.os.Message;
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.loadmoreview.AsynDataRequest;
 import com.nec.lib.android.loadmoreview.PageContent;
-import com.tlg.storehelper.httprequest.net.entity.SimplePageListEntity;
+import com.tlg.storehelper.httprequest.net.entity.SimplePageListResponseVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
 import com.tlg.storehelper.vo.ShopHistoryVo;
 
@@ -40,9 +40,9 @@ public class MembershipListDataRequest implements AsynDataRequest {
 
         mMembershipId = dataBundle.getString("membership_id");
         mStoreCode = dataBundle.getString("store_code");
-        RequestUtil.requestMembershipShopHistory(mMembershipId, mStoreCode, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListEntity<ShopHistoryVo>>() {
+        RequestUtil.requestMembershipShopHistory(mMembershipId, mStoreCode, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListResponseVo<ShopHistoryVo>>() {
             @Override
-            public void onSuccess(SimplePageListEntity<ShopHistoryVo> response) {
+            public void onSuccess(SimplePageListResponseVo<ShopHistoryVo> response) {
                 mPageSize = response.pageSize;
                 mRecordCount = response.recordCount;
                 mPageCount = response.pageCount;

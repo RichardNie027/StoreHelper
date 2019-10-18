@@ -95,8 +95,8 @@ public class CalculatorActivity extends BaseRxAppCompatActivity {
 
         //设置RecycleView的布局方式，FlexboxLayoutManager
         mLayoutManager1 = new FlexboxLayoutManager(_this);
-        mLayoutManager1.setFlexWrap(FlexWrap.WRAP); //设置是否换行
-        mLayoutManager1.setFlexDirection(FlexDirection.ROW); // 设置主轴排列方式
+        mLayoutManager1.setFlexWrap(FlexWrap.WRAP);             //设置是否换行
+        mLayoutManager1.setFlexDirection(FlexDirection.ROW);    // 设置主轴排列方式
         mLayoutManager1.setAlignItems(AlignItems.STRETCH);
         mLayoutManager1.setJustifyContent(JustifyContent.FLEX_START);
         mRecyclerView1.setLayoutManager(mLayoutManager1);

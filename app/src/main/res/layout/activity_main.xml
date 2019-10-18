@@ -41,7 +41,7 @@
     <EditText
         android:id="@+id/etBarcode"
         android:layout_width="0dp"
-        android:layout_height="36dp"
+        android:layout_height="30dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/edittext_white_selector"
         android:ems="10"

@@ -28,6 +28,7 @@
         android:alpha="0.7"
         android:text="销售单号"
         android:textAlignment="viewStart"
+        android:textColor="@color/colorSecondDark"
         android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvShopDate"
         app:layout_constraintEnd_toStartOf="@+id/tvQuantity"
@@ -42,7 +43,6 @@
         android:text="件数"
         android:textAlignment="textEnd"
         android:textColor="@color/colorPrimaryLight"
-        android:textStyle="bold"
         android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvShopDate"
         app:layout_constraintEnd_toStartOf="@+id/tvAmount"
@@ -71,16 +71,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/colorSecondDark"/>
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="300dp"
-        android:layout_height="142dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="146dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:clipChildren="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvShopDate"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/activity_membership_inner_recyclerview_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

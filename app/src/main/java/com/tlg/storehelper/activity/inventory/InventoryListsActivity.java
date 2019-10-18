@@ -65,16 +65,16 @@ public class InventoryListsActivity extends BaseRxAppCompatActivity {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
-            public void onItemClick(View view, int postion) {
+            public void onItemClick(View view, int position) {
                 Intent intent = new Intent(InventoryListsActivity.this, InventoryActivity.class);
-                //intent.putExtra("list_id", mDatas.get(postion).id);
+                //intent.putExtra("list_id", mDatas.get(position).id);
                 intent.putExtra("list_id", view.getTag().toString());
                 startActivity(intent);
             }
 
             @Override
-            public boolean onItemLongClick(View view, int postion) {
-                //AndroidUtil.showToast("long click " + postion);
+            public boolean onItemLongClick(View view, int position) {
+                //AndroidUtil.showToast("long click " + position);
                 return true;
             }
         });

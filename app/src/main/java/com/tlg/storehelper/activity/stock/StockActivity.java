@@ -1,34 +1,34 @@
 package com.tlg.storehelper.activity.stock;
 
-import android.content.ClipData;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nec.lib.android.base.BaseRxAppCompatActivity;
 import com.nec.lib.android.base.RecycleViewItemClickListener;
 import com.nec.lib.android.boost.BottomFlexboxDialogFragment;
+import com.nec.lib.android.stickheaderview.StickHeaderDecoration;
+import com.nec.lib.android.stickheaderview.StickHeaderRecyclerViewAdapter;
+import com.nec.lib.android.stickheaderview.StickHeaderViewGroupData;
 import com.nec.lib.android.utils.AndroidUtil;
-import com.tlg.storehelper.MyApp;
+import com.nec.lib.android.utils.ResUtil;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.activity.common.GoodsSearchingFragment;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
-import com.tlg.storehelper.httprequest.net.entity.SimpleListMapResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
-import com.tlg.storehelper.vo.StockVo;
+import com.tlg.storehelper.vo.GoodsSizePsiVo;
+import com.tlg.storehelper.vo.GoodsPsiVo;
+import com.tlg.storehelper.vo.PsiVo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -40,7 +40,7 @@ public class StockActivity extends BaseRxAppCompatActivity {
     private TextView mTvGoodsNo = null;
     private TextView mTvGoodsName = null;
     private RecyclerView mRecyclerView;
-    private List<StockVo> mDatas = new ArrayList<>();
+    private List<MyStickHeaderViewGroupData> mDatas = new ArrayList<>();
 
     @Override
     protected void beforeCreate(Bundle savedInstanceState) {
@@ -128,14 +128,16 @@ public class StockActivity extends BaseRxAppCompatActivity {
         //设置RecycleView的布局方式，线性布局默认垂直
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, mDatas);
+        MyStickHeaderRecyclerViewAdapter recyclerViewAdapter = new MyStickHeaderRecyclerViewAdapter(mDatas);
+        recyclerViewAdapter.setViewHolderClass(recyclerViewAdapter, MyStickHeaderRecyclerViewAdapter.MyViewHolder.class);
+        mRecyclerView.addItemDecoration(new StickHeaderDecoration(this, 28, 16, 16, ResUtil.getColor("white"), ResUtil.getColor("colorPrimaryLight"), ResUtil.getColor("silver")));
+        //mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(recyclerViewAdapter);
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                if(!mDatas.get(position).storeList.isEmpty())
-                    popupDialog(mDatas.get(position).storeList);
+                if(!mDatas.get(position).item.psiMap.isEmpty())
+                    popupDialog(new ArrayList<String>(mDatas.get(position).item.psiMap.keySet()));
             }
 
             @Override
@@ -180,16 +182,24 @@ public class StockActivity extends BaseRxAppCompatActivity {
 
     private void loadData(String storeCode, String goodsNo) {
         //获得库存
-        RequestUtil.requestStoreStock(storeCode, goodsNo, _this, new RequestUtil.OnSuccessListener<SimpleListMapResponseVo<StockVo>>() {
+        RequestUtil.requestStorePsi(storeCode, goodsNo, _this, new RequestUtil.OnSuccessListener<SimpleListResponseVo<GoodsPsiVo>>() {
             @Override
-            public void onSuccess(SimpleListMapResponseVo<StockVo> response) {
-                mTvGoodsNo.setVisibility(View.VISIBLE);
-                mTvGoodsName.setVisibility(View.VISIBLE);
-                mTvGoodsNo.setText(response.map.get("goodsNo").toString());
-                mTvGoodsName.setText(response.map.get("goodsName").toString());
-
+            public void onSuccess(SimpleListResponseVo<GoodsPsiVo> response) {
+                if(!response.list.isEmpty()) {
+                    mTvGoodsNo.setVisibility(View.VISIBLE);
+                    mTvGoodsName.setVisibility(View.VISIBLE);
+                    mTvGoodsNo.setText(response.list.get(0).goodsNo);
+                    mTvGoodsName.setText(response.list.get(0).goodsName);
+                }
                 mDatas.clear();
-                mDatas.addAll(response.list);
+                for(int i=0; i<response.list.size(); i++)
+                    for(int j=0; j<response.list.get(i).goodsSizePsiList.size(); j++) {
+                        GoodsPsiVo goodsPsiVo = response.list.get(i);
+                        if(goodsPsiVo.colorDesc==null || goodsPsiVo.colorDesc.isEmpty())
+                            mDatas.add(new MyStickHeaderViewGroupData(goodsPsiVo.goodsSizePsiList.get(j), "[" + i + "]  " + goodsPsiVo.goodsNo));
+                        else
+                            mDatas.add(new MyStickHeaderViewGroupData(goodsPsiVo.goodsSizePsiList.get(j), "[" + i + "]  " + goodsPsiVo.goodsNo + "  [颜色: " + goodsPsiVo.colorDesc + "]"));
+                    }
                 mRecyclerView.getAdapter().notifyDataSetChanged();
             }
         });
@@ -203,45 +213,49 @@ public class StockActivity extends BaseRxAppCompatActivity {
         new StockChecklistBottomFragment(map).showDialog(getSupportFragmentManager());
     }
 
-    ///自定义类继承RecycleView.Adapter类作为数据适配器
-    class RecyclerViewAdapter extends RecyclerView.Adapter {
+    class MyStickHeaderViewGroupData extends StickHeaderViewGroupData {
+        public GoodsSizePsiVo item;
 
-        private Context mContext;
-        private List<StockVo> mDatas;
+        public MyStickHeaderViewGroupData(GoodsSizePsiVo item, String groupName) {
+            this.item = item;
+            this.groupName = groupName;
+        }
+    }
+
+    ///自定义类继承RecycleView.Adapter类作为数据适配器
+    class MyStickHeaderRecyclerViewAdapter extends StickHeaderRecyclerViewAdapter<MyStickHeaderViewGroupData> {
+
         private RecycleViewItemClickListener mClickListener;
 
-        public RecyclerViewAdapter(Context context, List<StockVo> datas) {
-            this.mContext = context;
-            this.mDatas = datas;
-        }
-
-        @Override
-        public int getItemCount() {
-            return mDatas.size();
+        public MyStickHeaderRecyclerViewAdapter(List<MyStickHeaderViewGroupData> list) {
+            super(list);
+            sLayoutOfRecyclerView = "activity_stock_lists_recyclerview";
         }
 
         ///对控件赋值
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-            RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
-            recyclerViewHolder.tvSize.setTag(mDatas.get(position).size);
-            recyclerViewHolder.tvSize.setText(mDatas.get(position).size);
-            recyclerViewHolder.tvStock.setText(String.valueOf(mDatas.get(position).stock));
-            recyclerViewHolder.tvSales.setText(String.valueOf(mDatas.get(position).sales));
-            recyclerViewHolder.tvStocksAll.setText(String.valueOf(mDatas.get(position).stocksAll + " 家"));
-            recyclerViewHolder.ivIcon.setVisibility(mDatas.get(position).stocksAll>0 ? View.VISIBLE : View.INVISIBLE);
+            MyViewHolder recyclerViewHolder = (MyViewHolder) holder;
+            GoodsSizePsiVo item = mDatas.get(position).item;
+            recyclerViewHolder.tvSize.setTag(item.size);
+            recyclerViewHolder.tvSize.setText(item.size);
+            PsiVo psiVo = item.psiMap.get(GlobalVars.storeCode);
+            int stock = psiVo!=null ? psiVo.i : 0;
+            int sales = psiVo!=null ? psiVo.s : 0;
+            if(stock!=0 || sales!=0) {
+                recyclerViewHolder.tvStock.setText(String.valueOf(stock));
+                recyclerViewHolder.tvSales.setText(String.valueOf(sales));
+            } else {
+                recyclerViewHolder.tvStock.setText("");
+                recyclerViewHolder.tvSales.setText("");
+            }
+            recyclerViewHolder.tvStocksAll.setText(String.valueOf(item.psiMap.size() + " 家"));
+            recyclerViewHolder.ivIcon.setVisibility(item.psiMap.size()>0 ? View.VISIBLE : View.INVISIBLE);
             recyclerViewHolder.ivIcon.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_view));
-            if(mDatas.get(position).stock==0 && mDatas.get(position).sales==0 && mDatas.get(position).stocksAll==0)
+            if(stock==0 && sales==0 && item.psiMap.size()==0)
                 holder.itemView.setAlpha(0.5f);
             else
                 holder.itemView.setAlpha(1f);
-        }
-
-        @Override
-        public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.activity_stock_lists_recyclerview, parent, false);
-            RecyclerViewHolder recyclerViewHolder = new RecyclerViewHolder(view, mClickListener);
-            return recyclerViewHolder;
         }
 
         public void setOnItemClickListener(RecycleViewItemClickListener listener) {
@@ -249,14 +263,12 @@ public class StockActivity extends BaseRxAppCompatActivity {
         }
 
         ///适配器中的自定义内部类，其中的子对象用于呈现数据
-        class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        public class MyViewHolder extends StickHeaderViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView tvSize, tvStock, tvSales, tvStocksAll;
-            private RecycleViewItemClickListener mListener;
             ImageView ivIcon;
 
-            public RecyclerViewHolder(View view, RecycleViewItemClickListener listener) {
+            public MyViewHolder(View view) {
                 super(view);
-                mListener = listener;
                 //为ItemView添加点击事件
                 view.setOnClickListener(this);
                 view.setOnLongClickListener(this);
@@ -270,14 +282,14 @@ public class StockActivity extends BaseRxAppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                if(mListener != null)
-                    mListener.onItemClick(view, getPosition());
+                if(mClickListener != null)
+                    mClickListener.onItemClick(view, getPosition());
             }
 
             @Override
             public boolean onLongClick(View view) {
-                if(mListener != null)
-                    return mListener.onItemLongClick(view, getPosition());
+                if(mClickListener != null)
+                    return mClickListener.onItemLongClick(view, getPosition());
                 else
                     return false;
             }

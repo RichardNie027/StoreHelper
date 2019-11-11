@@ -67,14 +67,14 @@ public class SettingsActivity extends BaseRxAppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         loadData();
 
-        SettingsActivity.MyStickHeaderRecyclerViewAdapter recycleViewAdapter = new MyStickHeaderRecyclerViewAdapter(mDatas);
-        recycleViewAdapter.setViewHolderClass(recycleViewAdapter, MyStickHeaderRecyclerViewAdapter.MyViewHolder.class);
+        MyStickHeaderRecyclerViewAdapter recyclerViewAdapter = new MyStickHeaderRecyclerViewAdapter(mDatas);
+        recyclerViewAdapter.setViewHolderClass(recyclerViewAdapter, MyStickHeaderRecyclerViewAdapter.MyViewHolder.class);
         mRecyclerView.addItemDecoration(new StickHeaderDecoration(this, 28, 16, 16, ResUtil.getColor("white"), ResUtil.getColor("colorPrimaryLight"), ResUtil.getColor("silver")));
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(recycleViewAdapter);
+        //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(recyclerViewAdapter);
 
         //mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        recycleViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
+        recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 switch (Integer.parseInt(view.getTag().toString())) {

@@ -14,7 +14,7 @@ import com.tlg.storehelper.httprequest.net.entity.SimplePageListResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapResponseVo;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
 import com.tlg.storehelper.vo.ShopHistoryVo;
-import com.tlg.storehelper.vo.StockVo;
+import com.tlg.storehelper.vo.GoodsPsiVo;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
@@ -81,12 +81,12 @@ public interface MainApi {
     Observable<SimplePageListResponseVo<GoodsSimpleVo>> getBestSelling(@Query("storeCode")String storeCode, @Query("dim")String dim, @Query("page")int page);
 
     /**
-     * 接口描述：GET getStoreStock
+     * 接口描述：GET getStorePsi
      * 接口参数：
-     * 接口返回：SimpleListMapResponseVo<StockVo>
+     * 接口返回：SimpleListResponseVo<GoodsPsiVo>
      */
-    @GET("api/getStoreStock")
-    Observable<SimpleListMapResponseVo<StockVo>> getStoreStock(@Query("storeCode")String storeCode, @Query("goodsNo")String goodsNo);
+    @GET("api/getStorePsi")
+    Observable<SimpleListResponseVo<GoodsPsiVo>> getStorePsi(@Query("storeCode")String storeCode, @Query("goodsNo")String goodsNo);
 
     /**
      * 接口描述：GET getMembership

@@ -25,11 +25,11 @@ import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListMapResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.SimplePageListResponseVo;
 import com.tlg.storehelper.vo.GoodsPopularityVo;
+import com.tlg.storehelper.vo.GoodsPsiVo;
 import com.tlg.storehelper.vo.MembershipVo;
 import com.tlg.storehelper.httprequest.net.entity.SimpleMapResponseVo;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
 import com.tlg.storehelper.vo.ShopHistoryVo;
-import com.tlg.storehelper.vo.StockVo;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -180,8 +180,6 @@ public class RequestUtil {
     }
 
     public static void requestGoodsPopularity(@NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener, OnFailingListener onFailingListener, OnRequestEndListener onRequestEndListener) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MyApp.getInstance());
-
         Map requestMap = new RequestMap()
                 .put("storeCode", GlobalVars.storeCode)
                 .map;
@@ -323,7 +321,7 @@ public class RequestUtil {
                 });
     }
 
-    public static void requestStoreStock(String storeCode, String goodsNo, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+    public static void requestStorePsi(String storeCode, String goodsNo, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
         Map requestMap = new RequestMap()
                 .put("storeCode", storeCode)
                 .put("goodsNo", goodsNo)
@@ -331,17 +329,17 @@ public class RequestUtil {
         signRequest(requestMap);
 
         MainApiService.getInstance()
-                .getStoreStock(storeCode, goodsNo)
+                .getStorePsi(storeCode, goodsNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<SimpleListMapResponseVo<StockVo>>(activity, false,"正在获取库存") {
+                .subscribe(new AppBaseObserver<SimpleListResponseVo<GoodsPsiVo>>(activity, false,"正在获取进销存") {
                     @Override
-                    public void onFailing(SimpleListMapResponseVo<StockVo> response) {
+                    public void onFailing(SimpleListResponseVo<GoodsPsiVo> response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
-                                    .setTitle("获取库存失败")
+                                    .setTitle("获取进销存失败")
                                     .setMessage(response.msg)
                                     .setPositiveButton("确定", null)
                                     .show();
@@ -350,7 +348,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(SimpleListMapResponseVo<StockVo> response) {
+                    public void onSuccess(SimpleListResponseVo<GoodsPsiVo> response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);

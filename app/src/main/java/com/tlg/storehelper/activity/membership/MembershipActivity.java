@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.nec.lib.android.loadmoreview.DisplayMode;
 import com.nec.lib.android.loadmoreview.LoadMoreActivity;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.tlg.storehelper.MyApp;
 import com.tlg.storehelper.R;
 import com.tlg.storehelper.comm.GlobalVars;
@@ -82,7 +84,16 @@ public class MembershipActivity extends LoadMoreActivity {
             @Override
             public boolean onKey(View view, int keyCode, KeyEvent event) {
                 if(keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN){
-                    onEnterPress(mEtMembershipId.getText().toString());
+                    String cond = mEtMembershipId.getText().toString();
+                    if(cond.startsWith("1") && cond.length()!=11) {
+                        AndroidUtil.showToast("手机号码位数不正确");
+                        return true;
+                    }
+                    if(cond.length() != 10) {
+                        AndroidUtil.showToast("会员卡号应为10位");
+                        return true;
+                    }
+                    onEnterPress(cond);
                     mEtMembershipId.requestFocus();
                     return true;
                 }

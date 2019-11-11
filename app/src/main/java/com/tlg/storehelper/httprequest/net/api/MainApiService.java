@@ -15,7 +15,7 @@ import com.tlg.storehelper.vo.MembershipVo;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListMapResponseVo;
 import com.tlg.storehelper.vo.GoodsSimpleVo;
 import com.tlg.storehelper.vo.ShopHistoryVo;
-import com.tlg.storehelper.vo.StockVo;
+import com.tlg.storehelper.vo.GoodsPsiVo;
 
 import io.reactivex.Observable;
 
@@ -66,8 +66,8 @@ public class MainApiService {
         return mMainApi.getBestSelling(storeCode, dim, page);
     }
 
-    public Observable<SimpleListMapResponseVo<StockVo>> getStoreStock(String storeCode, String goodsNo) {
-        return mMainApi.getStoreStock(storeCode, goodsNo);
+    public Observable<SimpleListResponseVo<GoodsPsiVo>> getStorePsi(String storeCode, String goodsNo) {
+        return mMainApi.getStorePsi(storeCode, goodsNo);
     }
 
     public Observable<SimpleListResponseVo<MembershipVo>> getMembership(String membershipId, String storeCode) {

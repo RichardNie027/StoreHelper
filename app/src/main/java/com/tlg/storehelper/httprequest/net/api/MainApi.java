@@ -3,7 +3,7 @@ package com.tlg.storehelper.httprequest.net.api;
 import android.util.ArrayMap;
 
 import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
-import com.tlg.storehelper.httprequest.net.entity.CollocationResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.CollocationVo;
 import com.tlg.storehelper.httprequest.net.entity.GoodsInfoResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
@@ -70,7 +70,7 @@ public interface MainApi {
      * 接口返回：InventoryEntity
      */
     @GET("api/getCollocation")
-    Observable<CollocationResponseVo> getCollocation(@Query("goodsNo")String goodsNo);
+    Observable<CollocationVo> getCollocation(@Query("goodsNo")String goodsNo, @Query("storeCodes")String storeCodes);
 
     /**
      * 接口描述：GET getBestSelling
@@ -78,7 +78,7 @@ public interface MainApi {
      * 接口返回：SimplePageListResponseVo<GoodsSimpleVo>
      */
     @GET("api/getBestSelling")
-    Observable<SimplePageListResponseVo<GoodsSimpleVo>> getBestSelling(@Query("storeCode")String storeCode, @Query("dim")String dim, @Query("page")int page);
+    Observable<SimplePageListResponseVo<GoodsSimpleVo>> getBestSelling(@Query("storeCodes")String storeCodes, @Query("dim")String dim, @Query("floorNumber")int floorNumber, @Query("page")int page);
 
     /**
      * 接口描述：GET getStorePsi

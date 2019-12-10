@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Environment;
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,9 +25,10 @@ import com.tlg.storehelper.R;
 import com.tlg.storehelper.activity.common.GoodsSearchingFragment;
 import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
-import com.tlg.storehelper.httprequest.net.entity.CollocationResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.CollocationVo;
 import com.tlg.storehelper.httprequest.utils.PicUtil;
 import com.tlg.storehelper.httprequest.utils.RequestUtil;
+import com.tlg.storehelper.vo.GoodsSimpleVo;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     private TextView tvPrice;       //吊牌价
     private ImageView ivPic;        //图片
     private RecyclerView mRecyclerView;
-    private List<CollocationResponseVo.DetailBean> mDatas = new ArrayList<>();
+    private List<GoodsSimpleVo> mDatas = new ArrayList<>();
     private String mGoodsNo;        //预设货号
 
     private String localPicPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/StoreHelper/pic/";
@@ -205,15 +205,15 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     }
 
     private void showGoodsCollocation(String goodsNo) {
-        RequestUtil.requestCollocation(goodsNo, _this, new RequestUtil.OnSuccessListener<CollocationResponseVo>() {
+        RequestUtil.requestCollocation(goodsNo, GlobalVars.storeCode.substring(0,1), _this, new RequestUtil.OnSuccessListener<CollocationVo>() {
 
             @Override
-            public void onSuccess(CollocationResponseVo response) {
-                tvGoodsName.setText(response.goodsName);
-                tvGoodsNo.setText(response.goodsNo);
-                tvPrice.setText(new DecimalFormat("￥,###").format(response.price));
-                PicUtil.loadPic(ivPic, localPicPath, response.pic, 2);
-                ivPic.setTag(localPicPath + response.pic);
+            public void onSuccess(CollocationVo response) {
+                tvGoodsName.setText(response.goods.goodsName);
+                tvGoodsNo.setText(response.goods.goodsNo);
+                tvPrice.setText(new DecimalFormat("￥,###").format(response.goods.price));
+                PicUtil.loadPic(ivPic, localPicPath, response.goods.goodsNo, 2);
+                ivPic.setTag(localPicPath + response.goods.goodsNo);
                 RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(CollocationActivity.this, response.detail);
                 mRecyclerView.setAdapter(recyclerViewAdapter);
                 recyclerViewAdapter.setOnItemClickListener(new RecycleViewItemClickListener() {
@@ -237,10 +237,10 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
     class RecyclerViewAdapter extends RecyclerView.Adapter {
 
         private Context mContext;
-        private List<CollocationResponseVo.DetailBean> mDatas;
+        private List<GoodsSimpleVo> mDatas;
         private RecycleViewItemClickListener mClickListener;
 
-        public RecyclerViewAdapter(Context context, List<CollocationResponseVo.DetailBean> datas) {
+        public RecyclerViewAdapter(Context context, List<GoodsSimpleVo> datas) {
             this.mContext = context;
             this.mDatas = datas;
         }
@@ -256,8 +256,8 @@ public class CollocationActivity extends BaseRxAppCompatActivity {
             RecyclerViewHolder recyclerViewHolder = (RecyclerViewHolder) holder;
             recyclerViewHolder.itemView.setTag(mDatas.get(position).goodsNo);
             recyclerViewHolder.tvGoodsNo.setText(mDatas.get(position).goodsNo);
-            recyclerViewHolder.tvInfo.setText(mDatas.get(position).info);
-            PicUtil.loadPic(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).pic, 2);
+            recyclerViewHolder.tvInfo.setText("搭配"+mDatas.get(position).sales+" 存"+mDatas.get(position).stock);
+            PicUtil.loadPic(recyclerViewHolder.ivPic, localPicPath, mDatas.get(position).goodsNo, 2);
         }
 
         @Override

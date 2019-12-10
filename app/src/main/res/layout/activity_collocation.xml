@@ -103,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="最佳搭配（近60天连带）"
+        android:text="最佳搭配（近45天连带）"
         android:textSize="@dimen/text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/tvRecyclerViewHeader"
         app:layout_constraintEnd_toEndOf="parent"

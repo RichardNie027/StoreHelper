@@ -39,7 +39,10 @@ public class BestSellingListDataRequest implements AsynDataRequest {
 
         mStoreCode = dataBundle.getString(BestSellingFragment.sStoreCodeLabel);
         mDimension = dataBundle.getString(BestSellingFragment.sDimensionLabel);
-        RequestUtil.requestBestSelling(mStoreCode, mDimension, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListResponseVo<GoodsSimpleVo>>() {
+        int floorNumber = mStoreCode.length() == 1 ? 10 : mStoreCode.length() < 12 ? 3 : 5;
+        if (mDimension.equals("MONTH"))
+            floorNumber *= 2;
+        RequestUtil.requestBestSelling(mStoreCode, mDimension, floorNumber, page, (BaseRxAppCompatActivity)activity, new RequestUtil.OnSuccessListener<SimplePageListResponseVo<GoodsSimpleVo>>() {
             @Override
             public void onSuccess(SimplePageListResponseVo<GoodsSimpleVo> response) {
                 mPageSize = response.pageSize;

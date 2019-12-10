@@ -4,7 +4,7 @@ import android.util.ArrayMap;
 
 import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.httprequest.use.RetrofitFactory;
-import com.tlg.storehelper.httprequest.net.entity.CollocationResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.CollocationVo;
 import com.tlg.storehelper.httprequest.net.entity.GoodsInfoResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
@@ -58,12 +58,12 @@ public class MainApiService {
         return mMainApi.uploadInventory(inventoryEntity);
     }
 
-    public Observable<CollocationResponseVo> getCollocation(String goodsNo) {
-        return mMainApi.getCollocation(goodsNo);
+    public Observable<CollocationVo> getCollocation(String goodsNo, String storeCodes) {
+        return mMainApi.getCollocation(goodsNo, storeCodes);
     }
 
-    public Observable<SimplePageListResponseVo<GoodsSimpleVo>> getBestSelling(String storeCode, String dim, int page) {
-        return mMainApi.getBestSelling(storeCode, dim, page);
+    public Observable<SimplePageListResponseVo<GoodsSimpleVo>> getBestSelling(String storeCodes, String dim, int floorNumber, int page) {
+        return mMainApi.getBestSelling(storeCodes, dim, floorNumber, page);
     }
 
     public Observable<SimpleListResponseVo<GoodsPsiVo>> getStorePsi(String storeCode, String goodsNo) {

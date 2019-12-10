@@ -18,7 +18,7 @@ import com.tlg.storehelper.comm.GlobalVars;
 import com.tlg.storehelper.dao.DbUtil;
 import com.tlg.storehelper.httprequest.net.AppBaseObserver;
 import com.tlg.storehelper.httprequest.net.api.MainApiService;
-import com.tlg.storehelper.httprequest.net.entity.CollocationResponseVo;
+import com.tlg.storehelper.httprequest.net.entity.CollocationVo;
 import com.tlg.storehelper.httprequest.net.entity.GoodsInfoResponseVo;
 import com.tlg.storehelper.httprequest.net.entity.InventoryEntity;
 import com.tlg.storehelper.httprequest.net.entity.SimpleListResponseVo;
@@ -251,20 +251,21 @@ public class RequestUtil {
                 });
     }
 
-    public static void requestCollocation(String goodsNo, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+    public static void requestCollocation(String goodsNo, String storeCodes, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
         Map requestMap = new RequestMap()
                 .put("goodsNo", goodsNo)
+                .put("storeCodes", storeCodes)
                 .map;
         signRequest(requestMap);
 
         MainApiService.getInstance()
-                .getCollocation(goodsNo)
+                .getCollocation(goodsNo, storeCodes)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())
-                .subscribe(new AppBaseObserver<CollocationResponseVo>(activity, true,"正在获取连带信息") {
+                .subscribe(new AppBaseObserver<CollocationVo>(activity, true,"正在获取连带信息") {
                     @Override
-                    public void onFailing(CollocationResponseVo response) {
+                    public void onFailing(CollocationVo response) {
                         int code = response.getCode();
                         if (code >= 900 && code < 999) {
                             new android.app.AlertDialog.Builder(MyApp.getInstance())
@@ -277,7 +278,7 @@ public class RequestUtil {
                     }
 
                     @Override
-                    public void onSuccess(CollocationResponseVo response) {
+                    public void onSuccess(CollocationVo response) {
                         Log.d(activity.getClass().getName(), "请求成功");
                         if(onSuccessListener != null)
                             onSuccessListener.onSuccess(response);
@@ -285,16 +286,17 @@ public class RequestUtil {
                 });
     }
 
-    public static void requestBestSelling(String storeCode, String dim, int page, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
+    public static void requestBestSelling(String storeCodes, String dim, int floorNumber, int page, @NonNull BaseRxAppCompatActivity activity, OnSuccessListener onSuccessListener) {
         Map requestMap = new RequestMap()
-                .put("storeCode", storeCode)
+                .put("storeCodes", storeCodes)
                 .put("dim", dim)
+                .put("floorNumber", String.valueOf(floorNumber))
                 .put("page", String.valueOf(page))
                 .map;
         signRequest(requestMap);
 
         MainApiService.getInstance()
-                .getBestSelling(storeCode, dim, page)
+                .getBestSelling(storeCodes, dim, floorNumber, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(activity.bindToLifecycle())

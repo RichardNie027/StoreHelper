@@ -22,7 +22,7 @@ public class BestSellingFragment extends LoadMoreFragment {
     @Override
     protected void doParamBundle(Bundle bundle) {
         //1、组装mDataBundle
-        mDataBundle.putString(sStoreCodeLabel, GlobalVars.storeCode);
+        mDataBundle.putString(sStoreCodeLabel, GlobalVars.storeCode.substring(0,1));
         mDataBundle.putString(sDimensionLabel, bundle.getString(sDimensionLabel));
         //2、为页面传参
 

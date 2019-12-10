@@ -154,7 +154,7 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
                             dimension = "MONTH";
                             break;
                         default:
-                            dimension = "NEW";
+                            dimension = "2WEEK";
                     }
                     dataBundle.putString(BestSellingFragment.sDimensionLabel, dimension);
                     BestSellingListDataRequest bestSellingListDataRequest = new BestSellingListDataRequest();
@@ -255,7 +255,7 @@ public class MainActivity extends BaseRxAppCompatActivity implements BestSelling
                     dimension = "MONTH";
                     break;
                 default:
-                    dimension = "NEW";
+                    dimension = "2WEEK";
             }
             Bundle dataBundle = new Bundle();
             dataBundle.putString(BestSellingFragment.sDimensionLabel, dimension);

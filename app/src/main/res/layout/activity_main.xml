@@ -181,7 +181,7 @@
             style="@style/Custom.LightTabRadioButtonStyle"
             android:layout_weight="1"
             android:focusable="false"
-            android:text="新款" />
+            android:text="双周" />
     </RadioGroup>
 
     <View

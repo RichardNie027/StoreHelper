@@ -51,12 +51,12 @@ public class BestSellingRecyclerViewItemAdapter extends RecyclerViewItemAdapter<
             mHolder.mView.setTag(mHolder.mItem.goodsNo);
             if(mHolder.ivPicView != null) {
                 mHolder.ivPicView.setVisibility(View.VISIBLE);
-                PicUtil.loadPic(mHolder.ivPicView, localPicPath, mHolder.mItem.pic, 2);
+                PicUtil.loadPic(mHolder.ivPicView, localPicPath, mHolder.mItem.goodsNo, 2);
             }
             if(mHolder.tvGoodsNoView != null)
                 mHolder.tvGoodsNoView.setText(String.valueOf(mHolder.mItem.goodsNo));
             if(mHolder.tvInfoView != null)
-                mHolder.tvInfoView.setText(new DecimalFormat("￥,###").format(mHolder.mItem.price) + " [" + mHolder.mItem.info + "]");
+                mHolder.tvInfoView.setText(new DecimalFormat("￥,###").format(mHolder.mItem.price) + " [" + mHolder.mItem.sales + "] [" + mHolder.mItem.stock + "]");
         } else if (mDisplayMode == DisplayMode.LINEAR) {
             MyLinearViewHolder mHolder = (MyLinearViewHolder) holder;
             mHolder.mItem = mValues.get(position);
@@ -64,7 +64,7 @@ public class BestSellingRecyclerViewItemAdapter extends RecyclerViewItemAdapter<
             if(mHolder.tvGoodsNoView != null)
                 mHolder.tvGoodsNoView.setText(String.valueOf(mHolder.mItem.goodsNo));
             if(mHolder.tvInfoView != null)
-                mHolder.tvInfoView.setText(mHolder.mItem.price + " [" + mHolder.mItem.info + "]");
+                mHolder.tvInfoView.setText(mHolder.mItem.price + " [" + mHolder.mItem.sales + "] [" + mHolder.mItem.stock + "]");
         } else {
             ;
         }

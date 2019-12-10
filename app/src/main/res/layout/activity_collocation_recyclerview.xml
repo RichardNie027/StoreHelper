@@ -41,7 +41,7 @@
         android:text=" "
         android:textAlignment="center"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/text_size_normal"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintEnd_toEndOf="@+id/ivPic"
         app:layout_constraintStart_toStartOf="@+id/ivPic"
         app:layout_constraintTop_toTopOf="@+id/tvGoodsNo" />

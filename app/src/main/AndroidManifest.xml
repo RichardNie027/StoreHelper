@@ -13,7 +13,6 @@
         <activity android:name=".activity.membership.MembershipActivity"></activity>
         <activity android:name=".activity.stock.StockActivity" />
         <activity android:name=".activity.calculator.CalculatorActivity" />
-        <activity android:name=".activity.performance.PerformanceActivity" />
         <activity android:name=".activity.common.CoverActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

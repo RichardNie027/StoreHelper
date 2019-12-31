@@ -7,16 +7,16 @@ public class PsiVo {
     public int d;
     /**销售数量 sales*/
     public int s;
-    /**销售金额 sales amount*/
+    /**销售金额 sales money*/
     public int sa;
     /**库存 inventory*/
     public int i;
 
-    public PsiVo(int receiving, int delivery, int sales, int salesAmount, int inventory) {
+    public PsiVo(int receiving, int delivery, int sales, int salesMoney, int inventory) {
         this.r = receiving;
         this.d = delivery;
         this.s = sales;
-        this.sa = salesAmount;
+        this.sa = salesMoney;
         this.i = inventory;
     }
 }
